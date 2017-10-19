@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Redirecting to single point of application</title>
+        <script type="text/javascript">
+            sessionStorage.redirect = location.href;
+            var branch = location.href.split("/")[3];
+            window.location = "https://gns3.github.io/" + branch + "/";
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
