@@ -266,6 +266,7 @@ var DefaultLayoutComponent = (function () {
 DefaultLayoutComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-default-layout',
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_19" /* ViewEncapsulation */].None,
         template: __webpack_require__("../../../../../src/app/default-layout/default-layout.component.html"),
         styles: [__webpack_require__("../../../../../src/app/default-layout/default-layout.component.css")]
     }),
@@ -284,7 +285,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "svg {\n  display: block;\n}\n", ""]);
 
 // exports
 
@@ -335,6 +336,7 @@ var MapComponent = (function () {
         this.height = 600;
         this.phylloRadius = 7;
         this.pointRadius = 2;
+        this.windowFullSize = true;
         this.d3 = d3Service.getD3();
         this.parentNativeElement = element.nativeElement;
     }
@@ -369,15 +371,32 @@ var MapComponent = (function () {
             rootElement = d3.select(this.parentNativeElement);
             this.svg = rootElement.select('svg');
             this.graphContext = new __WEBPACK_IMPORTED_MODULE_3__models_context__["a" /* Context */](this.svg);
-            this.graphContext.setSize(new __WEBPACK_IMPORTED_MODULE_4__models_size__["a" /* Size */](this.width, this.height));
+            if (this.windowFullSize) {
+                this.graphContext.setSize(this.getSize());
+            }
+            else {
+                this.graphContext.setSize(new __WEBPACK_IMPORTED_MODULE_4__models_size__["a" /* Size */](this.width, this.height));
+            }
             this.graphLayout = new __WEBPACK_IMPORTED_MODULE_2__models_graph_layout__["a" /* GraphLayout */]();
             this.graphLayout.draw(this.svg, this.graphContext);
         }
     };
+    MapComponent.prototype.getSize = function () {
+        return new __WEBPACK_IMPORTED_MODULE_4__models_size__["a" /* Size */](document.documentElement.clientWidth, document.documentElement.clientHeight);
+    };
     MapComponent.prototype.changeLayout = function () {
-        this.svg
-            .attr('width', this.width)
-            .attr('height', this.height);
+        if (this.graphContext != null) {
+            this.svg
+                .attr('width', this.graphContext.getSize().width)
+                .attr('height', this.graphContext.getSize().height);
+        }
+        if (this.windowFullSize) {
+            if (this.parentNativeElement != null) {
+                this.graphContext.setSize(this.getSize());
+            }
+        }
+        else {
+        }
         this.graphLayout.setNodes(this.nodes);
         this.graphLayout.setLinks(this.links);
         this.redraw();
@@ -434,6 +453,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
     __metadata("design:type", Object)
 ], MapComponent.prototype, "pointRadius", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", Object)
+], MapComponent.prototype, "windowFullSize", void 0);
 MapComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-map',
@@ -800,7 +823,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "html {\n  position: static;\n  height: 100%;\n}\n\nbody {\n  height: 100%;\n  margin: 0;\n  margin-bottom: 0 !important;\n}\n\napp-root, app-project-map, .project-map, app-map, svg {\n  height: 100%;\n}\n\n", ""]);
 
 // exports
 
@@ -813,7 +836,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\"></app-map>\n</div>\n\n\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\"><app-map [nodes]=\"nodes\" [links]=\"links\"></app-map></div>\n"
 
 /***/ }),
 
@@ -978,6 +1001,7 @@ __decorate([
 ProjectMapComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-project-map',
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_19" /* ViewEncapsulation */].None,
         template: __webpack_require__("../../../../../src/app/project-map/project-map.component.html"),
         styles: [__webpack_require__("../../../../../src/app/project-map/project-map.component.css")],
     }),
