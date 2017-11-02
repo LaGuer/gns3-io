@@ -27,6 +27,7 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_gendir lazy recursive";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__project_map_project_map_component__ = __webpack_require__("../../../../../src/app/project-map/project-map.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__servers_servers_component__ = __webpack_require__("../../../../../src/app/servers/servers.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__projects_projects_component__ = __webpack_require__("../../../../../src/app/projects/projects.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__default_layout_default_layout_component__ = __webpack_require__("../../../../../src/app/default-layout/default-layout.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,10 +39,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var routes = [
-    { path: '', redirectTo: '/servers', pathMatch: 'full' },
-    { path: 'servers', component: __WEBPACK_IMPORTED_MODULE_3__servers_servers_component__["b" /* ServersComponent */] },
-    { path: 'server/:server_id/projects', component: __WEBPACK_IMPORTED_MODULE_4__projects_projects_component__["a" /* ProjectsComponent */] },
+    { path: '', component: __WEBPACK_IMPORTED_MODULE_5__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
+        children: [
+            { path: '', redirectTo: 'servers', pathMatch: 'full' },
+            { path: 'servers', component: __WEBPACK_IMPORTED_MODULE_3__servers_servers_component__["b" /* ServersComponent */] },
+            { path: 'server/:server_id/projects', component: __WEBPACK_IMPORTED_MODULE_4__projects_projects_component__["a" /* ProjectsComponent */] }
+        ]
+    },
     { path: 'server/:server_id/project/:project_id', component: __WEBPACK_IMPORTED_MODULE_2__project_map_project_map_component__["a" /* ProjectMapComponent */] },
 ];
 var AppRoutingModule = (function () {
@@ -81,7 +87,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark\">\n  <a class=\"navbar-brand\" href=\"/\"><img src=\"assets/logo-header.png\"></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\" aria-controls=\"navbarNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse\" id=\"navbarNav\">\n    <ul class=\"navbar-nav\">\n      <li class=\"nav-item active\">\n        <a class=\"nav-link\" [routerLink]=\"['/servers']\" >Servers <span class=\"sr-only\">(current)</span></a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<router-outlet></router-outlet>\n\n<footer class=\"footer\">\n  <span class=\"text-muted\">GNS3 Web UI demo</span>\n</footer>\n"
+module.exports = "<router-outlet></router-outlet>\n"
 
 /***/ }),
 
@@ -91,15 +97,25 @@ module.exports = "<nav class=\"navbar navbar-expand-lg navbar-dark\">\n  <a clas
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
 
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(http, iconReg, sanitizer) {
+        iconReg.addSvgIcon('gns3', sanitizer.bypassSecurityTrustResourceUrl('./assets/gns3_icon.svg'));
     }
     AppComponent.prototype.ngOnInit = function () {
     };
@@ -110,9 +126,11 @@ AppComponent = __decorate([
         selector: 'app-root',
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
-    })
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatIconRegistry */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatIconRegistry */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _c || Object])
 ], AppComponent);
 
+var _a, _b, _c;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -140,12 +158,20 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__services_server_service__ = __webpack_require__("../../../../../src/app/services/server.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__services_indexed_db_service__ = __webpack_require__("../../../../../src/app/services/indexed-db.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__services_http_server_service__ = __webpack_require__("../../../../../src/app/services/http-server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__default_layout_default_layout_component__ = __webpack_require__("../../../../../src/app/default-layout/default-layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__angular_cdk_table__ = __webpack_require__("../../../cdk/esm5/table.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
+
 
 
 
@@ -176,15 +202,27 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_8__map_map_component__["a" /* MapComponent */],
             __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__["a" /* ProjectMapComponent */],
             __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["b" /* ServersComponent */],
-            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* ServerCreateModalComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* AddServerDialogComponent */],
             __WEBPACK_IMPORTED_MODULE_11__projects_projects_component__["a" /* ProjectsComponent */],
+            __WEBPACK_IMPORTED_MODULE_18__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["c" /* NgbModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_http__["c" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_6__app_routing_module__["a" /* AppRoutingModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormsModule */]
+            __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_19__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["b" /* MatButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["k" /* MatMenuModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["c" /* MatCardModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["m" /* MatToolbarModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["h" /* MatIconModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["g" /* MatFormFieldModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["j" /* MatInputModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["l" /* MatTableModule */],
+            __WEBPACK_IMPORTED_MODULE_20__angular_material__["e" /* MatDialogModule */],
+            __WEBPACK_IMPORTED_MODULE_21__angular_cdk_table__["m" /* CdkTableModule */]
         ],
         providers: [
             __WEBPACK_IMPORTED_MODULE_4_d3_ng2_service__["a" /* D3Service */],
@@ -196,13 +234,75 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_17__services_http_server_service__["a" /* HttpServer */],
         ],
         entryComponents: [
-            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* ServerCreateModalComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* AddServerDialogComponent */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
 //# sourceMappingURL=app.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/default-layout/default-layout.component.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "html, body {\n  height: 100%;\n}\n\napp-root, app-default-layout {\n  height: 100%;\n}\n\napp-default-layout {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  height: 100vh;\n}\n\n.content {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n}\n\n.footer {\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  padding: 20px;\n  /*background-color: #0097a7;*/\n  color: white;\n}\n\n.default-content {\n  margin: 0 auto;\n  max-width: 940px;\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\nheader {\n  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);\n  z-index: 10;\n}\n\nmain {\n  height: 100%;\n}\n\n.default-header h1 {\n  font-weight: 300;\n  margin: 0;\n  font-size: 20px;\n  padding: 28px 8px;\n  color: white;\n}\n\n.default-header {\n  padding-left: 20px;\n  /*background-color: #0097a7;*/\n}\n\n.buttons-bar {\n  padding-top: 10px;\n  text-align: right;\n}\n\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/default-layout/default-layout.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<header>\n  <mat-toolbar color=\"primary\">\n    <button mat-icon-button>\n      <mat-icon svgIcon=\"gns3\"></mat-icon>\n    </button>\n\n    <button mat-button routerLink=\"/servers\" >Servers</button>\n  </mat-toolbar>\n</header>\n\n<main class=\"mat-app-background\">\n  <router-outlet></router-outlet>\n</main>\n\n<footer class=\"footer mat-app-background\">\n  GNS3 Web UI demo &copy; 2017\n</footer>\n\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/default-layout/default-layout.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DefaultLayoutComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var DefaultLayoutComponent = (function () {
+    function DefaultLayoutComponent() {
+    }
+    DefaultLayoutComponent.prototype.ngOnInit = function () {
+    };
+    return DefaultLayoutComponent;
+}());
+DefaultLayoutComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-default-layout',
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_19" /* ViewEncapsulation */].None,
+        template: __webpack_require__("../../../../../src/app/default-layout/default-layout.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/default-layout/default-layout.component.css")]
+    }),
+    __metadata("design:paramtypes", [])
+], DefaultLayoutComponent);
+
+//# sourceMappingURL=default-layout.component.js.map
 
 /***/ }),
 
@@ -214,7 +314,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "svg {\n  display: block;\n}\n", ""]);
 
 // exports
 
@@ -265,6 +365,7 @@ var MapComponent = (function () {
         this.height = 600;
         this.phylloRadius = 7;
         this.pointRadius = 2;
+        this.windowFullSize = true;
         this.d3 = d3Service.getD3();
         this.parentNativeElement = element.nativeElement;
     }
@@ -299,15 +400,32 @@ var MapComponent = (function () {
             rootElement = d3.select(this.parentNativeElement);
             this.svg = rootElement.select('svg');
             this.graphContext = new __WEBPACK_IMPORTED_MODULE_3__models_context__["a" /* Context */](this.svg);
-            this.graphContext.setSize(new __WEBPACK_IMPORTED_MODULE_4__models_size__["a" /* Size */](this.width, this.height));
+            if (this.windowFullSize) {
+                this.graphContext.setSize(this.getSize());
+            }
+            else {
+                this.graphContext.setSize(new __WEBPACK_IMPORTED_MODULE_4__models_size__["a" /* Size */](this.width, this.height));
+            }
             this.graphLayout = new __WEBPACK_IMPORTED_MODULE_2__models_graph_layout__["a" /* GraphLayout */]();
             this.graphLayout.draw(this.svg, this.graphContext);
         }
     };
+    MapComponent.prototype.getSize = function () {
+        return new __WEBPACK_IMPORTED_MODULE_4__models_size__["a" /* Size */](document.documentElement.clientWidth, document.documentElement.clientHeight);
+    };
     MapComponent.prototype.changeLayout = function () {
-        this.svg
-            .attr('width', this.width)
-            .attr('height', this.height);
+        if (this.graphContext != null) {
+            this.svg
+                .attr('width', this.graphContext.getSize().width)
+                .attr('height', this.graphContext.getSize().height);
+        }
+        if (this.windowFullSize) {
+            if (this.parentNativeElement != null) {
+                this.graphContext.setSize(this.getSize());
+            }
+        }
+        else {
+        }
         this.graphLayout.setNodes(this.nodes);
         this.graphLayout.setLinks(this.links);
         this.redraw();
@@ -364,6 +482,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
     __metadata("design:type", Object)
 ], MapComponent.prototype, "pointRadius", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", Object)
+], MapComponent.prototype, "windowFullSize", void 0);
 MapComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-map',
@@ -730,7 +852,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n/*}*/\n\n/*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n/*}*/\n\n/*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n/*}*/\n\n\n.project-map {\n  background-color: lightgray;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n", ""]);
 
 // exports
 
@@ -743,7 +865,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\"></app-map>\n</div>\n\n\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n      <button mat-icon-button [routerLink]=\"['/server', server.id, 'projects']\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <!--<mat-toolbar-row>-->\n        <!--<button mat-icon-button>-->\n          <!--<mat-icon>verified_user</mat-icon>-->\n        <!--</button>-->\n      <!--</mat-toolbar-row>-->\n\n      <!--<mat-toolbar-row>-->\n        <!--<button mat-icon-button>-->\n          <!--<mat-icon>delete</mat-icon>-->\n        <!--</button>-->\n      <!--</mat-toolbar-row>-->\n    </mat-toolbar>\n  </div>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -908,6 +1030,7 @@ __decorate([
 ProjectMapComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-project-map',
+        encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["_19" /* ViewEncapsulation */].None,
         template: __webpack_require__("../../../../../src/app/project-map/project-map.component.html"),
         styles: [__webpack_require__("../../../../../src/app/project-map/project-map.component.css")],
     }),
@@ -940,7 +1063,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/projects/projects.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container page\">\n  <h1>Projects</h1>\n\n  <div class=\"row\">\n    <table class=\"table table-inverse\">\n      <thead>\n        <tr>\n          <th>Name</th>\n          <th>Actions</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let project of projects\">\n          <td><a [routerLink]=\"['/server', server.id, 'project', project.project_id]\">{{ project.name }}</a></td>\n          <td><button class=\"btn btn-outline-danger btn-sm\" (click)=\"delete(project)\">Remove</button></td>\n        </tr>\n      </tbody>\n\n    </table>\n  </div>\n\n</div>\n"
+module.exports = "<div class=\"content\">\n  <div class=\"default-header mat-app-background\">\n    <h1>Projects</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\">\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <button [routerLink]=\"['/server', server.id, 'project', row.project_id]\" mat-button>{{row.name}}</button>\n          </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <button mat-icon-button (click)=\"delete(row)\">\n              <mat-icon aria-label=\"Delete project\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -949,10 +1072,27 @@ module.exports = "<div class=\"container page\">\n  <h1>Projects</h1>\n\n  <div 
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectsComponent; });
+/* unused harmony export ProjectDatabase */
+/* unused harmony export ProjectDataSource */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_project_service__ = __webpack_require__("../../../../../src/app/services/project.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_server_service__ = __webpack_require__("../../../../../src/app/services/server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_cdk_collections__ = __webpack_require__("../../../cdk/esm5/collections.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_Observable__);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -966,12 +1106,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
+
 var ProjectsComponent = (function () {
     function ProjectsComponent(route, serverService, projectService) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
-        this.projects = [];
+        this.projectDatabase = new ProjectDatabase();
+        this.displayedColumns = ['name', 'actions'];
+        this.dataSource = new ProjectDataSource(this.projectDatabase);
     }
     ProjectsComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -982,21 +1127,17 @@ var ProjectsComponent = (function () {
         })
             .subscribe(function (server) {
             _this.server = server;
-            _this.reload();
-        });
-    };
-    ProjectsComponent.prototype.reload = function () {
-        var _this = this;
-        this.projectService
-            .list(this.server)
-            .subscribe(function (projects) {
-            _this.projects = projects;
+            _this.projectService
+                .list(_this.server)
+                .subscribe(function (projects) {
+                _this.projectDatabase.addProjects(projects);
+            });
         });
     };
     ProjectsComponent.prototype.delete = function (project) {
         var _this = this;
         this.projectService.delete(this.server, project.project_id).subscribe(function () {
-            _this.reload();
+            _this.projectDatabase.remove(project);
         });
     };
     return ProjectsComponent;
@@ -1010,15 +1151,56 @@ ProjectsComponent = __decorate([
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_server_service__["a" /* ServerService */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_project_service__["a" /* ProjectService */]) === "function" && _c || Object])
 ], ProjectsComponent);
 
+var ProjectDatabase = (function () {
+    function ProjectDatabase() {
+        this.dataChange = new __WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject__["BehaviorSubject"]([]);
+    }
+    Object.defineProperty(ProjectDatabase.prototype, "data", {
+        get: function () {
+            return this.dataChange.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ProjectDatabase.prototype.addProjects = function (projects) {
+        this.dataChange.next(projects);
+    };
+    ProjectDatabase.prototype.remove = function (project) {
+        var index = this.data.indexOf(project);
+        if (index >= 0) {
+            this.data.splice(index, 1);
+            this.dataChange.next(this.data.slice());
+        }
+    };
+    return ProjectDatabase;
+}());
+
+var ProjectDataSource = (function (_super) {
+    __extends(ProjectDataSource, _super);
+    function ProjectDataSource(projectDatabase) {
+        var _this = _super.call(this) || this;
+        _this.projectDatabase = projectDatabase;
+        return _this;
+    }
+    ProjectDataSource.prototype.connect = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_6_rxjs_Observable__["Observable"].merge(this.projectDatabase.dataChange).map(function () {
+            return _this.projectDatabase.data;
+        });
+    };
+    ProjectDataSource.prototype.disconnect = function () { };
+    return ProjectDataSource;
+}(__WEBPACK_IMPORTED_MODULE_5__angular_cdk_collections__["a" /* DataSource */]));
+
 var _a, _b, _c;
 //# sourceMappingURL=projects.component.js.map
 
 /***/ }),
 
-/***/ "../../../../../src/app/servers/server-create-modal.component.html":
+/***/ "../../../../../src/app/servers/add-server-dialog.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"modal-header\">\n  <h4 class=\"modal-title\">Add server</h4>\n  <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"activeModal.dismiss()\">\n    <span aria-hidden=\"true\">&times;</span>\n  </button>\n</div>\n<div class=\"modal-body\">\n  <form #f=\"ngForm\">\n    <div class=\"form-group\">\n      <label for=\"name\">Name</label>\n      <input type=\"text\" class=\"form-control\" id=\"name\" name=\"name\" placeholder=\"Enter name\" [(ngModel)]=\"server.name\" required>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"ip\">IP</label>\n      <input type=\"text\" class=\"form-control\" id=\"ip\" name=\"ip\" placeholder=\"Enter IP\" [(ngModel)]=\"server.ip\" required>\n    </div>\n    <div class=\"form-group\">\n      <label for=\"port\">Port</label>\n      <input type=\"number\" class=\"form-control\" id=\"port\" name=\"port\" placeholder=\"Enter Port\" [(ngModel)]=\"server.port\" required>\n    </div>\n  </form>\n</div>\n<div class=\"modal-footer\">\n  <button type=\"button\" class=\"btn btn-outline-dark\" (click)=\"activeModal.dismiss()\">Close</button>\n\n  <button type=\"button\" class=\"btn btn-success\" (click)=\"add()\" [disabled]=\"!f.valid\">Add</button>\n</div>\n"
+module.exports = "<h1 mat-dialog-title>Add server</h1>\n<div mat-dialog-content>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.name\" placeholder=\"Name\">\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.ip\" placeholder=\"IP\">\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.port\" placeholder=\"Port\">\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" color=\"accent\">No Thanks</button>\n  <button mat-button (click)=\"onAddClick()\" tabindex=\"2\" mat-raised-button color=\"primary\">Add</button>\n</div>\n"
 
 /***/ }),
 
@@ -1043,7 +1225,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/servers/servers.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container page\">\n  <h1>Servers</h1>\n\n  <div class=\"row\">\n    <table class=\"table table-inverse\">\n      <thead>\n        <tr>\n          <th>#</th>\n          <th>Name</th>\n          <th>IP:Port</th>\n          <th>Action</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr *ngFor=\"let server of servers\">\n          <th scope=\"row\">{{ server.id }}</th>\n          <td><a [routerLink]=\"['/server', server.id, 'projects']\">{{ server.name }}</a></td>\n          <td>{{ server.ip }}:{{ server.port }}</td>\n          <td><button class=\"btn btn-outline-danger btn-sm \" (click)=\"deleteServer(server)\">Remove</button></td>\n        </tr>\n      </tbody>\n    </table>\n  </div>\n\n  <div class=\"row\">\n    <button class=\"btn btn-primary btn-lg active\" (click)=\"createModal()\">Add server</button>\n  </div>\n\n</div>\n"
+module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Servers</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\">\n\n        <ng-container matColumnDef=\"id\">\n          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\"> {{row.id}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\"> <button [routerLink]=\"['/server', row.id, 'projects']\" mat-button>{{row.name}}</button></mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"ip\">\n          <mat-header-cell *matHeaderCellDef> IP </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\"> {{row.ip}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"port\">\n          <mat-header-cell *matHeaderCellDef> Port </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\"> {{row.port}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\" style=\"text-align: right\">\n            <button mat-icon-button (click)=\"deleteServer(row)\">\n              <mat-icon aria-label=\"Remove server\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n    <div class=\"buttons-bar\">\n      <button mat-raised-button color=\"primary\" (click)=\"createModal()\">Add server</button>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1051,12 +1233,41 @@ module.exports = "<div class=\"container page\">\n  <h1>Servers</h1>\n\n  <div c
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServerCreateModalComponent; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ServersComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddServerDialogComponent; });
+/* unused harmony export ServerDatabase */
+/* unused harmony export ServerDataSource */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_server__ = __webpack_require__("../../../../../src/app/models/server.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__services_server_service__ = __webpack_require__("../../../../../src/app/services/server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_server__ = __webpack_require__("../../../../../src/app/models/server.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_server_service__ = __webpack_require__("../../../../../src/app/services/server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_cdk_collections__ = __webpack_require__("../../../cdk/esm5/collections.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_BehaviorSubject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith__ = __webpack_require__("../../../../rxjs/add/operator/startWith.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_operator_startWith__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_observable_merge__ = __webpack_require__("../../../../rxjs/add/observable/merge.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_add_observable_merge__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_debounceTime__ = __webpack_require__("../../../../rxjs/add/operator/debounceTime.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_debounceTime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_debounceTime__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_distinctUntilChanged__ = __webpack_require__("../../../../rxjs/add/operator/distinctUntilChanged.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_distinctUntilChanged___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_rxjs_add_operator_distinctUntilChanged__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_add_observable_fromEvent__ = __webpack_require__("../../../../rxjs/add/observable/fromEvent.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_rxjs_add_observable_fromEvent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_rxjs_add_observable_fromEvent__);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1066,56 +1277,53 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 
 
 
 
-var ServerCreateModalComponent = (function () {
-    function ServerCreateModalComponent(activeModal) {
-        this.activeModal = activeModal;
-        this.server = new __WEBPACK_IMPORTED_MODULE_2__models_server__["a" /* Server */]();
-    }
-    ServerCreateModalComponent.prototype.add = function () {
-        this.activeModal.close(this.server);
-    };
-    return ServerCreateModalComponent;
-}());
-ServerCreateModalComponent = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
-        selector: 'app-server-create-modal',
-        template: __webpack_require__("../../../../../src/app/servers/server-create-modal.component.html")
-    }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__["a" /* NgbActiveModal */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__["a" /* NgbActiveModal */]) === "function" && _a || Object])
-], ServerCreateModalComponent);
+
+
+
+
+
+
+
+
 
 var ServersComponent = (function () {
-    function ServersComponent(modalService, serverService) {
-        this.modalService = modalService;
+    function ServersComponent(dialog, serverService) {
+        this.dialog = dialog;
         this.serverService = serverService;
-        this.servers = [];
+        this.serverDatabase = new ServerDatabase();
+        this.displayedColumns = ['id', 'name', 'ip', 'port', 'actions'];
     }
     ServersComponent.prototype.ngOnInit = function () {
-        this.loadServers();
-    };
-    ServersComponent.prototype.loadServers = function () {
         var _this = this;
         this.serverService.findAll().then(function (servers) {
-            _this.servers = servers;
+            _this.serverDatabase.addServers(servers);
         });
+        this.dataSource = new ServerDataSource(this.serverDatabase);
     };
     ServersComponent.prototype.createModal = function () {
         var _this = this;
-        this.modalService.open(ServerCreateModalComponent).result.then(function (server) {
-            _this.serverService.create(server).then(function (created) {
-                _this.loadServers();
-            });
-        }, function (rejection) {
+        var dialogRef = this.dialog.open(AddServerDialogComponent, {
+            width: '250px',
+        });
+        dialogRef.afterClosed().subscribe(function (server) {
+            if (server) {
+                _this.serverService.create(server).then(function (created) {
+                    _this.serverDatabase.addServer(created);
+                });
+            }
         });
     };
     ServersComponent.prototype.deleteServer = function (server) {
         var _this = this;
         this.serverService.delete(server).then(function () {
-            _this.loadServers();
+            _this.serverDatabase.remove(server);
         });
     };
     return ServersComponent;
@@ -1126,10 +1334,79 @@ ServersComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/servers/servers.component.html"),
         styles: [__webpack_require__("../../../../../src/app/servers/servers.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__["b" /* NgbModal */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__ng_bootstrap_ng_bootstrap__["b" /* NgbModal */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__services_server_service__["a" /* ServerService */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_5__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_material__["d" /* MatDialog */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_server_service__["a" /* ServerService */]) === "function" && _b || Object])
 ], ServersComponent);
 
-var _a, _b, _c;
+var AddServerDialogComponent = (function () {
+    function AddServerDialogComponent(dialogRef, data, serverService) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.server = new __WEBPACK_IMPORTED_MODULE_1__models_server__["a" /* Server */]();
+    }
+    AddServerDialogComponent.prototype.onAddClick = function () {
+        this.dialogRef.close(this.server);
+    };
+    AddServerDialogComponent.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    return AddServerDialogComponent;
+}());
+AddServerDialogComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-add-server-dialog',
+        template: __webpack_require__("../../../../../src/app/servers/add-server-dialog.html"),
+    }),
+    __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MAT_DIALOG_DATA */])),
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_material__["f" /* MatDialogRef */]) === "function" && _c || Object, Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_server_service__["a" /* ServerService */]) === "function" && _d || Object])
+], AddServerDialogComponent);
+
+var ServerDatabase = (function () {
+    function ServerDatabase() {
+        this.dataChange = new __WEBPACK_IMPORTED_MODULE_6_rxjs_BehaviorSubject__["BehaviorSubject"]([]);
+    }
+    Object.defineProperty(ServerDatabase.prototype, "data", {
+        get: function () {
+            return this.dataChange.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ServerDatabase.prototype.addServer = function (server) {
+        var servers = this.data.slice();
+        servers.push(server);
+        this.dataChange.next(servers);
+    };
+    ServerDatabase.prototype.addServers = function (servers) {
+        this.dataChange.next(servers);
+    };
+    ServerDatabase.prototype.remove = function (server) {
+        var index = this.data.indexOf(server);
+        if (index >= 0) {
+            this.data.splice(index, 1);
+            this.dataChange.next(this.data.slice());
+        }
+    };
+    return ServerDatabase;
+}());
+
+var ServerDataSource = (function (_super) {
+    __extends(ServerDataSource, _super);
+    function ServerDataSource(serverDatabase) {
+        var _this = _super.call(this) || this;
+        _this.serverDatabase = serverDatabase;
+        return _this;
+    }
+    ServerDataSource.prototype.connect = function () {
+        var _this = this;
+        return __WEBPACK_IMPORTED_MODULE_4_rxjs_Observable__["Observable"].merge(this.serverDatabase.dataChange).map(function () {
+            return _this.serverDatabase.data;
+        });
+    };
+    ServerDataSource.prototype.disconnect = function () { };
+    return ServerDataSource;
+}(__WEBPACK_IMPORTED_MODULE_3__angular_cdk_collections__["a" /* DataSource */]));
+
+var _a, _b, _c, _d;
 //# sourceMappingURL=servers.component.js.map
 
 /***/ }),
@@ -1351,7 +1628,13 @@ var ServerService = (function () {
     ServerService.prototype.create = function (server) {
         var _this = this;
         return this.onReady(function () {
-            return _this.indexedDbService.get().add(_this.tablename, server);
+            var promise = new Promise(function (resolve, reject) {
+                _this.indexedDbService.get().add(_this.tablename, server).then(function (added) {
+                    server.id = added.key;
+                    resolve(server);
+                }, reject);
+            });
+            return promise;
         });
     };
     ServerService.prototype.findAll = function () {
