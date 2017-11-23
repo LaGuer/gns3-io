@@ -48,7 +48,7 @@ var routes = [
             { path: 'server/:server_id/projects', component: __WEBPACK_IMPORTED_MODULE_4__projects_projects_component__["a" /* ProjectsComponent */] }
         ]
     },
-    { path: 'server/:server_id/project/:project_id', component: __WEBPACK_IMPORTED_MODULE_2__project_map_project_map_component__["a" /* ProjectMapComponent */] },
+    { path: 'server/:server_id/project/:project_id', component: __WEBPACK_IMPORTED_MODULE_2__project_map_project_map_component__["b" /* ProjectMapComponent */] },
 ];
 var AppRoutingModule = (function () {
     function AppRoutingModule() {
@@ -162,12 +162,14 @@ var _a, _b, _c;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__angular_cdk_table__ = __webpack_require__("../../../cdk/esm5/table.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__shared_services_snapshot_service__ = __webpack_require__("../../../../../src/app/shared/services/snapshot.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -200,9 +202,10 @@ AppModule = __decorate([
         declarations: [
             __WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_8__cartography_map_map_component__["a" /* MapComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__["a" /* ProjectMapComponent */],
+            __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__["b" /* ProjectMapComponent */],
             __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["b" /* ServersComponent */],
             __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* AddServerDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
             __WEBPACK_IMPORTED_MODULE_11__projects_projects_component__["a" /* ProjectsComponent */],
             __WEBPACK_IMPORTED_MODULE_18__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
         ],
@@ -232,9 +235,11 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_15__shared_services_server_service__["a" /* ServerService */],
             __WEBPACK_IMPORTED_MODULE_16__shared_services_indexed_db_service__["a" /* IndexedDbService */],
             __WEBPACK_IMPORTED_MODULE_17__shared_services_http_server_service__["a" /* HttpServer */],
+            __WEBPACK_IMPORTED_MODULE_22__shared_services_snapshot_service__["a" /* SnapshotService */]
         ],
         entryComponents: [
-            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* AddServerDialogComponent */]
+            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* AddServerDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]]
     })
@@ -829,6 +834,13 @@ var Context = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/project-map/create-snapshot-dialog.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h1 mat-dialog-title>Create snapshot</h1>\n<div mat-dialog-content>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"snapshot.name\" placeholder=\"Name\">\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" color=\"accent\">No Thanks</button>\n  <button mat-button (click)=\"onAddClick()\" tabindex=\"2\" mat-raised-button color=\"primary\">Add</button>\n</div>\n"
+
+/***/ }),
+
 /***/ "../../../../../src/app/project-map/project-map.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -850,7 +862,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n      <button mat-icon-button [routerLink]=\"['/server', server.id, 'projects']\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <!--<mat-toolbar-row>-->\n        <!--<button mat-icon-button>-->\n          <!--<mat-icon>verified_user</mat-icon>-->\n        <!--</button>-->\n      <!--</mat-toolbar-row>-->\n\n      <!--<mat-toolbar-row>-->\n        <!--<button mat-icon-button>-->\n          <!--<mat-icon>delete</mat-icon>-->\n        <!--</button>-->\n      <!--</mat-toolbar-row>-->\n    </mat-toolbar>\n  </div>\n\n</div>\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n      <button mat-icon-button [routerLink]=\"['/server', server.id, 'projects']\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <!--<mat-toolbar-row>-->\n        <!--<button mat-icon-button>-->\n          <!--<mat-icon>delete</mat-icon>-->\n        <!--</button>-->\n      <!--</mat-toolbar-row>-->\n    </mat-toolbar>\n  </div>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -858,7 +870,8 @@ module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nod
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProjectMapComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ProjectMapComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CreateSnapshotDialogComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
@@ -877,6 +890,9 @@ module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nod
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__cartography_map_map_component__ = __webpack_require__("../../../../../src/app/cartography/map/map.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__ = __webpack_require__("../../../../../src/app/shared/services/server.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__ = __webpack_require__("../../../../../src/app/shared/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__ = __webpack_require__("../../../../../src/app/shared/services/snapshot.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shared_models_snapshot__ = __webpack_require__("../../../../../src/app/shared/models/snapshot.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -886,6 +902,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
 
 
 
@@ -899,11 +921,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var ProjectMapComponent = (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, dialog) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
         this.symbolService = symbolService;
+        this.snapshotService = snapshotService;
+        this.dialog = dialog;
         this.nodes = [];
         this.links = [];
     }
@@ -1006,6 +1030,24 @@ var ProjectMapComponent = (function () {
             }
         });
     };
+    ProjectMapComponent.prototype.createSnapshotModal = function () {
+        var _this = this;
+        var dialogRef = this.dialog.open(CreateSnapshotDialogComponent, {
+            width: '250px',
+        });
+        dialogRef.afterClosed().subscribe(function (snapshot) {
+            if (snapshot) {
+                var creation = _this.snapshotService.create(_this.server, _this.project.project_id, snapshot);
+                var subscription = creation.subscribe(function (created_snapshot) {
+                    console.log(created_snapshot);
+                });
+                // setTimeout(() => {
+                //   subscription.unsubscribe();
+                //   console.log("Unsubscribed");
+                // }, 15000);
+            }
+        });
+    };
     return ProjectMapComponent;
 }());
 __decorate([
@@ -1019,10 +1061,33 @@ ProjectMapComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/project-map/project-map.component.html"),
         styles: [__webpack_require__("../../../../../src/app/project-map/project-map.component.css")],
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */]) === "function" && _e || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */]) === "function" && _g || Object])
 ], ProjectMapComponent);
 
-var _a, _b, _c, _d, _e;
+var CreateSnapshotDialogComponent = (function () {
+    function CreateSnapshotDialogComponent(dialogRef, data) {
+        this.dialogRef = dialogRef;
+        this.data = data;
+        this.snapshot = new __WEBPACK_IMPORTED_MODULE_14__shared_models_snapshot__["a" /* Snapshot */]();
+    }
+    CreateSnapshotDialogComponent.prototype.onAddClick = function () {
+        this.dialogRef.close(this.snapshot);
+    };
+    CreateSnapshotDialogComponent.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    return CreateSnapshotDialogComponent;
+}());
+CreateSnapshotDialogComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-create-snapshot-dialog',
+        template: __webpack_require__("../../../../../src/app/project-map/create-snapshot-dialog.html"),
+    }),
+    __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_12__angular_material__["a" /* MAT_DIALOG_DATA */])),
+    __metadata("design:paramtypes", [typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */]) === "function" && _h || Object, Object])
+], CreateSnapshotDialogComponent);
+
+var _a, _b, _c, _d, _e, _f, _g, _h;
 //# sourceMappingURL=project-map.component.js.map
 
 /***/ }),
@@ -1411,6 +1476,21 @@ var Server = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/models/snapshot.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Snapshot; });
+var Snapshot = (function () {
+    function Snapshot() {
+    }
+    return Snapshot;
+}());
+
+//# sourceMappingURL=snapshot.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/shared/services/http-server.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1674,6 +1754,50 @@ ServerService = __decorate([
 
 var _a;
 //# sourceMappingURL=server.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/services/snapshot.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SnapshotService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__http_server_service__ = __webpack_require__("../../../../../src/app/shared/services/http-server.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var SnapshotService = (function () {
+    function SnapshotService(httpServer) {
+        this.httpServer = httpServer;
+    }
+    SnapshotService.prototype.create = function (server, project_id, snapshot) {
+        return this.httpServer
+            .post(server, "/projects/" + project_id + "/snapshots", snapshot)
+            .map(function (response) { return response.json(); });
+    };
+    SnapshotService.prototype.list = function (server, project_id) {
+        return this.httpServer
+            .get(server, "/projects/" + project_id + "/snapshots")
+            .map(function (response) { return response.json(); });
+    };
+    return SnapshotService;
+}());
+SnapshotService = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__http_server_service__["a" /* HttpServer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__http_server_service__["a" /* HttpServer */]) === "function" && _a || Object])
+], SnapshotService);
+
+var _a;
+//# sourceMappingURL=snapshot.service.js.map
 
 /***/ }),
 
