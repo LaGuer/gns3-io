@@ -87,7 +87,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<router-outlet></router-outlet>\n"
+module.exports = "<router-outlet></router-outlet>\n<ng2-toasty></ng2-toasty>\n"
 
 /***/ }),
 
@@ -100,6 +100,7 @@ module.exports = "<router-outlet></router-outlet>\n"
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_ng2_toasty__ = __webpack_require__("../../../../ng2-toasty/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -113,8 +114,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var AppComponent = (function () {
-    function AppComponent(http, iconReg, sanitizer) {
+    function AppComponent(http, iconReg, sanitizer, toastyConfig) {
+        toastyConfig.theme = 'material';
         iconReg.addSvgIcon('gns3', sanitizer.bypassSecurityTrustResourceUrl('./assets/gns3_icon.svg'));
     }
     AppComponent.prototype.ngOnInit = function () {
@@ -127,10 +130,10 @@ AppComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatIconRegistry */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatIconRegistry */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _c || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatIconRegistry */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_material__["i" /* MatIconRegistry */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4_ng2_toasty__["a" /* ToastyConfig */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4_ng2_toasty__["a" /* ToastyConfig */]) === "function" && _d || Object])
 ], AppComponent);
 
-var _a, _b, _c;
+var _a, _b, _c, _d;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
@@ -144,33 +147,35 @@ var _a, _b, _c;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_d3_ng2_service__ = __webpack_require__("../../../../d3-ng2-service/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__cartography_map_map_component__ = __webpack_require__("../../../../../src/app/cartography/map/map.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__ = __webpack_require__("../../../../../src/app/project-map/project-map.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__ = __webpack_require__("../../../../../src/app/servers/servers.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__projects_projects_component__ = __webpack_require__("../../../../../src/app/projects/projects.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_services_version_service__ = __webpack_require__("../../../../../src/app/shared/services/version.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_services_project_service__ = __webpack_require__("../../../../../src/app/shared/services/project.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shared_services_symbol_service__ = __webpack_require__("../../../../../src/app/shared/services/symbol.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__shared_services_server_service__ = __webpack_require__("../../../../../src/app/shared/services/server.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__shared_services_indexed_db_service__ = __webpack_require__("../../../../../src/app/shared/services/indexed-db.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__shared_services_http_server_service__ = __webpack_require__("../../../../../src/app/shared/services/http-server.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__default_layout_default_layout_component__ = __webpack_require__("../../../../../src/app/default-layout/default-layout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__angular_cdk_table__ = __webpack_require__("../../../cdk/esm5/table.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__shared_services_snapshot_service__ = __webpack_require__("../../../../../src/app/shared/services/snapshot.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__shared_progress_dialog_progress_dialog_service__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_cdk_table__ = __webpack_require__("../../../cdk/esm5/table.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__ = __webpack_require__("../../../platform-browser/@angular/platform-browser/animations.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_d3_ng2_service__ = __webpack_require__("../../../../d3-ng2-service/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ng_bootstrap_ng_bootstrap__ = __webpack_require__("../../../../@ng-bootstrap/ng-bootstrap/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_ng2_toasty__ = __webpack_require__("../../../../ng2-toasty/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__app_routing_module__ = __webpack_require__("../../../../../src/app/app-routing.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_services_version_service__ = __webpack_require__("../../../../../src/app/shared/services/version.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_services_project_service__ = __webpack_require__("../../../../../src/app/shared/services/project.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_services_symbol_service__ = __webpack_require__("../../../../../src/app/shared/services/symbol.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shared_services_server_service__ = __webpack_require__("../../../../../src/app/shared/services/server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__shared_services_indexed_db_service__ = __webpack_require__("../../../../../src/app/shared/services/indexed-db.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__shared_services_http_server_service__ = __webpack_require__("../../../../../src/app/shared/services/http-server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__shared_services_snapshot_service__ = __webpack_require__("../../../../../src/app/shared/services/snapshot.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__shared_progress_dialog_progress_dialog_service__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__projects_projects_component__ = __webpack_require__("../../../../../src/app/projects/projects.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__default_layout_default_layout_component__ = __webpack_require__("../../../../../src/app/default-layout/default-layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__shared_progress_dialog_progress_dialog_component__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__cartography_map_map_component__ = __webpack_require__("../../../../../src/app/cartography/map/map.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__project_map_project_map_component__ = __webpack_require__("../../../../../src/app/project-map/project-map.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__servers_servers_component__ = __webpack_require__("../../../../../src/app/servers/servers.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -204,52 +209,53 @@ var AppModule = (function () {
 AppModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* NgModule */])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */],
-            __WEBPACK_IMPORTED_MODULE_8__cartography_map_map_component__["a" /* MapComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__["b" /* ProjectMapComponent */],
-            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["b" /* ServersComponent */],
-            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* AddServerDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_11__projects_projects_component__["a" /* ProjectsComponent */],
-            __WEBPACK_IMPORTED_MODULE_18__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
-            __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_22__app_component__["a" /* AppComponent */],
+            __WEBPACK_IMPORTED_MODULE_23__cartography_map_map_component__["a" /* MapComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__project_map_project_map_component__["b" /* ProjectMapComponent */],
+            __WEBPACK_IMPORTED_MODULE_25__servers_servers_component__["b" /* ServersComponent */],
+            __WEBPACK_IMPORTED_MODULE_25__servers_servers_component__["a" /* AddServerDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_19__projects_projects_component__["a" /* ProjectsComponent */],
+            __WEBPACK_IMPORTED_MODULE_20__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
+            __WEBPACK_IMPORTED_MODULE_21__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_8__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_9_ng2_toasty__["b" /* ToastyModule */].forRoot(),
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_http__["c" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_6__app_routing_module__["a" /* AppRoutingModule */],
+            __WEBPACK_IMPORTED_MODULE_10__app_routing_module__["a" /* AppRoutingModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_forms__["c" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_19__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["b" /* MatButtonModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["k" /* MatMenuModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["c" /* MatCardModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["n" /* MatToolbarModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["h" /* MatIconModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["g" /* MatFormFieldModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["j" /* MatInputModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["m" /* MatTableModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["e" /* MatDialogModule */],
-            __WEBPACK_IMPORTED_MODULE_20__angular_material__["l" /* MatProgressBarModule */],
-            __WEBPACK_IMPORTED_MODULE_21__angular_cdk_table__["m" /* CdkTableModule */]
+            __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser_animations__["a" /* BrowserAnimationsModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["b" /* MatButtonModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["k" /* MatMenuModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["c" /* MatCardModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["n" /* MatToolbarModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["h" /* MatIconModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["g" /* MatFormFieldModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["j" /* MatInputModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["m" /* MatTableModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["e" /* MatDialogModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["l" /* MatProgressBarModule */],
+            __WEBPACK_IMPORTED_MODULE_4__angular_cdk_table__["m" /* CdkTableModule */]
         ],
         providers: [
-            __WEBPACK_IMPORTED_MODULE_4_d3_ng2_service__["a" /* D3Service */],
-            __WEBPACK_IMPORTED_MODULE_12__shared_services_version_service__["a" /* VersionService */],
-            __WEBPACK_IMPORTED_MODULE_13__shared_services_project_service__["a" /* ProjectService */],
-            __WEBPACK_IMPORTED_MODULE_14__shared_services_symbol_service__["a" /* SymbolService */],
-            __WEBPACK_IMPORTED_MODULE_15__shared_services_server_service__["a" /* ServerService */],
-            __WEBPACK_IMPORTED_MODULE_16__shared_services_indexed_db_service__["a" /* IndexedDbService */],
-            __WEBPACK_IMPORTED_MODULE_17__shared_services_http_server_service__["a" /* HttpServer */],
-            __WEBPACK_IMPORTED_MODULE_22__shared_services_snapshot_service__["a" /* SnapshotService */],
-            __WEBPACK_IMPORTED_MODULE_24__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]
+            __WEBPACK_IMPORTED_MODULE_7_d3_ng2_service__["a" /* D3Service */],
+            __WEBPACK_IMPORTED_MODULE_11__shared_services_version_service__["a" /* VersionService */],
+            __WEBPACK_IMPORTED_MODULE_12__shared_services_project_service__["a" /* ProjectService */],
+            __WEBPACK_IMPORTED_MODULE_13__shared_services_symbol_service__["a" /* SymbolService */],
+            __WEBPACK_IMPORTED_MODULE_14__shared_services_server_service__["a" /* ServerService */],
+            __WEBPACK_IMPORTED_MODULE_15__shared_services_indexed_db_service__["a" /* IndexedDbService */],
+            __WEBPACK_IMPORTED_MODULE_16__shared_services_http_server_service__["a" /* HttpServer */],
+            __WEBPACK_IMPORTED_MODULE_17__shared_services_snapshot_service__["a" /* SnapshotService */],
+            __WEBPACK_IMPORTED_MODULE_18__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]
         ],
         entryComponents: [
-            __WEBPACK_IMPORTED_MODULE_10__servers_servers_component__["a" /* AddServerDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */]
+            __WEBPACK_IMPORTED_MODULE_25__servers_servers_component__["a" /* AddServerDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_21__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */]
         ],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_7__app_component__["a" /* AppComponent */]]
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_22__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
@@ -903,6 +909,7 @@ module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nod
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shared_models_snapshot__ = __webpack_require__("../../../../../src/app/shared/models/snapshot.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__shared_progress_dialog_progress_dialog_component__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__ = __webpack_require__("../../../../ng2-toasty/index.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -932,8 +939,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
 var ProjectMapComponent = (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, dialog, progressDialogService) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, dialog, progressDialogService, toastyService) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
@@ -941,6 +949,7 @@ var ProjectMapComponent = (function () {
         this.snapshotService = snapshotService;
         this.dialog = dialog;
         this.progressDialogService = progressDialogService;
+        this.toastyService = toastyService;
         this.nodes = [];
         this.links = [];
     }
@@ -1053,8 +1062,17 @@ var ProjectMapComponent = (function () {
                 var creation = _this.snapshotService.create(_this.server, _this.project.project_id, snapshot);
                 var progress_1 = _this.progressDialogService.open();
                 var subscription_1 = creation.subscribe(function (created_snapshot) {
-                }, function () {
-                }, function () {
+                    _this.toastyService.success({
+                        'title': 'Snapshot created',
+                        'msg': "Snapshot '" + snapshot.name + "' has been created."
+                    });
+                    progress_1.close();
+                }, function (response) {
+                    var error = response.json();
+                    _this.toastyService.error({
+                        'title': 'Cannot create snapshot',
+                        'msg': error.message
+                    });
                     progress_1.close();
                 });
                 progress_1.afterClosed().subscribe(function (result) {
@@ -1078,7 +1096,7 @@ ProjectMapComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/project-map/project-map.component.html"),
         styles: [__webpack_require__("../../../../../src/app/project-map/project-map.component.css")],
     }),
-    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]) === "function" && _h || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */]) === "function" && _j || Object])
 ], ProjectMapComponent);
 
 var CreateSnapshotDialogComponent = (function () {
@@ -1101,10 +1119,10 @@ CreateSnapshotDialogComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/project-map/create-snapshot-dialog.html"),
     }),
     __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_12__angular_material__["a" /* MAT_DIALOG_DATA */])),
-    __metadata("design:paramtypes", [typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */]) === "function" && _j || Object, Object])
+    __metadata("design:paramtypes", [typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */]) === "function" && _k || Object, Object])
 ], CreateSnapshotDialogComponent);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
 //# sourceMappingURL=project-map.component.js.map
 
 /***/ }),
@@ -1405,7 +1423,7 @@ ServersComponent = __decorate([
 ], ServersComponent);
 
 var AddServerDialogComponent = (function () {
-    function AddServerDialogComponent(dialogRef, data, serverService) {
+    function AddServerDialogComponent(dialogRef, data) {
         this.dialogRef = dialogRef;
         this.data = data;
         this.server = new __WEBPACK_IMPORTED_MODULE_1__shared_models_server__["a" /* Server */]();
@@ -1424,7 +1442,7 @@ AddServerDialogComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/servers/add-server-dialog.html"),
     }),
     __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_5__angular_material__["a" /* MAT_DIALOG_DATA */])),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_material__["f" /* MatDialogRef */]) === "function" && _c || Object, Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_2__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__shared_services_server_service__["a" /* ServerService */]) === "function" && _d || Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__angular_material__["f" /* MatDialogRef */]) === "function" && _c || Object, Object])
 ], AddServerDialogComponent);
 
 var ServerDatabase = (function () {
@@ -1473,7 +1491,7 @@ var ServerDataSource = (function (_super) {
     return ServerDataSource;
 }(__WEBPACK_IMPORTED_MODULE_3__angular_cdk_collections__["a" /* DataSource */]));
 
-var _a, _b, _c, _d;
+var _a, _b, _c;
 //# sourceMappingURL=servers.component.js.map
 
 /***/ }),
