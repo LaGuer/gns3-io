@@ -519,6 +519,39 @@ var Size = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cartography/shared/widgets/ethernet-link.widget.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EthernetLinkWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_shape__ = __webpack_require__("../../../../d3-shape/index.js");
+
+var EthernetLinkWidget = (function () {
+    function EthernetLinkWidget() {
+    }
+    EthernetLinkWidget.prototype.draw = function (view, link) {
+        var link_data = [[
+                [link.source.x, link.source.y],
+                [link.target.x, link.target.y]
+            ]];
+        var value_line = Object(__WEBPACK_IMPORTED_MODULE_0_d3_shape__["v" /* line */])();
+        var link_path = view.select('path');
+        if (!link_path.node()) {
+            link_path = view.append('path');
+        }
+        var link_path_data = link_path.data(link_data);
+        link_path_data
+            .attr('d', value_line)
+            .attr('stroke', '#000')
+            .attr('stroke-width', '2');
+    };
+    return EthernetLinkWidget;
+}());
+
+//# sourceMappingURL=ethernet-link.widget.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/cartography/shared/widgets/graph.widget.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -590,17 +623,25 @@ var GraphLayout = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LinksWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__("../../../../d3-selection/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_shape__ = __webpack_require__("../../../../d3-shape/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_link_status_model__ = __webpack_require__("../../../../../src/app/cartography/shared/models/link-status.model.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__map_helpers_multi_link_calculator_helper__ = __webpack_require__("../../../../../src/app/cartography/map/helpers/multi-link-calculator-helper.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_link_status_model__ = __webpack_require__("../../../../../src/app/cartography/shared/models/link-status.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__map_helpers_multi_link_calculator_helper__ = __webpack_require__("../../../../../src/app/cartography/map/helpers/multi-link-calculator-helper.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__serial_link_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/serial-link.widget.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ethernet_link_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/ethernet-link.widget.ts");
+
 
 
 
 
 var LinksWidget = (function () {
     function LinksWidget() {
-        this.multiLinkCalculatorHelper = new __WEBPACK_IMPORTED_MODULE_3__map_helpers_multi_link_calculator_helper__["a" /* MultiLinkCalculatorHelper */]();
+        this.multiLinkCalculatorHelper = new __WEBPACK_IMPORTED_MODULE_2__map_helpers_multi_link_calculator_helper__["a" /* MultiLinkCalculatorHelper */]();
     }
+    LinksWidget.prototype.getLinkWidget = function (link) {
+        if (link.link_type === 'serial') {
+            return new __WEBPACK_IMPORTED_MODULE_3__serial_link_widget__["a" /* SerialLinkWidget */]();
+        }
+        return new __WEBPACK_IMPORTED_MODULE_4__ethernet_link_widget__["a" /* EthernetLinkWidget */]();
+    };
     LinksWidget.prototype.draw = function (view, links) {
         var self = this;
         this.multiLinkCalculatorHelper.assignDataToLinks(links);
@@ -617,26 +658,15 @@ var LinksWidget = (function () {
             .attr('map-target', function (l) { return l.target.node_id; });
         link.merge(link_enter)
             .each(function (l) {
-            var link_data = [[
-                    [l.source.x, l.source.y],
-                    [l.target.x, l.target.y]
-                ]];
             var link_group = Object(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["i" /* select */])(this);
-            var value_line = Object(__WEBPACK_IMPORTED_MODULE_1_d3_shape__["v" /* line */])();
+            var link_widget = self.getLinkWidget(l);
+            link_widget.draw(link_group, l);
             var link_path = link_group.select('path');
-            if (!link_path.node()) {
-                link_path = link_group.append('path');
-            }
-            var link_path_data = link_path.data(link_data);
-            link_path_data
-                .attr('d', value_line)
-                .attr('stroke', '#000')
-                .attr('stroke-width', '1');
             var start_point = link_path.node().getPointAtLength(50);
             var end_point = link_path.node().getPointAtLength(link_path.node().getTotalLength() - 50);
             var statuses = [
-                new __WEBPACK_IMPORTED_MODULE_2__models_link_status_model__["a" /* LinkStatus */](start_point.x, start_point.y, l.source.status),
-                new __WEBPACK_IMPORTED_MODULE_2__models_link_status_model__["a" /* LinkStatus */](end_point.x, end_point.y, l.target.status)
+                new __WEBPACK_IMPORTED_MODULE_1__models_link_status_model__["a" /* LinkStatus */](start_point.x, start_point.y, l.source.status),
+                new __WEBPACK_IMPORTED_MODULE_1__models_link_status_model__["a" /* LinkStatus */](end_point.x, end_point.y, l.target.status)
             ];
             var status_started = link_group.selectAll('circle.status_started')
                 .data(statuses.filter(function (link_status) { return link_status.status === 'started'; }));
@@ -733,6 +763,61 @@ var NodesWidget = (function () {
 }());
 
 //# sourceMappingURL=nodes.widget.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/cartography/shared/widgets/serial-link.widget.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SerialLinkWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_path__ = __webpack_require__("../../../../d3-path/index.js");
+
+var SerialLinkWidget = (function () {
+    function SerialLinkWidget() {
+    }
+    SerialLinkWidget.prototype.draw = function (view, link) {
+        var dx = link.target.x - link.source.x;
+        var dy = link.target.y - link.source.y;
+        var vector_angle = Math.atan2(dy, dx);
+        var rot_angle = -Math.PI / 4.0;
+        var vect_rot = [
+            Math.cos(vector_angle + rot_angle),
+            Math.sin(vector_angle + rot_angle)
+        ];
+        var angle_source = [
+            link.source.x + dx / 2.0 + 15 * vect_rot[0],
+            link.source.y + dy / 2.0 + 15 * vect_rot[1]
+        ];
+        var angle_target = [
+            link.target.x - dx / 2.0 - 15 * vect_rot[0],
+            link.target.y - dy / 2.0 - 15 * vect_rot[1]
+        ];
+        var line_data = [
+            [link.source.x, link.source.y],
+            angle_source,
+            angle_target,
+            [link.target.x, link.target.y]
+        ];
+        var link_path = view.select('path');
+        if (!link_path.node()) {
+            link_path = view.append('path');
+        }
+        var line_generator = Object(__WEBPACK_IMPORTED_MODULE_0_d3_path__["a" /* path */])();
+        line_generator.moveTo(line_data[0][0], line_data[0][1]);
+        line_generator.lineTo(line_data[1][0], line_data[1][1]);
+        line_generator.lineTo(line_data[2][0], line_data[2][1]);
+        line_generator.lineTo(line_data[3][0], line_data[3][1]);
+        link_path
+            .attr('d', line_generator.toString())
+            .attr('stroke', '#B22222')
+            .attr('fill', 'none')
+            .attr('stroke-width', '2');
+    };
+    return SerialLinkWidget;
+}());
+
+//# sourceMappingURL=serial-link.widget.js.map
 
 /***/ }),
 
