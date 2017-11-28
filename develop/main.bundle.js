@@ -345,6 +345,7 @@ var MapComponent = (function () {
         this.d3Service = d3Service;
         this.nodes = [];
         this.links = [];
+        this.drawings = [];
         this.width = 1500;
         this.height = 600;
         this.phylloRadius = 7;
@@ -358,6 +359,7 @@ var MapComponent = (function () {
             (changes['height'] && !changes['height'].isFirstChange()) ||
             (changes['phylloRadius'] && !changes['phylloRadius'].isFirstChange()) ||
             (changes['pointRadius'] && !changes['pointRadius'].isFirstChange()) ||
+            (changes['drawings'] && !changes['drawings'].isFirstChange()) ||
             (changes['nodes'] && !changes['nodes'].isFirstChange()) ||
             (changes['links'] && !changes['links'].isFirstChange())) {
             if (this.svg.empty && !this.svg.empty()) {
@@ -412,6 +414,7 @@ var MapComponent = (function () {
         }
         this.graphLayout.setNodes(this.nodes);
         this.graphLayout.setLinks(this.links);
+        this.graphLayout.setDrawings(this.drawings);
         this.redraw();
     };
     MapComponent.prototype.onLinksChange = function (change) {
@@ -450,6 +453,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
     __metadata("design:type", Array)
 ], MapComponent.prototype, "links", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", Array)
+], MapComponent.prototype, "drawings", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
     __metadata("design:type", Object)
@@ -519,6 +526,64 @@ var Size = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cartography/shared/widgets/drawings.widget.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrawingsWidget; });
+var DrawingsWidget = (function () {
+    function DrawingsWidget() {
+    }
+    DrawingsWidget.prototype.draw = function (view, drawings) {
+        var drawing = view.selectAll('g.drawing')
+            .data(drawings);
+        var drawing_enter = drawing.enter()
+            .append('g')
+            .attr('class', 'drawing');
+        var parser = new DOMParser();
+        var drawing_image = drawing_enter.append('image')
+            .attr('xlink:href', function (d) {
+            var svg = d.svg;
+            if (svg.indexOf("xmlns") < 0) {
+                svg = svg.replace('svg', 'svg xmlns="http://www.w3.org/2000/svg"');
+            }
+            return 'data:image/svg+xml;base64,' + btoa(svg);
+        })
+            .attr('width', function (d) {
+            var svg_dom = parser.parseFromString(d.svg, 'text/xml');
+            var roots = svg_dom.getElementsByTagName('svg');
+            if (roots.length > 0) {
+                if (roots[0].hasAttribute('width')) {
+                    return roots[0].getAttribute('width');
+                }
+            }
+            return 0;
+        })
+            .attr('height', function (d) {
+            var svg_dom = parser.parseFromString(d.svg, 'text/xml');
+            var roots = svg_dom.getElementsByTagName('svg');
+            if (roots.length > 0) {
+                if (roots[0].hasAttribute('height')) {
+                    return roots[0].getAttribute('height');
+                }
+            }
+            return 0;
+        });
+        var drawing_merge = drawing.merge(drawing_enter)
+            .attr('transform', function (d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+        drawing.exit().remove();
+    };
+    DrawingsWidget.prototype.appendSVG = function (svg) {
+    };
+    return DrawingsWidget;
+}());
+
+//# sourceMappingURL=drawings.widget.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/cartography/shared/widgets/ethernet-link.widget.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -561,6 +626,8 @@ var EthernetLinkWidget = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__links_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/links.widget.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_zoom__ = __webpack_require__("../../../../d3-zoom/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_selection__ = __webpack_require__("../../../../d3-selection/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__drawings_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/drawings.widget.ts");
+
 
 
 
@@ -569,8 +636,10 @@ var GraphLayout = (function () {
     function GraphLayout() {
         this.nodes = [];
         this.links = [];
+        this.drawings = [];
         this.nodesWidget = new __WEBPACK_IMPORTED_MODULE_0__nodes_widget__["a" /* NodesWidget */]();
         this.linksWidget = new __WEBPACK_IMPORTED_MODULE_1__links_widget__["a" /* LinksWidget */]();
+        this.drawingsWidget = new __WEBPACK_IMPORTED_MODULE_4__drawings_widget__["a" /* DrawingsWidget */]();
         this.centerZeroZeroPoint = true;
     }
     GraphLayout.prototype.setNodes = function (nodes) {
@@ -579,31 +648,36 @@ var GraphLayout = (function () {
     GraphLayout.prototype.setLinks = function (links) {
         this.links = links;
     };
+    GraphLayout.prototype.setDrawings = function (drawings) {
+        this.drawings = drawings;
+    };
     GraphLayout.prototype.draw = function (view, context) {
         var self = this;
-        var drawing = view
-            .selectAll('g.drawing')
+        var canvas = view
+            .selectAll('g.canvas')
             .data([context]);
-        var drawingEnter = drawing.enter()
+        var canvasEnter = canvas.enter()
             .append('g')
-            .attr('class', 'drawing');
+            .attr('class', 'canvas');
         if (this.centerZeroZeroPoint) {
-            drawing.attr('transform', function (ctx) { return "translate(" + ctx.getSize().width / 2 + ", " + ctx.getSize().height / 2 + ")"; });
+            canvas.attr('transform', function (ctx) { return "translate(" + ctx.getSize().width / 2 + ", " + ctx.getSize().height / 2 + ")"; });
         }
-        var links = drawingEnter.append('g')
-            .attr('class', 'links');
-        var nodes = drawingEnter.append('g')
-            .attr('class', 'nodes');
-        this.linksWidget.draw(drawing, this.links);
-        this.nodesWidget.draw(drawing, this.nodes);
+        // const links = canvasEnter.append<SVGGElement>('g')
+        //   .attr('class', 'links');
+        //
+        // const nodes = canvasEnter.append<SVGGElement>('g')
+        //   .attr('class', 'nodes');
+        this.linksWidget.draw(canvas, this.links);
+        this.nodesWidget.draw(canvas, this.nodes);
+        this.drawingsWidget.draw(canvas, this.drawings);
         var onZoom = function () {
             var e = __WEBPACK_IMPORTED_MODULE_3_d3_selection__["c" /* event */];
             if (self.centerZeroZeroPoint) {
-                drawing.attr('transform', "translate(" + (context.getSize().width / 2 + e.transform.x) + ", " +
+                canvas.attr('transform', "translate(" + (context.getSize().width / 2 + e.transform.x) + ", " +
                     (context.getSize().height / 2 + e.transform.y + ") scale(" + e.transform.k + ")"));
             }
             else {
-                drawing.attr('transform', e.transform.toString());
+                canvas.attr('transform', e.transform.toString());
             }
         };
         view.call(Object(__WEBPACK_IMPORTED_MODULE_2_d3_zoom__["a" /* zoom */])()
@@ -904,7 +978,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/map/map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<svg preserveAspectRatio=\"none\"></svg>\n"
+module.exports = "<svg xmlns:xlink=\"http://www.w3.org/1999/xlink\"  preserveAspectRatio=\"none\"></svg>\n"
 
 /***/ }),
 
@@ -961,7 +1035,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n      <button mat-icon-button [routerLink]=\"['/server', server.id, 'projects']\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <!--<mat-toolbar-row>-->\n        <!--<button mat-icon-button>-->\n          <!--<mat-icon>delete</mat-icon>-->\n        <!--</button>-->\n      <!--</mat-toolbar-row>-->\n    </mat-toolbar>\n  </div>\n\n</div>\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n      <button mat-icon-button [routerLink]=\"['/server', server.id, 'projects']\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <!--<mat-toolbar-row>-->\n        <!--<button mat-icon-button>-->\n          <!--<mat-icon>delete</mat-icon>-->\n        <!--</button>-->\n      <!--</mat-toolbar-row>-->\n    </mat-toolbar>\n  </div>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -1037,6 +1111,7 @@ var ProjectMapComponent = (function () {
         this.toastyService = toastyService;
         this.nodes = [];
         this.links = [];
+        this.drawings = [];
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1069,6 +1144,10 @@ var ProjectMapComponent = (function () {
         this.symbolService
             .load(this.server)
             .flatMap(function () {
+            return _this.projectService.drawings(_this.server, project.project_id);
+        })
+            .flatMap(function (drawings) {
+            _this.drawings = drawings;
             return _this.projectService.links(_this.server, project.project_id);
         })
             .flatMap(function (links) {
@@ -1886,6 +1965,11 @@ var ProjectService = (function () {
     ProjectService.prototype.links = function (server, project_id) {
         return this.httpServer
             .get(server, "/projects/" + project_id + "/links")
+            .map(function (response) { return response.json(); });
+    };
+    ProjectService.prototype.drawings = function (server, project_id) {
+        return this.httpServer
+            .get(server, "/projects/" + project_id + "/drawings")
             .map(function (response) { return response.json(); });
     };
     ProjectService.prototype.delete = function (server, project_id) {
