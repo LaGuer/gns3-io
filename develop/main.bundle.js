@@ -163,22 +163,28 @@ var _a, _b, _c, _d;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__shared_services_snapshot_service__ = __webpack_require__("../../../../../src/app/shared/services/snapshot.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__shared_progress_dialog_progress_dialog_service__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__ = __webpack_require__("../../../../../src/app/shared/services/node.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__projects_projects_component__ = __webpack_require__("../../../../../src/app/projects/projects.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__default_layout_default_layout_component__ = __webpack_require__("../../../../../src/app/default-layout/default-layout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__shared_progress_dialog_progress_dialog_component__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__cartography_map_map_component__ = __webpack_require__("../../../../../src/app/cartography/map/map.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__project_map_project_map_component__ = __webpack_require__("../../../../../src/app/project-map/project-map.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__servers_servers_component__ = __webpack_require__("../../../../../src/app/servers/servers.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__shared_node_context_menu_node_context_menu_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/node-context-menu.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__shared_node_context_menu_actions_start_node_action_start_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/start-node-action/start-node-action.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/stop-node-action/stop-node-action.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__shared_services_appliance_service__ = __webpack_require__("../../../../../src/app/shared/services/appliance.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__projects_projects_component__ = __webpack_require__("../../../../../src/app/projects/projects.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__default_layout_default_layout_component__ = __webpack_require__("../../../../../src/app/default-layout/default-layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__cartography_map_map_component__ = __webpack_require__("../../../../../src/app/cartography/map/map.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__project_map_project_map_component__ = __webpack_require__("../../../../../src/app/project-map/project-map.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__servers_servers_component__ = __webpack_require__("../../../../../src/app/servers/servers.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__shared_node_context_menu_node_context_menu_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/node-context-menu.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__shared_node_context_menu_actions_start_node_action_start_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/start-node-action/start-node-action.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/stop-node-action/stop-node-action.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__appliance_appliance_component__ = __webpack_require__("../../../../../src/app/appliance/appliance.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_list_dialog_appliance_list_dialog_component__ = __webpack_require__("../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -217,18 +223,20 @@ var AppModule = (function () {
 AppModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* NgModule */])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_23__app_component__["a" /* AppComponent */],
-            __WEBPACK_IMPORTED_MODULE_24__cartography_map_map_component__["a" /* MapComponent */],
-            __WEBPACK_IMPORTED_MODULE_25__project_map_project_map_component__["b" /* ProjectMapComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__servers_servers_component__["b" /* ServersComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__servers_servers_component__["a" /* AddServerDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_25__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_20__projects_projects_component__["a" /* ProjectsComponent */],
-            __WEBPACK_IMPORTED_MODULE_21__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
-            __WEBPACK_IMPORTED_MODULE_22__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_27__shared_node_context_menu_node_context_menu_component__["a" /* NodeContextMenuComponent */],
-            __WEBPACK_IMPORTED_MODULE_28__shared_node_context_menu_actions_start_node_action_start_node_action_component__["a" /* StartNodeActionComponent */],
-            __WEBPACK_IMPORTED_MODULE_29__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__["a" /* StopNodeActionComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__app_component__["a" /* AppComponent */],
+            __WEBPACK_IMPORTED_MODULE_25__cartography_map_map_component__["a" /* MapComponent */],
+            __WEBPACK_IMPORTED_MODULE_26__project_map_project_map_component__["b" /* ProjectMapComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__servers_servers_component__["b" /* ServersComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__servers_servers_component__["a" /* AddServerDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_26__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_21__projects_projects_component__["a" /* ProjectsComponent */],
+            __WEBPACK_IMPORTED_MODULE_22__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
+            __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_28__shared_node_context_menu_node_context_menu_component__["a" /* NodeContextMenuComponent */],
+            __WEBPACK_IMPORTED_MODULE_29__shared_node_context_menu_actions_start_node_action_start_node_action_component__["a" /* StartNodeActionComponent */],
+            __WEBPACK_IMPORTED_MODULE_30__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__["a" /* StopNodeActionComponent */],
+            __WEBPACK_IMPORTED_MODULE_31__appliance_appliance_component__["a" /* ApplianceComponent */],
+            __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_8__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
@@ -256,6 +264,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_12__shared_services_project_service__["a" /* ProjectService */],
             __WEBPACK_IMPORTED_MODULE_13__shared_services_symbol_service__["a" /* SymbolService */],
             __WEBPACK_IMPORTED_MODULE_14__shared_services_server_service__["a" /* ServerService */],
+            __WEBPACK_IMPORTED_MODULE_20__shared_services_appliance_service__["a" /* ApplianceService */],
             __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */],
             __WEBPACK_IMPORTED_MODULE_15__shared_services_indexed_db_service__["a" /* IndexedDbService */],
             __WEBPACK_IMPORTED_MODULE_16__shared_services_http_server_service__["a" /* HttpServer */],
@@ -263,15 +272,208 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_18__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]
         ],
         entryComponents: [
-            __WEBPACK_IMPORTED_MODULE_26__servers_servers_component__["a" /* AddServerDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_25__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_22__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */]
+            __WEBPACK_IMPORTED_MODULE_27__servers_servers_component__["a" /* AddServerDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_26__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */]
         ],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_23__app_component__["a" /* AppComponent */]]
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_24__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
 //# sourceMappingURL=app.module.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<h1 mat-dialog-title>Appliances list</h1>\n<div mat-dialog-content>\n    <mat-table #table [dataSource]=\"dataSource\">\n\n      <ng-container matColumnDef=\"name\">\n        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n        <mat-cell *matCellDef=\"let row\"> <button [routerLink]=\"['/server', row.id, 'projects']\" mat-button>{{row.name}}</button></mat-cell>\n      </ng-container>\n\n      <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n      <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n    </mat-table>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" color=\"accent\">No Thanks</button>\n  <button mat-button (click)=\"onAddClick()\" tabindex=\"2\" mat-raised-button color=\"primary\">Add</button>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApplianceListDialogComponent; });
+/* unused harmony export ApplianceDataSource */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_cdk_collections__ = __webpack_require__("../../../cdk/esm5/collections.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_services_appliance_service__ = __webpack_require__("../../../../../src/app/shared/services/appliance.service.ts");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+var ApplianceListDialogComponent = (function () {
+    function ApplianceListDialogComponent(dialogRef, applianceService, data) {
+        this.dialogRef = dialogRef;
+        this.applianceService = applianceService;
+        this.data = data;
+        this.displayedColumns = ['name'];
+        this.server = data['server'];
+    }
+    ApplianceListDialogComponent.prototype.ngOnInit = function () {
+        this.dataSource = new ApplianceDataSource(this.server, this.applianceService);
+    };
+    ApplianceListDialogComponent.prototype.onAddClick = function () {
+        this.dialogRef.close();
+    };
+    ApplianceListDialogComponent.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    return ApplianceListDialogComponent;
+}());
+ApplianceListDialogComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-appliance-list-dialog',
+        template: __webpack_require__("../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.scss")]
+    }),
+    __param(2, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MAT_DIALOG_DATA */])),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["f" /* MatDialogRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__shared_services_appliance_service__["a" /* ApplianceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_services_appliance_service__["a" /* ApplianceService */]) === "function" && _b || Object, Object])
+], ApplianceListDialogComponent);
+
+var ApplianceDataSource = (function (_super) {
+    __extends(ApplianceDataSource, _super);
+    function ApplianceDataSource(server, applianceService) {
+        var _this = _super.call(this) || this;
+        _this.server = server;
+        _this.applianceService = applianceService;
+        return _this;
+    }
+    ApplianceDataSource.prototype.connect = function () {
+        return this.applianceService.list(this.server);
+    };
+    ApplianceDataSource.prototype.disconnect = function () { };
+    return ApplianceDataSource;
+}(__WEBPACK_IMPORTED_MODULE_2__angular_cdk_collections__["a" /* DataSource */]));
+
+var _a, _b;
+//# sourceMappingURL=appliance-list-dialog.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/appliance/appliance.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<button mat-icon-button (click)=\"listAppliancesModal()\">\n  <mat-icon>add_to_queue</mat-icon>\n</button>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/appliance/appliance.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/appliance/appliance.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApplianceComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__appliance_list_dialog_appliance_list_dialog_component__ = __webpack_require__("../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_models_server__ = __webpack_require__("../../../../../src/app/shared/models/server.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var ApplianceComponent = (function () {
+    function ApplianceComponent(dialog) {
+        this.dialog = dialog;
+    }
+    ApplianceComponent.prototype.ngOnInit = function () { };
+    ApplianceComponent.prototype.listAppliancesModal = function () {
+        var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_2__appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */], {
+            width: '600px',
+            data: {
+                'server': this.server
+            }
+        });
+        dialogRef.afterClosed().subscribe(function () {
+        });
+    };
+    return ApplianceComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__shared_models_server__["a" /* Server */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_models_server__["a" /* Server */]) === "function" && _a || Object)
+], ApplianceComponent.prototype, "server", void 0);
+ApplianceComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-appliance',
+        template: __webpack_require__("../../../../../src/app/appliance/appliance.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/appliance/appliance.component.scss")]
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["d" /* MatDialog */]) === "function" && _b || Object])
+], ApplianceComponent);
+
+var _a, _b;
+//# sourceMappingURL=appliance.component.js.map
 
 /***/ }),
 
@@ -1068,7 +1270,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n      <button mat-icon-button [routerLink]=\"['/server', server.id, 'projects']\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n\n</div>\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n      <button mat-icon-button [routerLink]=\"['/server', server.id, 'projects']\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -2076,6 +2278,48 @@ var _a;
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/services/appliance.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApplianceService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__http_server_service__ = __webpack_require__("../../../../../src/app/shared/services/http-server.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ApplianceService = (function () {
+    function ApplianceService(httpServer) {
+        this.httpServer = httpServer;
+    }
+    ApplianceService.prototype.list = function (server) {
+        return this.httpServer
+            .get(server, '/appliances')
+            .map(function (response) { return response.json(); });
+    };
+    return ApplianceService;
+}());
+ApplianceService = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__http_server_service__["a" /* HttpServer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_server_service__["a" /* HttpServer */]) === "function" && _a || Object])
+], ApplianceService);
+
+var _a;
+//# sourceMappingURL=appliance.service.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/shared/services/http-server.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2221,6 +2465,11 @@ var NodeService = (function () {
     NodeService.prototype.stop = function (server, node) {
         return this.httpServer
             .post(server, "/projects/" + node.project_id + "/nodes/" + node.node_id + "/stop", {})
+            .map(function (response) { return response.json(); });
+    };
+    NodeService.prototype.createFromAppliance = function (server, project, appliance) {
+        return this.httpServer
+            .post(server, "/projects/" + project.project_id + "/appliances/" + appliance.appliance_id, {})
             .map(function (response) { return response.json(); });
     };
     return NodeService;
