@@ -288,7 +288,7 @@ AppModule = __decorate([
 /***/ "../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<h1 mat-dialog-title>Appliances list</h1>\n<div mat-dialog-content>\n    <mat-table #table [dataSource]=\"dataSource\">\n\n      <ng-container matColumnDef=\"name\">\n        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n        <mat-cell *matCellDef=\"let row\"> <button [routerLink]=\"['/server', row.id, 'projects']\" mat-button>{{row.name}}</button></mat-cell>\n      </ng-container>\n\n      <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n      <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n    </mat-table>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" color=\"accent\">No Thanks</button>\n  <button mat-button (click)=\"onAddClick()\" tabindex=\"2\" mat-raised-button color=\"primary\">Add</button>\n</div>\n"
+module.exports = "<div mat-dialog-content>\n    <div class=\"example-header\">\n      <mat-form-field floatPlaceholder=\"never\">\n        <input matInput #filter placeholder=\"Filter appliances\">\n      </mat-form-field>\n    </div>\n\n    <mat-table #table [dataSource]=\"dataSource\">\n\n      <ng-container matColumnDef=\"name\">\n        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n        <mat-cell *matCellDef=\"let row;\"> <a (click)=\"addNode(row)\" href='javascript:void(0);' class=\"table-link\">{{row.name}}</a> </mat-cell>\n      </ng-container>\n\n      <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n      <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n    </mat-table>\n</div>\n<div mat-dialog-actions align=\"end\">\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" color=\"accent\">Close</button>\n</div>\n"
 
 /***/ }),
 
@@ -300,7 +300,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".example-header {\n  min-height: 64px;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: baseline;\n      -ms-flex-align: baseline;\n          align-items: baseline;\n  padding: 8px 24px 0;\n  font-size: 20px;\n  -webkit-box-pack: justify;\n      -ms-flex-pack: justify;\n          justify-content: space-between; }\n\n.mat-table {\n  overflow: auto;\n  max-height: 400px; }\n\n.mat-form-field {\n  font-size: 16px;\n  -webkit-box-flex: 1;\n      -ms-flex-positive: 1;\n          flex-grow: 1; }\n", ""]);
 
 // exports
 
@@ -315,11 +315,28 @@ module.exports = module.exports.toString();
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ApplianceListDialogComponent; });
+/* unused harmony export ApplianceDatabase */
 /* unused harmony export ApplianceDataSource */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_cdk_collections__ = __webpack_require__("../../../cdk/esm5/collections.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_services_appliance_service__ = __webpack_require__("../../../../../src/app/shared/services/appliance.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_services_appliance_service__ = __webpack_require__("../../../../../src/app/shared/services/appliance.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_startWith__ = __webpack_require__("../../../../rxjs/add/operator/startWith.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_startWith___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_rxjs_add_operator_startWith__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_merge__ = __webpack_require__("../../../../rxjs/add/observable/merge.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_merge___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_add_observable_merge__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_debounceTime__ = __webpack_require__("../../../../rxjs/add/operator/debounceTime.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_debounceTime___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_rxjs_add_operator_debounceTime__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_distinctUntilChanged__ = __webpack_require__("../../../../rxjs/add/operator/distinctUntilChanged.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_distinctUntilChanged___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_rxjs_add_operator_distinctUntilChanged__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_observable_fromEvent__ = __webpack_require__("../../../../rxjs/add/observable/fromEvent.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_rxjs_add_observable_fromEvent___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_rxjs_add_observable_fromEvent__);
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -346,6 +363,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
+
+
+
+
+
+
+
 var ApplianceListDialogComponent = (function () {
     function ApplianceListDialogComponent(dialogRef, applianceService, data) {
         this.dialogRef = dialogRef;
@@ -355,16 +380,31 @@ var ApplianceListDialogComponent = (function () {
         this.server = data['server'];
     }
     ApplianceListDialogComponent.prototype.ngOnInit = function () {
-        this.dataSource = new ApplianceDataSource(this.server, this.applianceService);
-    };
-    ApplianceListDialogComponent.prototype.onAddClick = function () {
-        this.dialogRef.close();
+        var _this = this;
+        this.applianceDatabase = new ApplianceDatabase(this.server, this.applianceService);
+        this.dataSource = new ApplianceDataSource(this.applianceDatabase);
+        __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].fromEvent(this.filter.nativeElement, 'keyup')
+            .debounceTime(150)
+            .distinctUntilChanged()
+            .subscribe(function () {
+            if (!_this.dataSource) {
+                return;
+            }
+            _this.dataSource.filter = _this.filter.nativeElement.value;
+        });
     };
     ApplianceListDialogComponent.prototype.onNoClick = function () {
         this.dialogRef.close();
     };
+    ApplianceListDialogComponent.prototype.addNode = function (appliance) {
+        this.dialogRef.close(appliance);
+    };
     return ApplianceListDialogComponent;
 }());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])('filter'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */]) === "function" && _a || Object)
+], ApplianceListDialogComponent.prototype, "filter", void 0);
 ApplianceListDialogComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-appliance-list-dialog',
@@ -372,25 +412,62 @@ ApplianceListDialogComponent = __decorate([
         styles: [__webpack_require__("../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.scss")]
     }),
     __param(2, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_1__angular_material__["a" /* MAT_DIALOG_DATA */])),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["f" /* MatDialogRef */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__shared_services_appliance_service__["a" /* ApplianceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_services_appliance_service__["a" /* ApplianceService */]) === "function" && _b || Object, Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["f" /* MatDialogRef */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_4__shared_services_appliance_service__["a" /* ApplianceService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__shared_services_appliance_service__["a" /* ApplianceService */]) === "function" && _c || Object, Object])
 ], ApplianceListDialogComponent);
 
+var ApplianceDatabase = (function () {
+    function ApplianceDatabase(server, applianceService) {
+        var _this = this;
+        this.server = server;
+        this.applianceService = applianceService;
+        this.dataChange = new __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__["BehaviorSubject"]([]);
+        this.applianceService.list(this.server).subscribe(function (appliances) {
+            _this.dataChange.next(appliances);
+        });
+    }
+    Object.defineProperty(ApplianceDatabase.prototype, "data", {
+        get: function () {
+            return this.dataChange.value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ApplianceDatabase;
+}());
+
+;
 var ApplianceDataSource = (function (_super) {
     __extends(ApplianceDataSource, _super);
-    function ApplianceDataSource(server, applianceService) {
+    function ApplianceDataSource(applianceDatabase) {
         var _this = _super.call(this) || this;
-        _this.server = server;
-        _this.applianceService = applianceService;
+        _this.applianceDatabase = applianceDatabase;
+        _this.filterChange = new __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__["BehaviorSubject"]('');
         return _this;
     }
+    Object.defineProperty(ApplianceDataSource.prototype, "filter", {
+        get: function () { return this.filterChange.value; },
+        set: function (filter) { this.filterChange.next(filter); },
+        enumerable: true,
+        configurable: true
+    });
     ApplianceDataSource.prototype.connect = function () {
-        return this.applianceService.list(this.server);
+        var _this = this;
+        var displayDataChanges = [
+            this.applianceDatabase.dataChange,
+            this.filterChange,
+        ];
+        return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"].merge.apply(__WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["Observable"], displayDataChanges).map(function () {
+            return _this.applianceDatabase.data.slice().filter(function (item) {
+                var searchStr = (item.name).toLowerCase();
+                return searchStr.indexOf(_this.filter.toLowerCase()) !== -1;
+            });
+        });
     };
     ApplianceDataSource.prototype.disconnect = function () { };
     return ApplianceDataSource;
 }(__WEBPACK_IMPORTED_MODULE_2__angular_cdk_collections__["a" /* DataSource */]));
 
-var _a, _b;
+var _a, _b, _c;
 //# sourceMappingURL=appliance-list-dialog.component.js.map
 
 /***/ }),
@@ -445,16 +522,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var ApplianceComponent = (function () {
     function ApplianceComponent(dialog) {
         this.dialog = dialog;
+        this.onNodeCreation = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]();
     }
     ApplianceComponent.prototype.ngOnInit = function () { };
     ApplianceComponent.prototype.listAppliancesModal = function () {
+        var _this = this;
         var dialogRef = this.dialog.open(__WEBPACK_IMPORTED_MODULE_2__appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */], {
             width: '600px',
+            height: '560px',
             data: {
                 'server': this.server
             }
         });
-        dialogRef.afterClosed().subscribe(function () {
+        dialogRef.afterClosed().subscribe(function (appliance) {
+            if (appliance !== null) {
+                _this.onNodeCreation.emit(appliance);
+            }
         });
     };
     return ApplianceComponent;
@@ -463,6 +546,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
     __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__shared_models_server__["a" /* Server */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__shared_models_server__["a" /* Server */]) === "function" && _a || Object)
 ], ApplianceComponent.prototype, "server", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Output */])(),
+    __metadata("design:type", Object)
+], ApplianceComponent.prototype, "onNodeCreation", void 0);
 ApplianceComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-appliance',
@@ -1163,7 +1250,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "html, body {\n  height: 100%;\n}\n\napp-root, app-default-layout {\n  height: 100%;\n}\n\napp-default-layout {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  height: 100vh;\n}\n\n.content {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n}\n\n.footer {\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  padding: 20px;\n  /*background-color: #0097a7;*/\n  color: white;\n}\n\n.default-content {\n  margin: 0 auto;\n  max-width: 940px;\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\nheader {\n  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);\n  z-index: 10;\n}\n\nmain {\n  height: 100%;\n}\n\n.default-header h1 {\n  font-weight: 300;\n  margin: 0;\n  font-size: 20px;\n  padding: 28px 8px;\n  color: white;\n}\n\n.default-header {\n  padding-left: 20px;\n  /*background-color: #0097a7;*/\n}\n\n.buttons-bar {\n  padding-top: 10px;\n  text-align: right;\n}\n\n", ""]);
+exports.push([module.i, "html, body {\n  height: 100%;\n}\n\napp-root, app-default-layout {\n  height: 100%;\n}\n\napp-default-layout {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  height: 100vh;\n}\n\n.content {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 0 auto;\n          flex: 1 0 auto;\n}\n\n.footer {\n  -ms-flex-negative: 0;\n      flex-shrink: 0;\n  padding: 20px;\n  /*background-color: #0097a7;*/\n  color: white;\n}\n\n.default-content {\n  margin: 0 auto;\n  max-width: 940px;\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\nheader {\n  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);\n  z-index: 10;\n}\n\nmain {\n  height: 100%;\n}\n\n.default-header h1 {\n  font-weight: 300;\n  margin: 0;\n  font-size: 20px;\n  padding: 28px 8px;\n  color: white;\n}\n\n.default-header {\n  margin: 0 auto;\n  max-width: 940px;\n  /*background-color: #0097a7;*/\n}\n\n.buttons-bar {\n  padding-top: 10px;\n  text-align: right;\n}\n\n", ""]);
 
 // exports
 
@@ -1270,7 +1357,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n      <button mat-icon-button [routerLink]=\"['/server', server.id, 'projects']\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n\n</div>\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -1305,6 +1392,7 @@ module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nod
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__shared_progress_dialog_progress_dialog_component__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__ = __webpack_require__("../../../../ng2-toasty/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__shared_node_context_menu_node_context_menu_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/node-context-menu.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__ = __webpack_require__("../../../../../src/app/shared/services/node.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1336,13 +1424,15 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
 var ProjectMapComponent = (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, dialog, progressDialogService, toastyService) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, dialog, progressDialogService, toastyService) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
         this.symbolService = symbolService;
         this.snapshotService = snapshotService;
+        this.nodeService = nodeService;
         this.dialog = dialog;
         this.progressDialogService = progressDialogService;
         this.toastyService = toastyService;
@@ -1460,15 +1550,19 @@ var ProjectMapComponent = (function () {
             _this.nodeContextMenu.open(node, event.clientY, event.clientX);
         });
     };
-    // setUpNodeActions() {
-    //     this.mapChild.nodeContextMenu.clearActions();
-    //
-    //     const start_node_action = new StartNodeAction(this.server, this.nodeService);
-    //     this.mapChild.nodeContextMenu.registerAction(start_node_action);
-    //
-    //     const stop_node_action = new StopNodeAction(this.server, this.nodeService);
-    //     this.mapChild.nodeContextMenu.registerAction(stop_node_action);
-    // }
+    ProjectMapComponent.prototype.onNodeCreation = function (appliance) {
+        var _this = this;
+        this.nodeService
+            .createFromAppliance(this.server, this.project, appliance, 0, 0, 'local')
+            .subscribe(function () {
+            _this.projectService
+                .nodes(_this.server, _this.project.project_id)
+                .subscribe(function (nodes) {
+                _this.nodes = nodes;
+                _this.mapChild.reload();
+            });
+        });
+    };
     ProjectMapComponent.prototype.createSnapshotModal = function () {
         var _this = this;
         var dialogRef = this.dialog.open(CreateSnapshotDialogComponent, {
@@ -1517,7 +1611,7 @@ ProjectMapComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/project-map/project-map.component.html"),
         styles: [__webpack_require__("../../../../../src/app/project-map/project-map.component.css")],
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */]) === "function" && _k || Object])
+    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */]) === "function" && _l || Object])
 ], ProjectMapComponent);
 
 var CreateSnapshotDialogComponent = (function () {
@@ -1540,10 +1634,10 @@ CreateSnapshotDialogComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/project-map/create-snapshot-dialog.html"),
     }),
     __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_12__angular_material__["a" /* MAT_DIALOG_DATA */])),
-    __metadata("design:paramtypes", [typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */]) === "function" && _l || Object, Object])
+    __metadata("design:paramtypes", [typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */]) === "function" && _m || Object, Object])
 ], CreateSnapshotDialogComponent);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
 //# sourceMappingURL=project-map.component.js.map
 
 /***/ }),
@@ -1569,7 +1663,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/projects/projects.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n  <div class=\"default-header mat-app-background\">\n    <h1>Projects</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\">\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <button [routerLink]=\"['/server', server.id, 'project', row.project_id]\" mat-button>{{row.name}}</button>\n          </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <button mat-icon-button (click)=\"delete(row)\">\n              <mat-icon aria-label=\"Delete project\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n  </div>\n</div>\n"
+module.exports = "<div class=\"content\">\n  <div class=\"default-header mat-app-background\">\n    <h1>Projects</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\">\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <a [routerLink]=\"['/server', server.id, 'project', row.project_id]\" class=\"table-link\">{{row.name}}</a>\n          </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\" style=\"text-align: right\">\n            <button mat-icon-button (click)=\"delete(row)\">\n              <mat-icon aria-label=\"Delete project\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -1731,7 +1825,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/servers/servers.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Servers</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\">\n\n        <ng-container matColumnDef=\"id\">\n          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\"> {{row.id}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\"> <button [routerLink]=\"['/server', row.id, 'projects']\" mat-button>{{row.name}}</button></mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"ip\">\n          <mat-header-cell *matHeaderCellDef> IP </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\"> {{row.ip}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"port\">\n          <mat-header-cell *matHeaderCellDef> Port </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\"> {{row.port}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\" style=\"text-align: right\">\n            <button mat-icon-button (click)=\"deleteServer(row)\">\n              <mat-icon aria-label=\"Remove server\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n    <div class=\"buttons-bar\">\n      <button mat-raised-button color=\"primary\" (click)=\"createModal()\">Add server</button>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Servers</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\">\n\n        <ng-container matColumnDef=\"id\">\n          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>\n          <mat-cell *matCellDef=\"let row;\"> {{row.id}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row;\"> <a [routerLink]=\"['/server', row.id, 'projects']\" class=\"table-link\">{{row.name}}</a></mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"ip\">\n          <mat-header-cell *matHeaderCellDef> IP </mat-header-cell>\n          <mat-cell *matCellDef=\"let row;\"> {{row.ip}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"port\">\n          <mat-header-cell *matHeaderCellDef> Port </mat-header-cell>\n          <mat-cell *matCellDef=\"let row;\"> {{row.port}} </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row;\" style=\"text-align: right\">\n            <button mat-icon-button (click)=\"deleteServer(row)\">\n              <mat-icon aria-label=\"Remove server\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n    <div class=\"buttons-bar\">\n      <button mat-raised-button color=\"primary\" (click)=\"createModal()\">Add server</button>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -2467,10 +2561,9 @@ var NodeService = (function () {
             .post(server, "/projects/" + node.project_id + "/nodes/" + node.node_id + "/stop", {})
             .map(function (response) { return response.json(); });
     };
-    NodeService.prototype.createFromAppliance = function (server, project, appliance) {
+    NodeService.prototype.createFromAppliance = function (server, project, appliance, x, y, compute_id) {
         return this.httpServer
-            .post(server, "/projects/" + project.project_id + "/appliances/" + appliance.appliance_id, {})
-            .map(function (response) { return response.json(); });
+            .post(server, "/projects/" + project.project_id + "/appliances/" + appliance.appliance_id, { 'x': x, 'y': y, 'compute_id': compute_id });
     };
     return NodeService;
 }());
