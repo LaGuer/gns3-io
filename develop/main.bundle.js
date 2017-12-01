@@ -1010,8 +1010,6 @@ var GraphLayout = (function () {
     GraphLayout.prototype.getLinksWidget = function () {
         return this.linksWidget;
     };
-    GraphLayout.prototype.getCanvas = function (view) {
-    };
     GraphLayout.prototype.draw = function (view, context) {
         var self = this;
         var canvas = view
@@ -1077,7 +1075,8 @@ var LinksWidget = (function () {
     };
     LinksWidget.prototype.revise = function (selection) {
         var self = this;
-        selection.each(function (l) {
+        selection
+            .each(function (l) {
             var link_group = Object(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["i" /* select */])(this);
             var link_widget = self.getLinkWidget(l);
             link_widget.draw(link_group, l);
@@ -1088,28 +1087,40 @@ var LinksWidget = (function () {
                 new __WEBPACK_IMPORTED_MODULE_1__models_link_status_model__["a" /* LinkStatus */](start_point.x, start_point.y, l.source.status),
                 new __WEBPACK_IMPORTED_MODULE_1__models_link_status_model__["a" /* LinkStatus */](end_point.x, end_point.y, l.target.status)
             ];
-            var status_started = link_group.selectAll('circle.status_started')
+            var status_started = link_group
+                .selectAll('circle.status_started')
                 .data(statuses.filter(function (link_status) { return link_status.status === 'started'; }));
-            var status_started_enter = status_started.enter().append('circle');
-            status_started.merge(status_started_enter)
+            var status_started_enter = status_started
+                .enter()
+                .append('circle');
+            status_started
+                .merge(status_started_enter)
                 .attr('class', 'status_started')
                 .attr('cx', function (ls) { return ls.x; })
                 .attr('cy', function (ls) { return ls.y; })
                 .attr('r', 4)
                 .attr('fill', '#2ecc71');
-            status_started.exit().remove();
-            var status_stopped = link_group.selectAll('rect.status_stopped')
+            status_started
+                .exit()
+                .remove();
+            var status_stopped = link_group
+                .selectAll('rect.status_stopped')
                 .data(statuses.filter(function (link_status) { return link_status.status === 'stopped'; }));
-            var status_stopped_enter = status_stopped.enter().append('rect');
+            var status_stopped_enter = status_stopped
+                .enter()
+                .append('rect');
             var STOPPED_STATUS_RECT_WIDTH = 6;
-            status_stopped.merge(status_stopped_enter)
+            status_stopped
+                .merge(status_stopped_enter)
                 .attr('class', 'status_stopped')
                 .attr('x', function (ls) { return ls.x - STOPPED_STATUS_RECT_WIDTH / 2.; })
                 .attr('y', function (ls) { return ls.y - STOPPED_STATUS_RECT_WIDTH / 2.; })
                 .attr('width', STOPPED_STATUS_RECT_WIDTH)
                 .attr('height', STOPPED_STATUS_RECT_WIDTH)
                 .attr('fill', 'red');
-            status_stopped.exit().remove();
+            status_stopped
+                .exit()
+                .remove();
         })
             .attr('transform', function (l) {
             if (l.source && l.target) {
@@ -1134,7 +1145,9 @@ var LinksWidget = (function () {
             .attr('map-source', function (l) { return l.source.node_id; })
             .attr('map-target', function (l) { return l.target.node_id; });
         this.revise(link.merge(link_enter));
-        link.exit().remove();
+        link
+            .exit()
+            .remove();
     };
     return LinksWidget;
 }());
@@ -1152,9 +1165,9 @@ var LinksWidget = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_drag__ = __webpack_require__("../../../../d3-drag/index.js");
 
 
-;
 var NodesWidget = (function () {
     function NodesWidget() {
+        this.debug = false;
         this.onNodeDraggingCallbacks = [];
         this.symbols = [];
     }
@@ -1193,14 +1206,17 @@ var NodesWidget = (function () {
     NodesWidget.prototype.draw = function (view, nodes) {
         var _this = this;
         var self = this;
-        var node = view.selectAll('g.node')
+        var node = view
+            .selectAll('g.node')
             .data(nodes, function (n) {
             return n.node_id;
         });
-        var node_enter = node.enter()
+        var node_enter = node
+            .enter()
             .append('g')
             .attr('class', 'node');
-        var node_image = node_enter.append('image')
+        node_enter
+            .append('image')
             .attr('xlink:href', function (n) {
             var symbol = _this.symbols.find(function (s) { return s.symbol_id === n.symbol; });
             if (symbol) {
@@ -1211,15 +1227,20 @@ var NodesWidget = (function () {
         })
             .attr('width', function (n) { return n.width; })
             .attr('height', function (n) { return n.height; });
-        node_enter.append('circle')
-            .attr('class', 'node_point')
-            .attr('r', 2);
-        node_enter.append('text')
+        node_enter
+            .append('text')
             .attr('class', 'label');
-        node_enter.append('text')
-            .attr('class', 'node_point_label')
-            .attr('x', '-100')
-            .attr('y', '0');
+        if (this.debug) {
+            node_enter
+                .append('circle')
+                .attr('class', 'node_point')
+                .attr('r', 2);
+            node_enter
+                .append('text')
+                .attr('class', 'node_point_label')
+                .attr('x', '-100')
+                .attr('y', '0');
+        }
         var node_merge = node.merge(node_enter)
             .on("contextmenu", function (n, i) {
             __WEBPACK_IMPORTED_MODULE_0_d3_selection__["c" /* event */].preventDefault();
@@ -1246,7 +1267,9 @@ var NodesWidget = (function () {
             });
         };
         node_merge.call(dragging());
-        node.exit().remove();
+        node
+            .exit()
+            .remove();
     };
     return NodesWidget;
 }());
