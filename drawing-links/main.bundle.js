@@ -832,6 +832,21 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/app/cartography/shared/models/drawing-line.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrawingLine; });
+var DrawingLine = (function () {
+    function DrawingLine() {
+    }
+    return DrawingLine;
+}());
+
+//# sourceMappingURL=drawing-line.model.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/cartography/shared/models/link-status.model.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -865,6 +880,24 @@ var Node = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cartography/shared/models/point.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Point; });
+var Point = (function () {
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return Point;
+}());
+
+;
+//# sourceMappingURL=point.model.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/cartography/shared/models/size.model.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -879,6 +912,59 @@ var Size = (function () {
 }());
 
 //# sourceMappingURL=size.model.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/cartography/shared/widgets/drawing-line.widget.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrawingLineWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawing_line_model__ = __webpack_require__("../../../../../src/app/cartography/shared/models/drawing-line.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_point_model__ = __webpack_require__("../../../../../src/app/cartography/shared/models/point.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_shape__ = __webpack_require__("../../../../d3-shape/index.js");
+
+
+
+var DrawingLineWidget = (function () {
+    function DrawingLineWidget() {
+        this.drawingLine = new __WEBPACK_IMPORTED_MODULE_0__models_drawing_line_model__["a" /* DrawingLine */]();
+    }
+    DrawingLineWidget.prototype.start = function (x, y) {
+        this.drawingLine.start = new __WEBPACK_IMPORTED_MODULE_1__models_point_model__["a" /* Point */](x, y);
+        this.drawingLine.end = new __WEBPACK_IMPORTED_MODULE_1__models_point_model__["a" /* Point */](x, y);
+        this.draw();
+    };
+    DrawingLineWidget.prototype.update = function (x, y) {
+        this.drawingLine.end = new __WEBPACK_IMPORTED_MODULE_1__models_point_model__["a" /* Point */](x, y);
+    };
+    DrawingLineWidget.prototype.stop = function () {
+    };
+    DrawingLineWidget.prototype.connect = function (selection) {
+        this.selection = selection;
+    };
+    DrawingLineWidget.prototype.draw = function () {
+        var link_data = [[
+                [this.drawingLine.start.x, this.drawingLine.start.y],
+                [this.drawingLine.end.x, this.drawingLine.end.y]
+            ]];
+        var value_line = Object(__WEBPACK_IMPORTED_MODULE_2_d3_shape__["v" /* line */])();
+        var tool = this.selection
+            .selectAll('g.drawing-line')
+            .data(link_data);
+        var enter = tool
+            .enter()
+            .append('path');
+        tool
+            .merge(enter)
+            .attr('d', value_line)
+            .attr('stroke', '#000')
+            .attr('stroke-width', '2');
+    };
+    return DrawingLineWidget;
+}());
+
+//# sourceMappingURL=drawing-line.widget.js.map
 
 /***/ }),
 
@@ -983,6 +1069,8 @@ var EthernetLinkWidget = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_zoom__ = __webpack_require__("../../../../d3-zoom/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_selection__ = __webpack_require__("../../../../d3-selection/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__drawings_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/drawings.widget.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drawing_line_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/drawing-line.widget.ts");
+
 
 
 
@@ -997,6 +1085,7 @@ var GraphLayout = (function () {
         this.linksWidget = new __WEBPACK_IMPORTED_MODULE_1__links_widget__["a" /* LinksWidget */]();
         this.nodesWidget = new __WEBPACK_IMPORTED_MODULE_0__nodes_widget__["a" /* NodesWidget */]();
         this.drawingsWidget = new __WEBPACK_IMPORTED_MODULE_4__drawings_widget__["a" /* DrawingsWidget */]();
+        this.drawingLineTool = new __WEBPACK_IMPORTED_MODULE_5__drawing_line_widget__["a" /* DrawingLineWidget */]();
     }
     GraphLayout.prototype.setNodes = function (nodes) {
         this.nodes = nodes;
@@ -1013,6 +1102,9 @@ var GraphLayout = (function () {
     GraphLayout.prototype.getLinksWidget = function () {
         return this.linksWidget;
     };
+    GraphLayout.prototype.getDrawingLineTool = function () {
+        return this.drawingLineTool;
+    };
     GraphLayout.prototype.draw = function (view, context) {
         var self = this;
         var canvas = view
@@ -1027,6 +1119,7 @@ var GraphLayout = (function () {
         this.linksWidget.draw(canvas, this.links);
         this.nodesWidget.draw(canvas, this.nodes);
         this.drawingsWidget.draw(canvas, this.drawings);
+        this.drawingLineTool.connect(canvas);
         var onZoom = function () {
             var e = __WEBPACK_IMPORTED_MODULE_3_d3_selection__["c" /* event */];
             if (self.centerZeroZeroPoint) {
@@ -1725,8 +1818,8 @@ var ProjectMapComponent = (function () {
     ProjectMapComponent.prototype.turnOffDrawLineMode = function () {
         this.drawLineMode = false;
     };
-    ProjectMapComponent.prototype.onChooseInterface = function (port) {
-        console.log(port);
+    ProjectMapComponent.prototype.onChooseInterface = function (node, port) {
+        this.mapChild.graphLayout.getDrawingLineTool().start(10, 100);
     };
     return ProjectMapComponent;
 }());
