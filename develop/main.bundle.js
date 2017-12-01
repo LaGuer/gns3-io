@@ -648,9 +648,10 @@ module.exports = module.exports.toString();
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MapComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_ng2_service__ = __webpack_require__("../../../../d3-ng2-service/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_widgets_graph_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/graph.widget.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__map_models_context__ = __webpack_require__("../../../../../src/app/map/models/context.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_models_size_model__ = __webpack_require__("../../../../../src/app/cartography/shared/models/size.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_selection__ = __webpack_require__("../../../../d3-selection/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_widgets_graph_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/graph.widget.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__map_models_context__ = __webpack_require__("../../../../../src/app/map/models/context.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_models_size_model__ = __webpack_require__("../../../../../src/app/cartography/shared/models/size.model.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -660,6 +661,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -701,25 +703,35 @@ var MapComponent = (function () {
         }
     };
     MapComponent.prototype.ngOnInit = function () {
+        var _this = this;
         var d3 = this.d3;
         var rootElement;
         var self = this;
         if (this.parentNativeElement !== null) {
             rootElement = d3.select(this.parentNativeElement);
             this.svg = rootElement.select('svg');
-            this.graphContext = new __WEBPACK_IMPORTED_MODULE_3__map_models_context__["a" /* Context */](this.svg);
+            this.graphContext = new __WEBPACK_IMPORTED_MODULE_4__map_models_context__["a" /* Context */](this.svg);
             if (this.windowFullSize) {
                 this.graphContext.setSize(this.getSize());
             }
             else {
-                this.graphContext.setSize(new __WEBPACK_IMPORTED_MODULE_4__shared_models_size_model__["a" /* Size */](this.width, this.height));
+                this.graphContext.setSize(new __WEBPACK_IMPORTED_MODULE_5__shared_models_size_model__["a" /* Size */](this.width, this.height));
             }
-            this.graphLayout = new __WEBPACK_IMPORTED_MODULE_2__shared_widgets_graph_widget__["a" /* GraphLayout */]();
+            this.graphLayout = new __WEBPACK_IMPORTED_MODULE_3__shared_widgets_graph_widget__["a" /* GraphLayout */]();
+            this.graphLayout.getNodesWidget().addOnNodeDraggingCallback(function (n) {
+                var linksWidget = _this.graphLayout.getLinksWidget();
+                linksWidget.select(_this.svg).each(function (link) {
+                    if (link.target.node_id === n.node_id || link.source.node_id === n.node_id) {
+                        var selection = Object(__WEBPACK_IMPORTED_MODULE_2_d3_selection__["i" /* select */])(this);
+                        linksWidget.revise(selection);
+                    }
+                });
+            });
             this.graphLayout.draw(this.svg, this.graphContext);
         }
     };
     MapComponent.prototype.getSize = function () {
-        return new __WEBPACK_IMPORTED_MODULE_4__shared_models_size_model__["a" /* Size */](document.documentElement.clientWidth, document.documentElement.clientHeight);
+        return new __WEBPACK_IMPORTED_MODULE_5__shared_models_size_model__["a" /* Size */](document.documentElement.clientWidth, document.documentElement.clientHeight);
     };
     MapComponent.prototype.changeLayout = function () {
         if (this.graphContext != null) {
@@ -966,10 +978,14 @@ var GraphLayout = (function () {
         this.nodes = [];
         this.links = [];
         this.drawings = [];
-        this.nodesWidget = new __WEBPACK_IMPORTED_MODULE_0__nodes_widget__["a" /* NodesWidget */]();
-        this.linksWidget = new __WEBPACK_IMPORTED_MODULE_1__links_widget__["a" /* LinksWidget */]();
-        this.drawingsWidget = new __WEBPACK_IMPORTED_MODULE_4__drawings_widget__["a" /* DrawingsWidget */]();
         this.centerZeroZeroPoint = true;
+        this.linksWidget = new __WEBPACK_IMPORTED_MODULE_1__links_widget__["a" /* LinksWidget */]();
+        this.nodesWidget = new __WEBPACK_IMPORTED_MODULE_0__nodes_widget__["a" /* NodesWidget */]();
+        // this.nodesWidget.addOnNodeDraggingCallback((n: Node) => {
+        //   this.linksWidget.
+        //   // this.linksWidget.draw();
+        // });
+        this.drawingsWidget = new __WEBPACK_IMPORTED_MODULE_4__drawings_widget__["a" /* DrawingsWidget */]();
     }
     GraphLayout.prototype.setNodes = function (nodes) {
         this.nodes = nodes;
@@ -983,6 +999,11 @@ var GraphLayout = (function () {
     GraphLayout.prototype.getNodesWidget = function () {
         return this.nodesWidget;
     };
+    GraphLayout.prototype.getLinksWidget = function () {
+        return this.linksWidget;
+    };
+    GraphLayout.prototype.getCanvas = function (view) {
+    };
     GraphLayout.prototype.draw = function (view, context) {
         var self = this;
         var canvas = view
@@ -994,11 +1015,6 @@ var GraphLayout = (function () {
         if (this.centerZeroZeroPoint) {
             canvas.attr('transform', function (ctx) { return "translate(" + ctx.getSize().width / 2 + ", " + ctx.getSize().height / 2 + ")"; });
         }
-        // const links = canvasEnter.append<SVGGElement>('g')
-        //   .attr('class', 'links');
-        //
-        // const nodes = canvasEnter.append<SVGGElement>('g')
-        //   .attr('class', 'nodes');
         this.linksWidget.draw(canvas, this.links);
         this.nodesWidget.draw(canvas, this.nodes);
         this.drawingsWidget.draw(canvas, this.drawings);
@@ -1048,22 +1064,12 @@ var LinksWidget = (function () {
         }
         return new __WEBPACK_IMPORTED_MODULE_4__ethernet_link_widget__["a" /* EthernetLinkWidget */]();
     };
-    LinksWidget.prototype.draw = function (view, links) {
+    LinksWidget.prototype.select = function (view) {
+        return view.selectAll("g.link");
+    };
+    LinksWidget.prototype.revise = function (selection) {
         var self = this;
-        this.multiLinkCalculatorHelper.assignDataToLinks(links);
-        var link = view
-            .selectAll("g.link")
-            .data(links.filter(function (l) {
-            return l.target && l.source;
-        }));
-        var link_enter = link.enter()
-            .append('g')
-            .attr('class', 'link')
-            .attr('link_id', function (l) { return l.link_id; })
-            .attr('map-source', function (l) { return l.source.node_id; })
-            .attr('map-target', function (l) { return l.target.node_id; });
-        link.merge(link_enter)
-            .each(function (l) {
+        selection.each(function (l) {
             var link_group = Object(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["i" /* select */])(this);
             var link_widget = self.getLinkWidget(l);
             link_widget.draw(link_group, l);
@@ -1104,6 +1110,22 @@ var LinksWidget = (function () {
             }
             return null;
         });
+    };
+    LinksWidget.prototype.draw = function (view, links) {
+        var self = this;
+        this.multiLinkCalculatorHelper.assignDataToLinks(links);
+        var link = view
+            .selectAll("g.link")
+            .data(links.filter(function (l) {
+            return l.target && l.source;
+        }));
+        var link_enter = link.enter()
+            .append('g')
+            .attr('class', 'link')
+            .attr('link_id', function (l) { return l.link_id; })
+            .attr('map-source', function (l) { return l.source.node_id; })
+            .attr('map-target', function (l) { return l.target.node_id; });
+        this.revise(link.merge(link_enter));
         link.exit().remove();
     };
     return LinksWidget;
@@ -1119,35 +1141,50 @@ var LinksWidget = (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NodesWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__("../../../../d3-selection/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_drag__ = __webpack_require__("../../../../d3-drag/index.js");
+
 
 ;
 var NodesWidget = (function () {
     function NodesWidget() {
+        this.onNodeDraggingCallbacks = [];
     }
-    NodesWidget.prototype.setOnContextMenuListener = function (onContextMenuListener) {
-        this.onContextMenuListener = onContextMenuListener;
-    };
     NodesWidget.prototype.setOnContextMenuCallback = function (onContextMenuCallback) {
         this.onContextMenuCallback = onContextMenuCallback;
     };
+    NodesWidget.prototype.setOnNodeDraggedCallback = function (onNodeDraggedCallback) {
+        this.onNodeDraggedCallback = onNodeDraggedCallback;
+    };
+    NodesWidget.prototype.addOnNodeDraggingCallback = function (onNodeDraggingCallback) {
+        this.onNodeDraggingCallbacks.push(onNodeDraggingCallback);
+    };
+    NodesWidget.prototype.executeOnNodeDraggingCallback = function (n) {
+        this.onNodeDraggingCallbacks.forEach(function (callback) {
+            callback(n);
+        });
+    };
+    NodesWidget.prototype.revise = function (selection) {
+        selection
+            .attr('transform', function (n) {
+            return "translate(" + n.x + "," + n.y + ")";
+        });
+        selection
+            .select('text.label')
+            .attr('x', function (n) { return n.label.x; })
+            .attr('y', function (n) { return n.label.y; })
+            .attr('style', function (n) { return n.label.style; })
+            .text(function (n) { return n.label.text; });
+        selection
+            .select('text.node_point_label')
+            .text(function (n) { return "(" + n.x + ", " + n.y + ")"; });
+    };
     NodesWidget.prototype.draw = function (view, nodes) {
         var self = this;
-        // function dragged(this: SVGElement, node: Node) {
-        //   const element = this;
-        //   const e: D3DragEvent<SVGGElement, Node, Node> = d3.event;
-        //
-        //   d3.select(this)
-        //     .attr('transform', `translate(${e.x},${e.y})`);
-        //
-        //   node.x = e.x;
-        //   node.y = e.y;
-        // }
         var node = view.selectAll('g.node')
             .data(nodes);
         var node_enter = node.enter()
             .append('g')
             .attr('class', 'node');
-        // .call(d3.drag<SVGGElement, Node>().on('drag', dragged))
         var node_image = node_enter.append('image')
             .attr('xlink:href', function (n) { return 'data:image/svg+xml;base64,' + btoa(n.icon.raw); })
             .attr('width', function (n) { return n.width; })
@@ -1167,17 +1204,26 @@ var NodesWidget = (function () {
             if (self.onContextMenuCallback !== null) {
                 self.onContextMenuCallback(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["c" /* event */], n);
             }
-        })
-            .attr('transform', function (n) {
-            return "translate(" + n.x + "," + n.y + ")";
         });
-        node_merge.select('text.label')
-            .attr('x', function (n) { return n.label.x; })
-            .attr('y', function (n) { return n.label.y; })
-            .attr('style', function (n) { return n.label.style; })
-            .text(function (n) { return n.label.text; });
-        node_merge.select('text.node_point_label')
-            .text(function (n) { return "(" + n.x + ", " + n.y + ")"; });
+        this.revise(node_merge);
+        var callback = function (n) {
+            var e = __WEBPACK_IMPORTED_MODULE_0_d3_selection__["c" /* event */];
+            n.x = e.x;
+            n.y = e.y;
+            self.revise(Object(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["i" /* select */])(this));
+            self.executeOnNodeDraggingCallback(n);
+        };
+        var dragging = function () {
+            return Object(__WEBPACK_IMPORTED_MODULE_1_d3_drag__["a" /* drag */])()
+                .on('drag', callback)
+                .on('end', function (n) {
+                if (self.onNodeDraggedCallback) {
+                    var e = __WEBPACK_IMPORTED_MODULE_0_d3_selection__["c" /* event */];
+                    self.onNodeDraggedCallback(e, n);
+                }
+            });
+        };
+        node_merge.call(dragging());
         node.exit().remove();
     };
     return NodesWidget;
@@ -1548,6 +1594,19 @@ var ProjectMapComponent = (function () {
         var _this = this;
         this.mapChild.graphLayout.getNodesWidget().setOnContextMenuCallback(function (event, node) {
             _this.nodeContextMenu.open(node, event.clientY, event.clientX);
+        });
+        this.mapChild.graphLayout.getNodesWidget().setOnNodeDraggedCallback(function (event, node) {
+            var index = _this.nodes.findIndex(function (n) { return n.node_id === node.node_id; });
+            if (index >= 0) {
+                _this.nodes[index] = node;
+                _this.mapChild.reload(); // temporary invocation
+                _this.nodeService
+                    .updatePosition(_this.server, node, node.x, node.y)
+                    .subscribe(function (n) {
+                    _this.nodes[index] = node;
+                    _this.mapChild.reload(); // temporary invocation
+                });
+            }
         });
     };
     ProjectMapComponent.prototype.onNodeCreation = function (appliance) {
@@ -2564,6 +2623,14 @@ var NodeService = (function () {
     NodeService.prototype.createFromAppliance = function (server, project, appliance, x, y, compute_id) {
         return this.httpServer
             .post(server, "/projects/" + project.project_id + "/appliances/" + appliance.appliance_id, { 'x': x, 'y': y, 'compute_id': compute_id });
+    };
+    NodeService.prototype.updatePosition = function (server, node, x, y) {
+        return this.httpServer
+            .put(server, "/projects/" + node.project_id + "/nodes/" + node.node_id, {
+            'x': x,
+            'y': y
+        })
+            .map(function (response) { return response.json(); });
     };
     return NodeService;
 }());
