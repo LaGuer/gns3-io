@@ -674,6 +674,7 @@ var MapComponent = (function () {
         this.nodes = [];
         this.links = [];
         this.drawings = [];
+        this.symbols = [];
         this.width = 1500;
         this.height = 600;
         this.windowFullSize = true;
@@ -685,13 +686,17 @@ var MapComponent = (function () {
             (changes['height'] && !changes['height'].isFirstChange()) ||
             (changes['drawings'] && !changes['drawings'].isFirstChange()) ||
             (changes['nodes'] && !changes['nodes'].isFirstChange()) ||
-            (changes['links'] && !changes['links'].isFirstChange())) {
+            (changes['links'] && !changes['links'].isFirstChange()) ||
+            (changes['symbols'] && !changes['symbols'].isFirstChange())) {
             if (this.svg.empty && !this.svg.empty()) {
                 if (changes['nodes']) {
                     this.onNodesChange(changes['nodes']);
                 }
                 if (changes['links']) {
                     this.onLinksChange(changes['links']);
+                }
+                if (changes['symbols']) {
+                    this.onSymbolsChange(changes['symbols']);
                 }
                 this.changeLayout();
             }
@@ -770,6 +775,9 @@ var MapComponent = (function () {
     MapComponent.prototype.onNodesChange = function (change) {
         this.onLinksChange(null);
     };
+    MapComponent.prototype.onSymbolsChange = function (change) {
+        this.graphLayout.getNodesWidget().setSymbols(this.symbols);
+    };
     MapComponent.prototype.redraw = function () {
         this.graphLayout.draw(this.svg, this.graphContext);
     };
@@ -791,6 +799,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
     __metadata("design:type", Array)
 ], MapComponent.prototype, "drawings", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
+    __metadata("design:type", Array)
+], MapComponent.prototype, "symbols", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
     __metadata("design:type", Object)
@@ -981,10 +993,6 @@ var GraphLayout = (function () {
         this.centerZeroZeroPoint = true;
         this.linksWidget = new __WEBPACK_IMPORTED_MODULE_1__links_widget__["a" /* LinksWidget */]();
         this.nodesWidget = new __WEBPACK_IMPORTED_MODULE_0__nodes_widget__["a" /* NodesWidget */]();
-        // this.nodesWidget.addOnNodeDraggingCallback((n: Node) => {
-        //   this.linksWidget.
-        //   // this.linksWidget.draw();
-        // });
         this.drawingsWidget = new __WEBPACK_IMPORTED_MODULE_4__drawings_widget__["a" /* DrawingsWidget */]();
     }
     GraphLayout.prototype.setNodes = function (nodes) {
@@ -1148,6 +1156,7 @@ var LinksWidget = (function () {
 var NodesWidget = (function () {
     function NodesWidget() {
         this.onNodeDraggingCallbacks = [];
+        this.symbols = [];
     }
     NodesWidget.prototype.setOnContextMenuCallback = function (onContextMenuCallback) {
         this.onContextMenuCallback = onContextMenuCallback;
@@ -1157,6 +1166,9 @@ var NodesWidget = (function () {
     };
     NodesWidget.prototype.addOnNodeDraggingCallback = function (onNodeDraggingCallback) {
         this.onNodeDraggingCallbacks.push(onNodeDraggingCallback);
+    };
+    NodesWidget.prototype.setSymbols = function (symbols) {
+        this.symbols = symbols;
     };
     NodesWidget.prototype.executeOnNodeDraggingCallback = function (n) {
         this.onNodeDraggingCallbacks.forEach(function (callback) {
@@ -1179,14 +1191,24 @@ var NodesWidget = (function () {
             .text(function (n) { return "(" + n.x + ", " + n.y + ")"; });
     };
     NodesWidget.prototype.draw = function (view, nodes) {
+        var _this = this;
         var self = this;
         var node = view.selectAll('g.node')
-            .data(nodes);
+            .data(nodes, function (n) {
+            return n.node_id;
+        });
         var node_enter = node.enter()
             .append('g')
             .attr('class', 'node');
         var node_image = node_enter.append('image')
-            .attr('xlink:href', function (n) { return 'data:image/svg+xml;base64,' + btoa(n.icon.raw); })
+            .attr('xlink:href', function (n) {
+            var symbol = _this.symbols.find(function (s) { return s.symbol_id === n.symbol; });
+            if (symbol) {
+                return 'data:image/svg+xml;base64,' + btoa(symbol.raw);
+            }
+            // @todo; we need to have default image
+            return 'data:image/svg+xml;base64,none';
+        })
             .attr('width', function (n) { return n.width; })
             .attr('height', function (n) { return n.height; });
         node_enter.append('circle')
@@ -1390,7 +1412,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n/*}*/\n\n/*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n/*}*/\n\n/*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n/*}*/\n\n\n.project-map {\n  background-color: lightgray;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n", ""]);
+exports.push([module.i, "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n/*}*/\n\n/*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n/*}*/\n\n/*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n/*}*/\n\n\n.project-map {\n  background-color: #F0F0F0;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n", ""]);
 
 // exports
 
@@ -1403,7 +1425,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n\n</div>\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -1485,6 +1507,7 @@ var ProjectMapComponent = (function () {
         this.nodes = [];
         this.links = [];
         this.drawings = [];
+        this.symbols = [];
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1511,6 +1534,9 @@ var ProjectMapComponent = (function () {
                 _this.onProjectLoad(project);
             });
         });
+        this.symbolService.symbols.subscribe(function (symbols) {
+            _this.symbols = symbols;
+        });
     };
     ProjectMapComponent.prototype.onProjectLoad = function (project) {
         var _this = this;
@@ -1529,9 +1555,6 @@ var ProjectMapComponent = (function () {
         })
             .subscribe(function (nodes) {
             _this.nodes = nodes;
-            nodes.forEach(function (n) {
-                n.icon = _this.symbolService.get(n.symbol);
-            });
             _this.setUpMapCallbacks(project);
             _this.setUpWS(project);
         });
