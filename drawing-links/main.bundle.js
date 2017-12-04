@@ -1260,7 +1260,12 @@ var LinksWidget = (function () {
     LinksWidget.prototype.draw = function (view, links) {
         var self = this;
         this.multiLinkCalculatorHelper.assignDataToLinks(links);
-        var link = view
+        var linksLayer = view.selectAll("g.links").data([{}]);
+        linksLayer
+            .enter()
+            .append('g')
+            .attr("class", "links");
+        var link = linksLayer
             .selectAll("g.link")
             .data(links.filter(function (l) {
             return l.target && l.source;
@@ -2548,7 +2553,7 @@ var _a, _b, _c, _d;
 /***/ "../../../../../src/app/shared/node-select-interface/node-select-interface.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"selectInterfaceMenu\"></span>\n  <mat-menu #selectInterfaceMenu=\"matMenu\">\n      <button mat-menu-item *ngFor=\"let port of node.ports\" (click)=\"chooseInterface(port)\">\n        <mat-icon>info</mat-icon>\n        <span>{{ port.name }}</span>\n      </button>\n  </mat-menu>\n</div>\n"
+module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"selectInterfaceMenu\"></span>\n  <mat-menu #selectInterfaceMenu=\"matMenu\">\n      <button mat-menu-item *ngFor=\"let port of node.ports\" (click)=\"chooseInterface(port)\">\n        <mat-icon>add_circle_outline</mat-icon>\n        <span>{{ port.name }}</span>\n      </button>\n  </mat-menu>\n</div>\n"
 
 /***/ }),
 
