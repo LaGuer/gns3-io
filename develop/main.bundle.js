@@ -164,20 +164,20 @@ var _a, _b, _c, _d;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__shared_progress_dialog_progress_dialog_service__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__ = __webpack_require__("../../../../../src/app/shared/services/node.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__shared_services_appliance_service__ = __webpack_require__("../../../../../src/app/shared/services/appliance.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__projects_projects_component__ = __webpack_require__("../../../../../src/app/projects/projects.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__default_layout_default_layout_component__ = __webpack_require__("../../../../../src/app/default-layout/default-layout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__cartography_map_map_component__ = __webpack_require__("../../../../../src/app/cartography/map/map.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__project_map_project_map_component__ = __webpack_require__("../../../../../src/app/project-map/project-map.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__servers_servers_component__ = __webpack_require__("../../../../../src/app/servers/servers.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__shared_node_context_menu_node_context_menu_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/node-context-menu.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__shared_node_context_menu_actions_start_node_action_start_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/start-node-action/start-node-action.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/stop-node-action/stop-node-action.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__appliance_appliance_component__ = __webpack_require__("../../../../../src/app/appliance/appliance.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_list_dialog_appliance_list_dialog_component__ = __webpack_require__("../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__shared_node_select_interface_node_select_interface_component__ = __webpack_require__("../../../../../src/app/shared/node-select-interface/node-select-interface.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__shared_services_link_service__ = __webpack_require__("../../../../../src/app/shared/services/link.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__shared_services_link_service__ = __webpack_require__("../../../../../src/app/shared/services/link.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__projects_projects_component__ = __webpack_require__("../../../../../src/app/projects/projects.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__default_layout_default_layout_component__ = __webpack_require__("../../../../../src/app/default-layout/default-layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__shared_progress_dialog_progress_dialog_component__ = __webpack_require__("../../../../../src/app/shared/progress-dialog/progress-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__cartography_map_map_component__ = __webpack_require__("../../../../../src/app/cartography/map/map.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__project_map_project_map_component__ = __webpack_require__("../../../../../src/app/project-map/project-map.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__servers_servers_component__ = __webpack_require__("../../../../../src/app/servers/servers.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__shared_node_context_menu_node_context_menu_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/node-context-menu.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__shared_node_context_menu_actions_start_node_action_start_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/start-node-action/start-node-action.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/stop-node-action/stop-node-action.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_component__ = __webpack_require__("../../../../../src/app/appliance/appliance.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__appliance_appliance_list_dialog_appliance_list_dialog_component__ = __webpack_require__("../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__shared_node_select_interface_node_select_interface_component__ = __webpack_require__("../../../../../src/app/shared/node-select-interface/node-select-interface.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -227,21 +227,21 @@ var AppModule = (function () {
 AppModule = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* NgModule */])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_24__app_component__["a" /* AppComponent */],
-            __WEBPACK_IMPORTED_MODULE_25__cartography_map_map_component__["a" /* MapComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__project_map_project_map_component__["b" /* ProjectMapComponent */],
-            __WEBPACK_IMPORTED_MODULE_27__servers_servers_component__["b" /* ServersComponent */],
-            __WEBPACK_IMPORTED_MODULE_27__servers_servers_component__["a" /* AddServerDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_21__projects_projects_component__["a" /* ProjectsComponent */],
-            __WEBPACK_IMPORTED_MODULE_22__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
-            __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_28__shared_node_context_menu_node_context_menu_component__["a" /* NodeContextMenuComponent */],
-            __WEBPACK_IMPORTED_MODULE_29__shared_node_context_menu_actions_start_node_action_start_node_action_component__["a" /* StartNodeActionComponent */],
-            __WEBPACK_IMPORTED_MODULE_30__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__["a" /* StopNodeActionComponent */],
-            __WEBPACK_IMPORTED_MODULE_31__appliance_appliance_component__["a" /* ApplianceComponent */],
-            __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_33__shared_node_select_interface_node_select_interface_component__["a" /* NodeSelectInterfaceComponent */],
+            __WEBPACK_IMPORTED_MODULE_25__app_component__["a" /* AppComponent */],
+            __WEBPACK_IMPORTED_MODULE_26__cartography_map_map_component__["a" /* MapComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__project_map_project_map_component__["b" /* ProjectMapComponent */],
+            __WEBPACK_IMPORTED_MODULE_28__servers_servers_component__["b" /* ServersComponent */],
+            __WEBPACK_IMPORTED_MODULE_28__servers_servers_component__["a" /* AddServerDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_22__projects_projects_component__["a" /* ProjectsComponent */],
+            __WEBPACK_IMPORTED_MODULE_23__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_29__shared_node_context_menu_node_context_menu_component__["a" /* NodeContextMenuComponent */],
+            __WEBPACK_IMPORTED_MODULE_30__shared_node_context_menu_actions_start_node_action_start_node_action_component__["a" /* StartNodeActionComponent */],
+            __WEBPACK_IMPORTED_MODULE_31__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__["a" /* StopNodeActionComponent */],
+            __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_component__["a" /* ApplianceComponent */],
+            __WEBPACK_IMPORTED_MODULE_33__appliance_appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_34__shared_node_select_interface_node_select_interface_component__["a" /* NodeSelectInterfaceComponent */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_8__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
@@ -254,13 +254,14 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_6__angular_material__["b" /* MatButtonModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_material__["k" /* MatMenuModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_material__["c" /* MatCardModule */],
-            __WEBPACK_IMPORTED_MODULE_6__angular_material__["o" /* MatToolbarModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["p" /* MatToolbarModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_material__["h" /* MatIconModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_material__["g" /* MatFormFieldModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_material__["j" /* MatInputModule */],
-            __WEBPACK_IMPORTED_MODULE_6__angular_material__["n" /* MatTableModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["o" /* MatTableModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_material__["e" /* MatDialogModule */],
             __WEBPACK_IMPORTED_MODULE_6__angular_material__["m" /* MatProgressBarModule */],
+            __WEBPACK_IMPORTED_MODULE_6__angular_material__["n" /* MatProgressSpinnerModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_cdk_table__["m" /* CdkTableModule */]
         ],
         providers: [
@@ -271,19 +272,19 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_14__shared_services_server_service__["a" /* ServerService */],
             __WEBPACK_IMPORTED_MODULE_20__shared_services_appliance_service__["a" /* ApplianceService */],
             __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */],
-            __WEBPACK_IMPORTED_MODULE_34__shared_services_link_service__["a" /* LinkService */],
+            __WEBPACK_IMPORTED_MODULE_21__shared_services_link_service__["a" /* LinkService */],
             __WEBPACK_IMPORTED_MODULE_15__shared_services_indexed_db_service__["a" /* IndexedDbService */],
             __WEBPACK_IMPORTED_MODULE_16__shared_services_http_server_service__["a" /* HttpServer */],
             __WEBPACK_IMPORTED_MODULE_17__shared_services_snapshot_service__["a" /* SnapshotService */],
             __WEBPACK_IMPORTED_MODULE_18__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]
         ],
         entryComponents: [
-            __WEBPACK_IMPORTED_MODULE_27__servers_servers_component__["a" /* AddServerDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_26__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_23__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
-            __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */]
+            __WEBPACK_IMPORTED_MODULE_28__servers_servers_component__["a" /* AddServerDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__project_map_project_map_component__["a" /* CreateSnapshotDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_24__shared_progress_dialog_progress_dialog_component__["a" /* ProgressDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_33__appliance_appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */]
         ],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_24__app_component__["a" /* AppComponent */]]
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_25__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
@@ -637,7 +638,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "svg {\n  display: block; }\n", ""]);
+exports.push([module.i, "svg {\n  display: block; }\n\nimage.over {\n  fill: #000; }\n", ""]);
 
 // exports
 
@@ -1362,6 +1363,12 @@ var NodesWidget = (function () {
         })
             .attr('width', function (n) { return n.width; })
             .attr('height', function (n) { return n.height; });
+        // .on('mouseover', function (this, n: Node) {
+        //   select(this).attr("class", "over");
+        // })
+        // .on('mouseout', function (this, n: Node) {
+        //   select(this).attr("class", "");
+        // });
         node_enter
             .append('text')
             .attr('class', 'label');
@@ -1576,7 +1583,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n/*}*/\n\n/*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n/*}*/\n\n/*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n/*}*/\n\n\n.project-map {\n  background-color: #F0F0F0;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n", ""]);
+exports.push([module.i, "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n/*}*/\n\n/*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n/*}*/\n\n/*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n/*}*/\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-map {\n  background-color: #F0F0F0;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.loading-spinner {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; -webkit-box-pack: center; -ms-flex-pack: center; justify-content: center; -webkit-box-align: center; -ms-flex-align: center; align-items: center;\n}\n", ""]);
 
 // exports
 
@@ -1589,7 +1596,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"turnOnDrawLineMode()\" *ngIf=\"!drawLineMode\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n\n        <button mat-icon-button color=\"primary\" (click)=\"turnOffDrawLineMode()\" *ngIf=\"drawLineMode\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"turnOnDrawLineMode()\" *ngIf=\"!drawLineMode\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n\n        <button mat-icon-button color=\"primary\" (click)=\"turnOffDrawLineMode()\" *ngIf=\"drawLineMode\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n\n"
 
 /***/ }),
 
@@ -1678,6 +1685,7 @@ var ProjectMapComponent = (function () {
         this.drawings = [];
         this.symbols = [];
         this.drawLineMode = false;
+        this.isLoading = true;
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1727,6 +1735,7 @@ var ProjectMapComponent = (function () {
             _this.nodes = nodes;
             _this.setUpMapCallbacks(project);
             _this.setUpWS(project);
+            _this.isLoading = true;
         });
     };
     ProjectMapComponent.prototype.setUpWS = function (project) {
