@@ -176,12 +176,16 @@ var _a, _b, _c, _d;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/actions/stop-node-action/stop-node-action.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__appliance_appliance_component__ = __webpack_require__("../../../../../src/app/appliance/appliance.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_list_dialog_appliance_list_dialog_component__ = __webpack_require__("../../../../../src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__shared_node_select_interface_node_select_interface_component__ = __webpack_require__("../../../../../src/app/shared/node-select-interface/node-select-interface.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__shared_services_link_service__ = __webpack_require__("../../../../../src/app/shared/services/link.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -237,6 +241,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_30__shared_node_context_menu_actions_stop_node_action_stop_node_action_component__["a" /* StopNodeActionComponent */],
             __WEBPACK_IMPORTED_MODULE_31__appliance_appliance_component__["a" /* ApplianceComponent */],
             __WEBPACK_IMPORTED_MODULE_32__appliance_appliance_list_dialog_appliance_list_dialog_component__["a" /* ApplianceListDialogComponent */],
+            __WEBPACK_IMPORTED_MODULE_33__shared_node_select_interface_node_select_interface_component__["a" /* NodeSelectInterfaceComponent */],
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_8__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
@@ -266,6 +271,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_14__shared_services_server_service__["a" /* ServerService */],
             __WEBPACK_IMPORTED_MODULE_20__shared_services_appliance_service__["a" /* ApplianceService */],
             __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */],
+            __WEBPACK_IMPORTED_MODULE_34__shared_services_link_service__["a" /* LinkService */],
             __WEBPACK_IMPORTED_MODULE_15__shared_services_indexed_db_service__["a" /* IndexedDbService */],
             __WEBPACK_IMPORTED_MODULE_16__shared_services_http_server_service__["a" /* HttpServer */],
             __WEBPACK_IMPORTED_MODULE_17__shared_services_snapshot_service__["a" /* SnapshotService */],
@@ -829,6 +835,21 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/app/cartography/shared/models/drawing-line.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrawingLine; });
+var DrawingLine = (function () {
+    function DrawingLine() {
+    }
+    return DrawingLine;
+}());
+
+//# sourceMappingURL=drawing-line.model.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/cartography/shared/models/link-status.model.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -862,6 +883,24 @@ var Node = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/cartography/shared/models/point.model.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Point; });
+var Point = (function () {
+    function Point(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+    return Point;
+}());
+
+;
+//# sourceMappingURL=point.model.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/cartography/shared/models/size.model.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -876,6 +915,87 @@ var Size = (function () {
 }());
 
 //# sourceMappingURL=size.model.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/cartography/shared/widgets/drawing-line.widget.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrawingLineWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawing_line_model__ = __webpack_require__("../../../../../src/app/cartography/shared/models/drawing-line.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_point_model__ = __webpack_require__("../../../../../src/app/cartography/shared/models/point.model.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_shape__ = __webpack_require__("../../../../d3-shape/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_selection__ = __webpack_require__("../../../../d3-selection/index.js");
+
+
+
+
+var DrawingLineWidget = (function () {
+    function DrawingLineWidget() {
+        this.drawingLine = new __WEBPACK_IMPORTED_MODULE_0__models_drawing_line_model__["a" /* DrawingLine */]();
+        this.drawing = false;
+        this.data = {};
+    }
+    DrawingLineWidget.prototype.start = function (x, y, data) {
+        var self = this;
+        this.drawing = true;
+        this.data = data;
+        this.drawingLine.start = new __WEBPACK_IMPORTED_MODULE_1__models_point_model__["a" /* Point */](x, y);
+        this.drawingLine.end = new __WEBPACK_IMPORTED_MODULE_1__models_point_model__["a" /* Point */](x, y);
+        var over = function (d, i) {
+            var node = self.selection.select('g.canvas').node();
+            var coordinates = Object(__WEBPACK_IMPORTED_MODULE_3_d3_selection__["f" /* mouse */])(node);
+            self.drawingLine.end.x = coordinates[0];
+            self.drawingLine.end.y = coordinates[1];
+            self.draw();
+        };
+        this.selection.on('mousemove', over);
+        this.draw();
+    };
+    DrawingLineWidget.prototype.isDrawing = function () {
+        return this.drawing;
+    };
+    DrawingLineWidget.prototype.stop = function () {
+        this.drawing = false;
+        this.selection.on('mousemove', null);
+        this.draw();
+        return this.data;
+    };
+    DrawingLineWidget.prototype.connect = function (selection) {
+        this.selection = selection;
+        var canvas = this.selection.select("g.canvas");
+        if (!canvas.select("g.drawing-line-tool").node()) {
+            canvas.append('g').attr("class", "drawing-line-tool");
+        }
+    };
+    DrawingLineWidget.prototype.draw = function () {
+        var link_data = [];
+        if (this.drawing) {
+            link_data = [[
+                    [this.drawingLine.start.x, this.drawingLine.start.y],
+                    [this.drawingLine.end.x, this.drawingLine.end.y]
+                ]];
+        }
+        var value_line = Object(__WEBPACK_IMPORTED_MODULE_2_d3_shape__["v" /* line */])();
+        var drawing_line_tool = this.selection.select('g.drawing-line-tool');
+        var tool = drawing_line_tool
+            .selectAll('path')
+            .data(link_data);
+        var enter = tool
+            .enter()
+            .append('path');
+        tool
+            .merge(enter)
+            .attr('d', value_line)
+            .attr('stroke', '#000')
+            .attr('stroke-width', '2');
+        tool.exit().remove();
+    };
+    return DrawingLineWidget;
+}());
+
+//# sourceMappingURL=drawing-line.widget.js.map
 
 /***/ }),
 
@@ -980,6 +1100,8 @@ var EthernetLinkWidget = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_zoom__ = __webpack_require__("../../../../d3-zoom/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_d3_selection__ = __webpack_require__("../../../../d3-selection/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__drawings_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/drawings.widget.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drawing_line_widget__ = __webpack_require__("../../../../../src/app/cartography/shared/widgets/drawing-line.widget.ts");
+
 
 
 
@@ -994,6 +1116,7 @@ var GraphLayout = (function () {
         this.linksWidget = new __WEBPACK_IMPORTED_MODULE_1__links_widget__["a" /* LinksWidget */]();
         this.nodesWidget = new __WEBPACK_IMPORTED_MODULE_0__nodes_widget__["a" /* NodesWidget */]();
         this.drawingsWidget = new __WEBPACK_IMPORTED_MODULE_4__drawings_widget__["a" /* DrawingsWidget */]();
+        this.drawingLineTool = new __WEBPACK_IMPORTED_MODULE_5__drawing_line_widget__["a" /* DrawingLineWidget */]();
     }
     GraphLayout.prototype.setNodes = function (nodes) {
         this.nodes = nodes;
@@ -1010,6 +1133,9 @@ var GraphLayout = (function () {
     GraphLayout.prototype.getLinksWidget = function () {
         return this.linksWidget;
     };
+    GraphLayout.prototype.getDrawingLineTool = function () {
+        return this.drawingLineTool;
+    };
     GraphLayout.prototype.draw = function (view, context) {
         var self = this;
         var canvas = view
@@ -1024,6 +1150,7 @@ var GraphLayout = (function () {
         this.linksWidget.draw(canvas, this.links);
         this.nodesWidget.draw(canvas, this.nodes);
         this.drawingsWidget.draw(canvas, this.drawings);
+        this.drawingLineTool.connect(view);
         var onZoom = function () {
             var e = __WEBPACK_IMPORTED_MODULE_3_d3_selection__["c" /* event */];
             if (self.centerZeroZeroPoint) {
@@ -1133,7 +1260,12 @@ var LinksWidget = (function () {
     LinksWidget.prototype.draw = function (view, links) {
         var self = this;
         this.multiLinkCalculatorHelper.assignDataToLinks(links);
-        var link = view
+        var linksLayer = view.selectAll("g.links").data([{}]);
+        linksLayer
+            .enter()
+            .append('g')
+            .attr("class", "links");
+        var link = linksLayer
             .selectAll("g.link")
             .data(links.filter(function (l) {
             return l.target && l.source;
@@ -1173,6 +1305,9 @@ var NodesWidget = (function () {
     }
     NodesWidget.prototype.setOnContextMenuCallback = function (onContextMenuCallback) {
         this.onContextMenuCallback = onContextMenuCallback;
+    };
+    NodesWidget.prototype.setOnNodeClickedCallback = function (onNodeClickedCallback) {
+        this.onNodeClickedCallback = onNodeClickedCallback;
     };
     NodesWidget.prototype.setOnNodeDraggedCallback = function (onNodeDraggedCallback) {
         this.onNodeDraggedCallback = onNodeDraggedCallback;
@@ -1241,11 +1376,17 @@ var NodesWidget = (function () {
                 .attr('x', '-100')
                 .attr('y', '0');
         }
-        var node_merge = node.merge(node_enter)
+        var node_merge = node
+            .merge(node_enter)
             .on("contextmenu", function (n, i) {
             __WEBPACK_IMPORTED_MODULE_0_d3_selection__["c" /* event */].preventDefault();
             if (self.onContextMenuCallback !== null) {
                 self.onContextMenuCallback(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["c" /* event */], n);
+            }
+        })
+            .on('click', function (n) {
+            if (self.onNodeClickedCallback) {
+                self.onNodeClickedCallback(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["c" /* event */], n);
             }
         });
         this.revise(node_merge);
@@ -1448,7 +1589,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n\n</div>\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n        <mat-icon svgIcon=\"gns3\"></mat-icon>\n      </button>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"turnOnDrawLineMode()\" *ngIf=\"!drawLineMode\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n\n        <button mat-icon-button color=\"primary\" (click)=\"turnOffDrawLineMode()\" *ngIf=\"drawLineMode\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n"
 
 /***/ }),
 
@@ -1484,6 +1625,8 @@ module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [sym
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__ = __webpack_require__("../../../../ng2-toasty/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__shared_node_context_menu_node_context_menu_component__ = __webpack_require__("../../../../../src/app/shared/node-context-menu/node-context-menu.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__ = __webpack_require__("../../../../../src/app/shared/services/node.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__shared_node_select_interface_node_select_interface_component__ = __webpack_require__("../../../../../src/app/shared/node-select-interface/node-select-interface.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__shared_services_link_service__ = __webpack_require__("../../../../../src/app/shared/services/link.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1516,14 +1659,17 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
+
 var ProjectMapComponent = (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, dialog, progressDialogService, toastyService) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toastyService) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
         this.symbolService = symbolService;
         this.snapshotService = snapshotService;
         this.nodeService = nodeService;
+        this.linkService = linkService;
         this.dialog = dialog;
         this.progressDialogService = progressDialogService;
         this.toastyService = toastyService;
@@ -1531,6 +1677,7 @@ var ProjectMapComponent = (function () {
         this.links = [];
         this.drawings = [];
         this.symbols = [];
+        this.drawLineMode = false;
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1641,6 +1788,11 @@ var ProjectMapComponent = (function () {
         this.mapChild.graphLayout.getNodesWidget().setOnContextMenuCallback(function (event, node) {
             _this.nodeContextMenu.open(node, event.clientY, event.clientX);
         });
+        this.mapChild.graphLayout.getNodesWidget().setOnNodeClickedCallback(function (event, node) {
+            if (_this.drawLineMode) {
+                _this.nodeSelectInterfaceMenu.open(node, event.clientY, event.clientX);
+            }
+        });
         this.mapChild.graphLayout.getNodesWidget().setOnNodeDraggedCallback(function (event, node) {
             var index = _this.nodes.findIndex(function (n) { return n.node_id === node.node_id; });
             if (index >= 0) {
@@ -1699,6 +1851,38 @@ var ProjectMapComponent = (function () {
             }
         });
     };
+    ProjectMapComponent.prototype.turnOnDrawLineMode = function () {
+        this.drawLineMode = true;
+    };
+    ProjectMapComponent.prototype.turnOffDrawLineMode = function () {
+        this.drawLineMode = false;
+    };
+    ProjectMapComponent.prototype.onChooseInterface = function (event) {
+        var node = event.node;
+        var port = event.port;
+        var drawingLineTool = this.mapChild.graphLayout.getDrawingLineTool();
+        if (drawingLineTool.isDrawing()) {
+            var data = drawingLineTool.stop();
+            this.onLineCreation(data['node'], data['port'], node, port);
+        }
+        else {
+            drawingLineTool.start(node.x + node.width / 2., node.y + node.height / 2., {
+                'node': node,
+                'port': port
+            });
+        }
+    };
+    ProjectMapComponent.prototype.onLineCreation = function (source_node, source_port, target_node, target_port) {
+        var _this = this;
+        this.linkService
+            .createLink(this.server, source_node, source_port, target_node, target_port)
+            .subscribe(function () {
+            _this.projectService.links(_this.server, _this.project.project_id).subscribe(function (links) {
+                _this.links = links;
+                _this.mapChild.reload();
+            });
+        });
+    };
     return ProjectMapComponent;
 }());
 __decorate([
@@ -1709,6 +1893,10 @@ __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_18__shared_node_context_menu_node_context_menu_component__["a" /* NodeContextMenuComponent */]),
     __metadata("design:type", typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_18__shared_node_context_menu_node_context_menu_component__["a" /* NodeContextMenuComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_18__shared_node_context_menu_node_context_menu_component__["a" /* NodeContextMenuComponent */]) === "function" && _b || Object)
 ], ProjectMapComponent.prototype, "nodeContextMenu", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_20__shared_node_select_interface_node_select_interface_component__["a" /* NodeSelectInterfaceComponent */]),
+    __metadata("design:type", typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_20__shared_node_select_interface_node_select_interface_component__["a" /* NodeSelectInterfaceComponent */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_20__shared_node_select_interface_node_select_interface_component__["a" /* NodeSelectInterfaceComponent */]) === "function" && _c || Object)
+], ProjectMapComponent.prototype, "nodeSelectInterfaceMenu", void 0);
 ProjectMapComponent = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-project-map',
@@ -1716,7 +1904,7 @@ ProjectMapComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/project-map/project-map.component.html"),
         styles: [__webpack_require__("../../../../../src/app/project-map/project-map.component.css")],
     }),
-    __metadata("design:paramtypes", [typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */]) === "function" && _l || Object])
+    __metadata("design:paramtypes", [typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_10__shared_services_server_service__["a" /* ServerService */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_11__shared_services_project_service__["a" /* ProjectService */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_8__shared_services_symbol_service__["a" /* SymbolService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_13__shared_services_snapshot_service__["a" /* SnapshotService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_19__shared_services_node_service__["a" /* NodeService */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_21__shared_services_link_service__["a" /* LinkService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_21__shared_services_link_service__["a" /* LinkService */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["d" /* MatDialog */]) === "function" && _l || Object, typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */]) === "function" && _m || Object, typeof (_o = typeof __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_17_ng2_toasty__["c" /* ToastyService */]) === "function" && _o || Object])
 ], ProjectMapComponent);
 
 var CreateSnapshotDialogComponent = (function () {
@@ -1739,10 +1927,10 @@ CreateSnapshotDialogComponent = __decorate([
         template: __webpack_require__("../../../../../src/app/project-map/create-snapshot-dialog.html"),
     }),
     __param(1, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["B" /* Inject */])(__WEBPACK_IMPORTED_MODULE_12__angular_material__["a" /* MAT_DIALOG_DATA */])),
-    __metadata("design:paramtypes", [typeof (_m = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */]) === "function" && _m || Object, Object])
+    __metadata("design:paramtypes", [typeof (_p = typeof __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_12__angular_material__["f" /* MatDialogRef */]) === "function" && _p || Object, Object])
 ], CreateSnapshotDialogComponent);
 
-var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p;
 //# sourceMappingURL=project-map.component.js.map
 
 /***/ }),
@@ -2362,6 +2550,100 @@ var _a, _b, _c, _d;
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/node-select-interface/node-select-interface.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"selectInterfaceMenu\"></span>\n  <mat-menu #selectInterfaceMenu=\"matMenu\">\n      <button mat-menu-item *ngFor=\"let port of node.ports\" (click)=\"chooseInterface(port)\">\n        <mat-icon>add_circle_outline</mat-icon>\n        <span>{{ port.name }}</span>\n      </button>\n  </mat-menu>\n</div>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/node-select-interface/node-select-interface.component.scss":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".context-menu {\n  position: absolute; }\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/node-select-interface/node-select-interface.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NodeSelectInterfaceComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("../../../material/esm5/material.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var NodeSelectInterfaceComponent = (function () {
+    function NodeSelectInterfaceComponent(sanitizer, changeDetector) {
+        this.sanitizer = sanitizer;
+        this.changeDetector = changeDetector;
+        this.onChooseInterface = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["x" /* EventEmitter */]();
+    }
+    NodeSelectInterfaceComponent.prototype.ngOnInit = function () {
+        this.setPosition(0, 0);
+    };
+    NodeSelectInterfaceComponent.prototype.setPosition = function (top, left) {
+        this.topPosition = this.sanitizer.bypassSecurityTrustStyle(top + "px");
+        this.leftPosition = this.sanitizer.bypassSecurityTrustStyle(left + "px");
+        this.changeDetector.detectChanges();
+    };
+    NodeSelectInterfaceComponent.prototype.open = function (node, top, left) {
+        this.node = node;
+        this.setPosition(top, left);
+        this.contextMenu.openMenu();
+    };
+    NodeSelectInterfaceComponent.prototype.chooseInterface = function (port) {
+        this.onChooseInterface.emit({
+            'node': this.node,
+            'port': port
+        });
+    };
+    return NodeSelectInterfaceComponent;
+}());
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["T" /* Output */])(),
+    __metadata("design:type", Object)
+], NodeSelectInterfaceComponent.prototype, "onChooseInterface", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])(__WEBPACK_IMPORTED_MODULE_1__angular_material__["l" /* MatMenuTrigger */]),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_material__["l" /* MatMenuTrigger */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_material__["l" /* MatMenuTrigger */]) === "function" && _a || Object)
+], NodeSelectInterfaceComponent.prototype, "contextMenu", void 0);
+NodeSelectInterfaceComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'app-node-select-interface',
+        template: __webpack_require__("../../../../../src/app/shared/node-select-interface/node-select-interface.component.html"),
+        styles: [__webpack_require__("../../../../../src/app/shared/node-select-interface/node-select-interface.component.scss")]
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ChangeDetectorRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["l" /* ChangeDetectorRef */]) === "function" && _c || Object])
+], NodeSelectInterfaceComponent);
+
+var _a, _b, _c;
+//# sourceMappingURL=node-select-interface.component.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/shared/progress-dialog/progress-dialog.component.html":
 /***/ (function(module, exports) {
 
@@ -2628,6 +2910,58 @@ IndexedDbService = __decorate([
 ], IndexedDbService);
 
 //# sourceMappingURL=indexed-db.service.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/shared/services/link.service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LinkService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__http_server_service__ = __webpack_require__("../../../../../src/app/shared/services/http-server.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var LinkService = (function () {
+    function LinkService(httpServer) {
+        this.httpServer = httpServer;
+    }
+    LinkService.prototype.createLink = function (server, source_node, source_port, target_node, target_port) {
+        return this.httpServer
+            .post(server, "/projects/" + source_node.project_id + "/links", { "nodes": [
+                {
+                    node_id: source_node.node_id,
+                    port_number: source_port.port_number,
+                    adapter_number: source_port.adapter_number
+                },
+                {
+                    node_id: target_node.node_id,
+                    port_number: target_port.port_number,
+                    adapter_number: target_port.adapter_number
+                }
+            ] });
+    };
+    return LinkService;
+}());
+LinkService = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__http_server_service__["a" /* HttpServer */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__http_server_service__["a" /* HttpServer */]) === "function" && _a || Object])
+], LinkService);
+
+var _a;
+//# sourceMappingURL=link.service.js.map
 
 /***/ }),
 
