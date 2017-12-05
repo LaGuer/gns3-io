@@ -1331,10 +1331,24 @@ var NodesWidget = (function () {
         });
         selection
             .select('text.label')
-            .attr('x', function (n) { return n.label.x - n.width / 2.; })
-            .attr('y', function (n) { return n.label.y - n.height / 2. + 20; }) // @todo: server computes y in auto way
             .attr('style', function (n) { return n.label.style; })
-            .text(function (n) { return n.label.text; });
+            .text(function (n) { return n.label.text; })
+            .attr('x', function (n) {
+            if (n.label.x === null) {
+                // center
+                var bbox = this.getBBox();
+                return -bbox.width / 2.;
+            }
+            return n.label.x - n.width / 2.;
+        })
+            .attr('y', function (n) {
+            if (n.label.x === null) {
+                // center
+                var bbox = this.getBBox();
+                return -n.height + 20;
+            }
+            return n.label.y - n.height / 2.;
+        });
         selection
             .select('text.node_point_label')
             .text(function (n) { return "(" + n.x + ", " + n.y + ")"; });
