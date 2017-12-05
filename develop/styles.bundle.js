@@ -89,7 +89,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 exports.push([module.i, "@import url(https://fonts.googleapis.com/icon?family=Material+Icons);", ""]);
 
 // module
-exports.push([module.i, "/* @TODO: make icons self hosted */\n\nimg.logo-header {\n  width: 50px;\n}\n\na.table-link {\n  color: #0097a7;\n}\n", ""]);
+exports.push([module.i, "/* @TODO: make icons self hosted */\n\nimg.logo-header {\n  width: 50px;\n}\n\na.table-link {\n  color: #0097a7;\n}\n\n", ""]);
 
 // exports
 
