@@ -1253,7 +1253,7 @@ var LinksWidget = (function () {
             .attr('transform', function (l) {
             if (l.source && l.target) {
                 var translation = self.multiLinkCalculatorHelper.linkTranslation(l.distance, l.source, l.target);
-                return "translate (" + (translation.dx + l.source.width / 2.) + ", " + (translation.dy + l.source.height / 2.) + ")";
+                return "translate (" + translation.dx + ", " + translation.dy + ")";
             }
             return null;
         });
@@ -1331,10 +1331,24 @@ var NodesWidget = (function () {
         });
         selection
             .select('text.label')
-            .attr('x', function (n) { return n.label.x; })
-            .attr('y', function (n) { return n.label.y; })
             .attr('style', function (n) { return n.label.style; })
-            .text(function (n) { return n.label.text; });
+            .text(function (n) { return n.label.text; })
+            .attr('x', function (n) {
+            if (n.label.x === null) {
+                // center
+                var bbox = this.getBBox();
+                return -bbox.width / 2.;
+            }
+            return n.label.x - n.width / 2.;
+        })
+            .attr('y', function (n) {
+            if (n.label.x === null) {
+                // center
+                var bbox = this.getBBox();
+                return -n.height + 20;
+            }
+            return n.label.y - n.height / 2.;
+        });
         selection
             .select('text.node_point_label')
             .text(function (n) { return "(" + n.x + ", " + n.y + ")"; });
@@ -1362,7 +1376,11 @@ var NodesWidget = (function () {
             return 'data:image/svg+xml;base64,none';
         })
             .attr('width', function (n) { return n.width; })
-            .attr('height', function (n) { return n.height; });
+            .attr('height', function (n) { return n.height; })
+            .attr('x', function (n) { return -n.width / 2.; })
+            .attr('y', function (n) { return -n.height / 2.; });
+        // .attr('width', (n: Node) => n.width)
+        // .attr('height', (n: Node) => n.height);
         // .on('mouseover', function (this, n: Node) {
         //   select(this).attr("class", "over");
         // })
@@ -1583,7 +1601,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n/*}*/\n\n/*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n/*}*/\n\n/*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n/*}*/\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-map {\n  background-color: #F0F0F0;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n\n", ""]);
+exports.push([module.i, "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n/*}*/\n\n/*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n/*}*/\n\n/*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n/*}*/\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-map {\n  background-color: #F0F0F0;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n\ng.node text {\n  font-family: Roboto !important;\n}\n\n", ""]);
 
 // exports
 
@@ -1875,7 +1893,7 @@ var ProjectMapComponent = (function () {
             this.onLineCreation(data['node'], data['port'], node, port);
         }
         else {
-            drawingLineTool.start(node.x + node.width / 2., node.y + node.height / 2., {
+            drawingLineTool.start(node.x, node.y, {
                 'node': node,
                 'port': port
             });
