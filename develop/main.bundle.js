@@ -1345,7 +1345,7 @@ var NodesWidget = (function () {
             if (n.label.x === null) {
                 // center
                 var bbox = this.getBBox();
-                return -n.height + 20;
+                return -n.height / 2. - bbox.height;
             }
             return n.label.y - n.height / 2.;
         });
@@ -1883,6 +1883,7 @@ var ProjectMapComponent = (function () {
     };
     ProjectMapComponent.prototype.turnOffDrawLineMode = function () {
         this.drawLineMode = false;
+        this.mapChild.graphLayout.getDrawingLineTool().stop();
     };
     ProjectMapComponent.prototype.onChooseInterface = function (event) {
         var node = event.node;
