@@ -771,7 +771,7 @@ var MapComponent = /** @class */ (function () {
                 this.graphContext.setSize(new __WEBPACK_IMPORTED_MODULE_5__shared_models_size_model__["a" /* Size */](this.width, this.height));
             }
             this.graphLayout = new __WEBPACK_IMPORTED_MODULE_3__shared_widgets_graph_widget__["a" /* GraphLayout */]();
-            this.graphLayout.getNodesWidget().addOnNodeDraggingCallback(function (n) {
+            this.graphLayout.getNodesWidget().addOnNodeDraggingCallback(function (event, n) {
                 var linksWidget = _this.graphLayout.getLinksWidget();
                 linksWidget.select(_this.svg).each(function (link) {
                     if (link.target.node_id === n.node_id || link.source.node_id === n.node_id) {
@@ -1318,7 +1318,8 @@ var LinksWidget = /** @class */ (function () {
             .attr('link_id', function (l) { return l.link_id; })
             .attr('map-source', function (l) { return l.source.node_id; })
             .attr('map-target', function (l) { return l.target.node_id; });
-        //this.revise(link.merge(link_enter));
+        var merge = link.merge(link_enter);
+        this.revise(merge);
         link
             .exit()
             .remove();
@@ -1360,10 +1361,10 @@ var NodesWidget = /** @class */ (function () {
     NodesWidget.prototype.setSymbols = function (symbols) {
         this.symbols = symbols;
     };
-    NodesWidget.prototype.executeOnNodeDraggingCallback = function (n) {
-        // this.onNodeDraggingCallbacks.forEach((callback: (n: Node) => void) => {
-        //   callback(n);
-        // });
+    NodesWidget.prototype.executeOnNodeDraggingCallback = function (callback_event, node) {
+        this.onNodeDraggingCallbacks.forEach(function (callback) {
+            callback(callback_event, node);
+        });
     };
     NodesWidget.prototype.revise = function (selection) {
         selection
@@ -1461,7 +1462,7 @@ var NodesWidget = /** @class */ (function () {
             n.x = e.x;
             n.y = e.y;
             self.revise(Object(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["j" /* select */])(this));
-            self.executeOnNodeDraggingCallback(n);
+            self.executeOnNodeDraggingCallback(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["d" /* event */], n);
         };
         var dragging = function () {
             return Object(__WEBPACK_IMPORTED_MODULE_1_d3_drag__["a" /* drag */])()
