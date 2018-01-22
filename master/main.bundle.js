@@ -787,17 +787,17 @@ var MapComponent = /** @class */ (function () {
         return new __WEBPACK_IMPORTED_MODULE_5__shared_models_size_model__["a" /* Size */](document.documentElement.clientWidth, document.documentElement.clientHeight);
     };
     MapComponent.prototype.changeLayout = function () {
-        if (this.graphContext != null) {
-            this.svg
-                .attr('width', this.graphContext.getSize().width)
-                .attr('height', this.graphContext.getSize().height);
-        }
         if (this.windowFullSize) {
             if (this.parentNativeElement != null) {
                 this.graphContext.setSize(this.getSize());
             }
         }
         else {
+        }
+        if (this.graphContext != null) {
+            this.svg
+                .attr('width', this.graphContext.getSize().width)
+                .attr('height', this.graphContext.getSize().height);
         }
         this.graphLayout.setNodes(this.nodes);
         this.graphLayout.setLinks(this.links);
@@ -833,6 +833,9 @@ var MapComponent = /** @class */ (function () {
         this.onLinksChange(null);
         this.redraw();
     };
+    MapComponent.prototype.onResize = function (event) {
+        this.changeLayout();
+    };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
         __metadata("design:type", Array)
@@ -861,6 +864,12 @@ var MapComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["F" /* Input */])(),
         __metadata("design:type", Object)
     ], MapComponent.prototype, "windowFullSize", void 0);
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* HostListener */])('window:resize', ['$event']),
+        __metadata("design:type", Function),
+        __metadata("design:paramtypes", [Object]),
+        __metadata("design:returntype", void 0)
+    ], MapComponent.prototype, "onResize", null);
     MapComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
             selector: 'app-map',
@@ -1617,9 +1626,6 @@ var Context = /** @class */ (function () {
     };
     Context.prototype.setSize = function (size) {
         this.size = size;
-    };
-    Context.prototype.getRoot = function () {
-        return this.root;
     };
     return Context;
 }());
