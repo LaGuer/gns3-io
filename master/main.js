@@ -700,7 +700,7 @@ var MultiLinkCalculatorHelper = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<svg preserveAspectRatio=\"none\"></svg>\n"
+module.exports = "<svg preserveAspectRatio=\"none\">\n</svg>\n"
 
 /***/ }),
 
@@ -1515,15 +1515,15 @@ var NodesWidget = /** @class */ (function () {
             .attr('width', function (n) { return n.width; })
             .attr('height', function (n) { return n.height; })
             .attr('x', function (n) { return -n.width / 2.; })
-            .attr('y', function (n) { return -n.height / 2.; });
+            .attr('y', function (n) { return -n.height / 2.; })
+            .on('mouseover', function (n) {
+            Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(this).attr("class", "over");
+        })
+            .on('mouseout', function (n) {
+            Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(this).attr("class", "");
+        });
         // .attr('width', (n: Node) => n.width)
         // .attr('height', (n: Node) => n.height);
-        // .on('mouseover', function (this, n: Node) {
-        //   select(this).attr("class", "over");
-        // })
-        // .on('mouseout', function (this, n: Node) {
-        //   select(this).attr("class", "");
-        // });
         node_enter
             .append('text')
             .attr('class', 'label');
@@ -1750,7 +1750,7 @@ module.exports = "<h1 mat-dialog-title>Create snapshot</h1>\n<div mat-dialog-con
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n  /*}*/\n  /*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n  /*}*/\n  /*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n  /*}*/\n  g.node:hover {\n  background-color: #0097a7;\n}\n  .project-map {\n  background-color: #F0F0F0;\n}\n  .project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n  .loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n  g.node text {\n  font-family: Roboto !important;\n}\n\n"
+module.exports = "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n  /*}*/\n  /*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n  /*}*/\n  /*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n  /*}*/\n  g.node:hover {\n  background-color: #0097a7;\n}\n  .project-map {\n  background-color: #F0F0F0;\n}\n  .project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n  .loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n  g.node text {\n  font-family: Roboto !important;\n}\n  svg image:hover, svg image.chosen {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n"
 
 /***/ }),
 
