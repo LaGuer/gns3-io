@@ -1344,7 +1344,7 @@ var GraphLayout = /** @class */ (function () {
         this.linksWidget.draw(canvas, this.links);
         this.nodesWidget.draw(canvas, this.nodes);
         this.drawingsWidget.draw(canvas, this.drawings);
-        // this.drawingLineTool.connect(view, context);
+        this.drawingLineTool.connect(view);
         this.selectionTool.connect(view, context);
         // const onZoom = function(this: SVGSVGElement) {
         //   const e: D3ZoomEvent<SVGSVGElement, any> = event;
@@ -1826,7 +1826,7 @@ module.exports = "<h1 mat-dialog-title>Create snapshot</h1>\n<div mat-dialog-con
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n  /*}*/\n  /*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n  /*}*/\n  /*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n  /*}*/\n  g.node:hover {\n  background-color: #0097a7;\n}\n  .project-map {\n  background-color: #F0F0F0;\n}\n  .project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n  .loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n  g.node text {\n  font-family: Roboto !important;\n}\n  svg image:hover, svg image.chosen {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n  .selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n  g.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n"
+module.exports = "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n  /*}*/\n  /*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n  /*}*/\n  /*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n  /*}*/\n  g.node:hover {\n  background-color: #0097a7;\n}\n  .project-map {\n  background-color: #F0F0F0;\n}\n  .project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n  .loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n  g.node text {\n  font-family: Roboto !important;\n}\n  svg image:hover, svg image.chosen {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n  .selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n  g.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n  /* Disable outline after button click */\n  .project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n"
 
 /***/ }),
 
@@ -1837,7 +1837,7 @@ module.exports = "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n  /*
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n      \n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"turnOnDrawLineMode()\" *ngIf=\"!drawLineMode\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n\n        <button mat-icon-button color=\"primary\" (click)=\"turnOffDrawLineMode()\" *ngIf=\"drawLineMode\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n\n"
 
 /***/ }),
 
@@ -1925,6 +1925,7 @@ var ProjectMapComponent = /** @class */ (function () {
         this.drawings = [];
         this.symbols = [];
         this.drawLineMode = false;
+        this.movingMode = false;
         this.isLoading = true;
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
@@ -2094,12 +2095,14 @@ var ProjectMapComponent = /** @class */ (function () {
             }
         });
     };
-    ProjectMapComponent.prototype.turnOnDrawLineMode = function () {
-        this.drawLineMode = true;
+    ProjectMapComponent.prototype.toggleDrawLineMode = function () {
+        this.drawLineMode = !this.drawLineMode;
+        if (!this.drawLineMode) {
+            this.mapChild.graphLayout.getDrawingLineTool().stop();
+        }
     };
-    ProjectMapComponent.prototype.turnOffDrawLineMode = function () {
-        this.drawLineMode = false;
-        this.mapChild.graphLayout.getDrawingLineTool().stop();
+    ProjectMapComponent.prototype.toggleMovingMode = function () {
+        this.movingMode = !this.movingMode;
     };
     ProjectMapComponent.prototype.onChooseInterface = function (event) {
         var node = event.node;
