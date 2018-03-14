@@ -802,6 +802,7 @@ var MapComponent = /** @class */ (function () {
                 this.graphContext.setSize(new _shared_models_size_model__WEBPACK_IMPORTED_MODULE_5__["Size"](this.width, this.height));
             }
             this.graphLayout = new _shared_widgets_graph_widget__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
+            this.graphLayout.connect(this.svg, this.graphContext);
             this.graphLayout.getNodesWidget().addOnNodeDraggingCallback(function (event, n) {
                 var linksWidget = _this.graphLayout.getLinksWidget();
                 linksWidget.select(_this.svg).each(function (link) {
@@ -1025,6 +1026,56 @@ var Size = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/tools/moving-tool.ts":
+/*!*********************************************************!*\
+  !*** ./src/app/cartography/shared/tools/moving-tool.ts ***!
+  \*********************************************************/
+/*! exports provided: MovingTool */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MovingTool", function() { return MovingTool; });
+/* harmony import */ var d3_zoom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3-zoom */ "./node_modules/d3-zoom/index.js");
+/* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
+
+
+var MovingTool = /** @class */ (function () {
+    function MovingTool() {
+        this.zoom = Object(d3_zoom__WEBPACK_IMPORTED_MODULE_0__["zoom"])()
+            .scaleExtent([1 / 2, 8]);
+    }
+    MovingTool.prototype.connect = function (selection, context) {
+        this.selection = selection;
+        this.context = context;
+    };
+    MovingTool.prototype.draw = function (selection, context) {
+        this.selection = selection;
+        this.context = context;
+    };
+    MovingTool.prototype.activate = function () {
+        var self = this;
+        var onZoom = function () {
+            var canvas = self.selection.select("g.canvas");
+            var e = d3_selection__WEBPACK_IMPORTED_MODULE_1__["event"];
+            canvas.attr('transform', "translate(" + (self.context.getSize().width / 2 + e.transform.x) + ", " +
+                (self.context.getSize().height / 2 + e.transform.y + ") scale(" + e.transform.k + ")"));
+        };
+        this.zoom.on('zoom', onZoom);
+        this.selection.call(this.zoom);
+    };
+    MovingTool.prototype.deactivate = function () {
+        // d3.js preserves event `mousedown.zoom` and blocks selection
+        this.selection.on('mousedown.zoom', null);
+        this.zoom.on('zoom', null);
+    };
+    return MovingTool;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/tools/selection-tool.ts":
 /*!************************************************************!*\
   !*** ./src/app/cartography/shared/tools/selection-tool.ts ***!
@@ -1041,22 +1092,17 @@ var SelectionTool = /** @class */ (function () {
     function SelectionTool() {
     }
     SelectionTool.prototype.connect = function (selection, context) {
-        var self = this;
         this.selection = selection;
-        var canvas = this.selection.select("g.canvas");
-        if (!canvas.select("g.selection-line-tool").node()) {
-            var g = canvas.append('g');
-            g.attr("class", "selection-line-tool");
-            this.path = g.append("path");
-            this.path
-                .attr("class", "selection")
-                .attr("visibility", "hidden");
-        }
+        this.context = context;
+    };
+    SelectionTool.prototype.activate = function () {
+        var _this = this;
+        var self = this;
         var transformation = function (p) {
-            var transformation_point = context.getZeroZeroTransformationPoint();
+            var transformation_point = _this.context.getZeroZeroTransformationPoint();
             return [p[0] - transformation_point.x, p[1] - transformation_point.y];
         };
-        selection.on("mousedown", function () {
+        this.selection.on("mousedown", function () {
             var subject = Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(window);
             var parent = this.parentElement;
             var start = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
@@ -1070,7 +1116,20 @@ var SelectionTool = /** @class */ (function () {
             });
         });
     };
-    SelectionTool.prototype.draw = function () {
+    SelectionTool.prototype.deactivate = function () {
+        this.selection.on('mousedown', null);
+    };
+    SelectionTool.prototype.draw = function (selection, context) {
+        var canvas = selection.select("g.canvas");
+        if (!canvas.select("g.selection-line-tool").node()) {
+            var g = canvas.append('g');
+            g.attr("class", "selection-line-tool");
+            this.path = g.append("path");
+            this.path
+                .attr("class", "selection")
+                .attr("visibility", "hidden");
+        }
+        this.selection = selection;
     };
     SelectionTool.prototype.startSelection = function (start) {
         this.path
@@ -1128,10 +1187,10 @@ var DrawingLineWidget = /** @class */ (function () {
             var coordinates = Object(d3_selection__WEBPACK_IMPORTED_MODULE_3__["mouse"])(node);
             self.drawingLine.end.x = coordinates[0];
             self.drawingLine.end.y = coordinates[1];
-            self.draw();
+            self.draw(null, null);
         };
         this.selection.on('mousemove', over);
-        this.draw();
+        this.draw(null, null);
     };
     DrawingLineWidget.prototype.isDrawing = function () {
         return this.drawing;
@@ -1139,17 +1198,17 @@ var DrawingLineWidget = /** @class */ (function () {
     DrawingLineWidget.prototype.stop = function () {
         this.drawing = false;
         this.selection.on('mousemove', null);
-        this.draw();
+        this.draw(null, null);
         return this.data;
     };
-    DrawingLineWidget.prototype.connect = function (selection) {
+    DrawingLineWidget.prototype.connect = function (selection, context) {
         this.selection = selection;
+    };
+    DrawingLineWidget.prototype.draw = function (selection, context) {
         var canvas = this.selection.select("g.canvas");
         if (!canvas.select("g.drawing-line-tool").node()) {
             canvas.append('g').attr("class", "drawing-line-tool");
         }
-    };
-    DrawingLineWidget.prototype.draw = function () {
         var link_data = [];
         if (this.drawing) {
             link_data = [[
@@ -1295,6 +1354,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _drawings_widget__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./drawings.widget */ "./src/app/cartography/shared/widgets/drawings.widget.ts");
 /* harmony import */ var _drawing_line_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./drawing-line.widget */ "./src/app/cartography/shared/widgets/drawing-line.widget.ts");
 /* harmony import */ var _tools_selection_tool__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tools/selection-tool */ "./src/app/cartography/shared/tools/selection-tool.ts");
+/* harmony import */ var _tools_moving_tool__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tools/moving-tool */ "./src/app/cartography/shared/tools/moving-tool.ts");
+
 
 
 
@@ -1311,6 +1372,7 @@ var GraphLayout = /** @class */ (function () {
         this.drawingsWidget = new _drawings_widget__WEBPACK_IMPORTED_MODULE_2__["DrawingsWidget"]();
         this.drawingLineTool = new _drawing_line_widget__WEBPACK_IMPORTED_MODULE_3__["DrawingLineWidget"]();
         this.selectionTool = new _tools_selection_tool__WEBPACK_IMPORTED_MODULE_4__["SelectionTool"]();
+        this.movingTool = new _tools_moving_tool__WEBPACK_IMPORTED_MODULE_5__["MovingTool"]();
     }
     GraphLayout.prototype.setNodes = function (nodes) {
         this.nodes = nodes;
@@ -1330,6 +1392,18 @@ var GraphLayout = /** @class */ (function () {
     GraphLayout.prototype.getDrawingLineTool = function () {
         return this.drawingLineTool;
     };
+    GraphLayout.prototype.getMovingTool = function () {
+        return this.movingTool;
+    };
+    GraphLayout.prototype.getSelectionTool = function () {
+        return this.selectionTool;
+    };
+    GraphLayout.prototype.connect = function (view, context) {
+        this.drawingLineTool.connect(view, context);
+        this.selectionTool.connect(view, context);
+        this.movingTool.connect(view, context);
+        this.selectionTool.activate();
+    };
     GraphLayout.prototype.draw = function (view, context) {
         var self = this;
         var canvas = view
@@ -1344,23 +1418,9 @@ var GraphLayout = /** @class */ (function () {
         this.linksWidget.draw(canvas, this.links);
         this.nodesWidget.draw(canvas, this.nodes);
         this.drawingsWidget.draw(canvas, this.drawings);
-        this.drawingLineTool.connect(view);
-        this.selectionTool.connect(view, context);
-        // const onZoom = function(this: SVGSVGElement) {
-        //   const e: D3ZoomEvent<SVGSVGElement, any> = event;
-        //   if (self.centerZeroZeroPoint) {
-        //     canvas.attr(
-        //       'transform',
-        //       `translate(${context.getSize().width / 2 + e.transform.x}, ` +
-        //             `${context.getSize().height / 2 + e.transform.y}) scale(${e.transform.k})`);
-        //   } else {
-        //     canvas.attr('transform', e.transform.toString());
-        //   }
-        // };
-        //
-        // view.call(zoom<SVGSVGElement, any>()
-        //     .scaleExtent([1 / 2, 8])
-        //     .on('zoom', onZoom));
+        this.drawingLineTool.draw(view, context);
+        this.selectionTool.draw(view, context);
+        this.movingTool.draw(view, context);
     };
     return GraphLayout;
 }());
@@ -2103,6 +2163,14 @@ var ProjectMapComponent = /** @class */ (function () {
     };
     ProjectMapComponent.prototype.toggleMovingMode = function () {
         this.movingMode = !this.movingMode;
+        if (this.movingMode) {
+            this.mapChild.graphLayout.getSelectionTool().deactivate();
+            this.mapChild.graphLayout.getMovingTool().activate();
+        }
+        else {
+            this.mapChild.graphLayout.getMovingTool().deactivate();
+            this.mapChild.graphLayout.getSelectionTool().activate();
+        }
     };
     ProjectMapComponent.prototype.onChooseInterface = function (event) {
         var node = event.node;
