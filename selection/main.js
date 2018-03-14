@@ -790,11 +790,10 @@ var MapComponent = /** @class */ (function () {
         var _this = this;
         var d3 = this.d3;
         var rootElement;
-        var self = this;
         if (this.parentNativeElement !== null) {
             rootElement = d3.select(this.parentNativeElement);
             this.svg = rootElement.select('svg');
-            this.graphContext = new _map_models_context__WEBPACK_IMPORTED_MODULE_4__["Context"](this.svg);
+            this.graphContext = new _map_models_context__WEBPACK_IMPORTED_MODULE_4__["Context"]();
             if (this.windowFullSize) {
                 this.graphContext.setSize(this.getSize());
             }
@@ -1112,7 +1111,9 @@ var SelectionTool = /** @class */ (function () {
                 self.moveSelection(start, transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent)));
             }).on("mouseup.selection", function () {
                 self.endSelection(start, transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent)));
-                subject.on("mousemove.selection", null).on("mouseup.selection", null);
+                subject
+                    .on("mousemove.selection", null)
+                    .on("mouseup.selection", null);
             });
         });
     };
@@ -1405,7 +1406,6 @@ var GraphLayout = /** @class */ (function () {
         this.selectionTool.activate();
     };
     GraphLayout.prototype.draw = function (view, context) {
-        var self = this;
         var canvas = view
             .selectAll('g.canvas')
             .data([context]);
@@ -1845,12 +1845,15 @@ var DefaultLayoutComponent = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Context", function() { return Context; });
-/* harmony import */ var _cartography_shared_models_point_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../cartography/shared/models/point.model */ "./src/app/cartography/shared/models/point.model.ts");
+/* harmony import */ var _cartography_shared_models_size_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../cartography/shared/models/size.model */ "./src/app/cartography/shared/models/size.model.ts");
+/* harmony import */ var _cartography_shared_models_point_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../cartography/shared/models/point.model */ "./src/app/cartography/shared/models/point.model.ts");
+
 
 var Context = /** @class */ (function () {
-    function Context(root) {
-        this.centerZeroZeroPoint = true;
-        this.root = root;
+    function Context(centerZeroZeroPoint) {
+        if (centerZeroZeroPoint === void 0) { centerZeroZeroPoint = false; }
+        this.centerZeroZeroPoint = centerZeroZeroPoint;
+        this.size = new _cartography_shared_models_size_model__WEBPACK_IMPORTED_MODULE_0__["Size"](0, 0);
     }
     Context.prototype.getSize = function () {
         return this.size;
@@ -1859,7 +1862,10 @@ var Context = /** @class */ (function () {
         this.size = size;
     };
     Context.prototype.getZeroZeroTransformationPoint = function () {
-        return new _cartography_shared_models_point_model__WEBPACK_IMPORTED_MODULE_0__["Point"](this.getSize().width / 2., this.getSize().height / 2.);
+        if (this.centerZeroZeroPoint) {
+            return new _cartography_shared_models_point_model__WEBPACK_IMPORTED_MODULE_1__["Point"](this.getSize().width / 2., this.getSize().height / 2.);
+        }
+        return new _cartography_shared_models_point_model__WEBPACK_IMPORTED_MODULE_1__["Point"](0, 0);
     };
     return Context;
 }());
