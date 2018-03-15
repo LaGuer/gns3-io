@@ -793,7 +793,7 @@ var MapComponent = /** @class */ (function () {
         if (this.parentNativeElement !== null) {
             rootElement = d3.select(this.parentNativeElement);
             this.svg = rootElement.select('svg');
-            this.graphContext = new _map_models_context__WEBPACK_IMPORTED_MODULE_4__["Context"]();
+            this.graphContext = new _map_models_context__WEBPACK_IMPORTED_MODULE_4__["Context"](true);
             if (this.windowFullSize) {
                 this.graphContext.setSize(this.getSize());
             }
