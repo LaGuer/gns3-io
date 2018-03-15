@@ -1106,6 +1106,8 @@ var SelectionTool = /** @class */ (function () {
             var parent = this.parentElement;
             var start = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
             self.startSelection(start);
+            // clear selection
+            self.selection.selectAll('.selectable').classed("selected", false);
             subject
                 .on("mousemove.selection", function () {
                 var end = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
