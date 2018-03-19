@@ -791,9 +791,7 @@ var MapComponent = /** @class */ (function () {
         }
     };
     MapComponent.prototype.ngOnDestroy = function () {
-        if (this.svg.empty && !this.svg.empty()) {
-            this.svg.selectAll('*').remove();
-        }
+        this.graphLayout.disconnect(this.svg);
     };
     MapComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -1604,6 +1602,11 @@ var GraphLayout = /** @class */ (function () {
         this.drawingLineTool.draw(view, context);
         this.selectionTool.draw(view, context);
         this.movingTool.draw(view, context);
+    };
+    GraphLayout.prototype.disconnect = function (view) {
+        if (view.empty && !view.empty()) {
+            view.selectAll('*').remove();
+        }
     };
     return GraphLayout;
 }());
