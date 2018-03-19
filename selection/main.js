@@ -204,12 +204,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_node_select_interface_node_select_interface_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./shared/node-select-interface/node-select-interface.component */ "./src/app/shared/node-select-interface/node-select-interface.component.ts");
 /* harmony import */ var _cartography_cartography_module__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./cartography/cartography.module */ "./src/app/cartography/cartography.module.ts");
 /* harmony import */ var _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./shared/services/toaster.service */ "./src/app/shared/services/toaster.service.ts");
+/* harmony import */ var _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./shared/handlers/project-web-service-handler */ "./src/app/shared/handlers/project-web-service-handler.ts");
+/* harmony import */ var _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./cartography/shared/datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
+/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -303,7 +309,10 @@ var AppModule = /** @class */ (function () {
                 _shared_services_http_server_service__WEBPACK_IMPORTED_MODULE_16__["HttpServer"],
                 _shared_services_snapshot_service__WEBPACK_IMPORTED_MODULE_17__["SnapshotService"],
                 _shared_progress_dialog_progress_dialog_service__WEBPACK_IMPORTED_MODULE_18__["ProgressDialogService"],
-                _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_35__["ToasterService"]
+                _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_35__["ToasterService"],
+                _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_36__["ProjectWebServiceHandler"],
+                _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_37__["LinksDataSource"],
+                _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_38__["NodesDataSource"]
             ],
             entryComponents: [
                 _servers_servers_component__WEBPACK_IMPORTED_MODULE_27__["AddServerDialogComponent"],
@@ -912,6 +921,151 @@ var MapComponent = /** @class */ (function () {
     ], MapComponent);
     return MapComponent;
 }());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/datasources/datasource.ts":
+/*!**************************************************************!*\
+  !*** ./src/app/cartography/shared/datasources/datasource.ts ***!
+  \**************************************************************/
+/*! exports provided: DataSource */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DataSource", function() { return DataSource; });
+/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs/_esm5/BehaviorSubject.js");
+
+var DataSource = /** @class */ (function () {
+    function DataSource() {
+        this.data = [];
+        this.dataChange = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_0__["BehaviorSubject"]([]);
+    }
+    DataSource.prototype.add = function (item) {
+        this.data.push(item);
+        this.dataChange.next(this.data);
+    };
+    DataSource.prototype.set = function (data) {
+        this.data = data;
+        this.dataChange.next(this.data);
+    };
+    DataSource.prototype.update = function (item) {
+        var index = this.findIndex(item);
+        if (index >= 0) {
+            this.data[index] = item;
+            this.dataChange.next(this.data);
+        }
+    };
+    DataSource.prototype.remove = function (item) {
+        var index = this.findIndex(item);
+        if (index >= 0) {
+            this.data.splice(index, 1);
+            this.dataChange.next(this.data);
+        }
+    };
+    DataSource.prototype.connect = function () {
+        return this.dataChange;
+    };
+    return DataSource;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/datasources/links-datasource.ts":
+/*!********************************************************************!*\
+  !*** ./src/app/cartography/shared/datasources/links-datasource.ts ***!
+  \********************************************************************/
+/*! exports provided: LinksDataSource */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinksDataSource", function() { return LinksDataSource; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./datasource */ "./src/app/cartography/shared/datasources/datasource.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var LinksDataSource = /** @class */ (function (_super) {
+    __extends(LinksDataSource, _super);
+    function LinksDataSource() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    LinksDataSource.prototype.findIndex = function (link) {
+        return this.data.findIndex(function (l) { return l.link_id === link.link_id; });
+    };
+    LinksDataSource = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])()
+    ], LinksDataSource);
+    return LinksDataSource;
+}(_datasource__WEBPACK_IMPORTED_MODULE_1__["DataSource"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/datasources/nodes-datasource.ts":
+/*!********************************************************************!*\
+  !*** ./src/app/cartography/shared/datasources/nodes-datasource.ts ***!
+  \********************************************************************/
+/*! exports provided: NodesDataSource */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NodesDataSource", function() { return NodesDataSource; });
+/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datasource */ "./src/app/cartography/shared/datasources/datasource.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var NodesDataSource = /** @class */ (function (_super) {
+    __extends(NodesDataSource, _super);
+    function NodesDataSource() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    NodesDataSource.prototype.findIndex = function (node) {
+        return this.data.findIndex(function (n) { return n.node_id === node.node_id; });
+    };
+    NodesDataSource = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    ], NodesDataSource);
+    return NodesDataSource;
+}(_datasource__WEBPACK_IMPORTED_MODULE_0__["DataSource"]));
 
 
 
@@ -1969,6 +2123,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_node_select_interface_node_select_interface_component__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ../shared/node-select-interface/node-select-interface.component */ "./src/app/shared/node-select-interface/node-select-interface.component.ts");
 /* harmony import */ var _shared_services_link_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ../shared/services/link.service */ "./src/app/shared/services/link.service.ts");
 /* harmony import */ var _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../shared/services/toaster.service */ "./src/app/shared/services/toaster.service.ts");
+/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ../cartography/shared/datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
+/* harmony import */ var _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../shared/handlers/project-web-service-handler */ "./src/app/shared/handlers/project-web-service-handler.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2003,8 +2160,11 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 
+
+
+
 var ProjectMapComponent = /** @class */ (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toaster) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toaster, projectWebServiceHandler, nodesDataSource, linksDataSource) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
@@ -2015,6 +2175,9 @@ var ProjectMapComponent = /** @class */ (function () {
         this.dialog = dialog;
         this.progressDialogService = progressDialogService;
         this.toaster = toaster;
+        this.projectWebServiceHandler = projectWebServiceHandler;
+        this.nodesDataSource = nodesDataSource;
+        this.linksDataSource = linksDataSource;
         this.nodes = [];
         this.links = [];
         this.drawings = [];
@@ -2051,6 +2214,18 @@ var ProjectMapComponent = /** @class */ (function () {
         this.symbolService.symbols.subscribe(function (symbols) {
             _this.symbols = symbols;
         });
+        this.nodesDataSource.connect().subscribe(function (nodes) {
+            _this.nodes = nodes;
+            if (_this.mapChild) {
+                _this.mapChild.reload();
+            }
+        });
+        this.linksDataSource.connect().subscribe(function (links) {
+            _this.links = links;
+            if (_this.mapChild) {
+                _this.mapChild.reload();
+            }
+        });
     };
     ProjectMapComponent.prototype.onProjectLoad = function (project) {
         var _this = this;
@@ -2064,69 +2239,19 @@ var ProjectMapComponent = /** @class */ (function () {
             return _this.projectService.links(_this.server, project.project_id);
         })
             .flatMap(function (links) {
-            _this.links = links;
+            _this.linksDataSource.set(links);
             return _this.projectService.nodes(_this.server, project.project_id);
         })
             .subscribe(function (nodes) {
-            _this.nodes = nodes;
+            _this.nodesDataSource.set(nodes);
             _this.setUpMapCallbacks(project);
             _this.setUpWS(project);
             _this.isLoading = false;
         });
     };
     ProjectMapComponent.prototype.setUpWS = function (project) {
-        var _this = this;
         this.ws = rxjs_Observable__WEBPACK_IMPORTED_MODULE_2__["Observable"].webSocket(this.projectService.notificationsPath(this.server, project.project_id));
-        this.ws.subscribe(function (o) {
-            if (o.action === 'node.updated') {
-                var node_1 = o.event;
-                var index = _this.nodes.findIndex(function (n) { return n.node_id === node_1.node_id; });
-                if (index >= 0) {
-                    _this.nodes[index] = node_1;
-                    _this.mapChild.reload(); // temporary invocation
-                }
-            }
-            if (o.action === 'node.created') {
-                var node_2 = o.event;
-                var index = _this.nodes.findIndex(function (n) { return n.node_id === node_2.node_id; });
-                if (index === -1) {
-                    _this.nodes.push(node_2);
-                    _this.mapChild.reload(); // temporary invocation
-                }
-            }
-            if (o.action === 'node.deleted') {
-                var node_3 = o.event;
-                var index = _this.nodes.findIndex(function (n) { return n.node_id === node_3.node_id; });
-                if (index >= 0) {
-                    _this.nodes.splice(index, 1);
-                    _this.mapChild.reload(); // temporary invocation
-                }
-            }
-            if (o.action === 'link.created') {
-                var link_1 = o.event;
-                var index = _this.links.findIndex(function (l) { return l.link_id === link_1.link_id; });
-                if (index === -1) {
-                    _this.links.push(link_1);
-                    _this.mapChild.reload(); // temporary invocation
-                }
-            }
-            if (o.action === 'link.updated') {
-                var link_2 = o.event;
-                var index = _this.links.findIndex(function (l) { return l.link_id === link_2.link_id; });
-                if (index >= 0) {
-                    _this.links[index] = link_2;
-                    _this.mapChild.reload(); // temporary invocation
-                }
-            }
-            if (o.action === 'link.deleted') {
-                var link_3 = o.event;
-                var index = _this.links.findIndex(function (l) { return l.link_id === link_3.link_id; });
-                if (index >= 0) {
-                    _this.links.splice(index, 1);
-                    _this.mapChild.reload(); // temporary invocation
-                }
-            }
-        });
+        this.projectWebServiceHandler.connect(this.ws);
     };
     ProjectMapComponent.prototype.setUpMapCallbacks = function (project) {
         var _this = this;
@@ -2139,17 +2264,12 @@ var ProjectMapComponent = /** @class */ (function () {
             }
         });
         this.mapChild.graphLayout.getNodesWidget().setOnNodeDraggedCallback(function (event, node) {
-            var index = _this.nodes.findIndex(function (n) { return n.node_id === node.node_id; });
-            if (index >= 0) {
-                _this.nodes[index] = node;
-                _this.mapChild.reload(); // temporary invocation
-                _this.nodeService
-                    .updatePosition(_this.server, node, node.x, node.y)
-                    .subscribe(function (n) {
-                    _this.nodes[index] = node;
-                    _this.mapChild.reload(); // temporary invocation
-                });
-            }
+            _this.nodesDataSource.update(node);
+            _this.nodeService
+                .updatePosition(_this.server, node, node.x, node.y)
+                .subscribe(function (n) {
+                _this.nodesDataSource.update(n);
+            });
         });
     };
     ProjectMapComponent.prototype.onNodeCreation = function (appliance) {
@@ -2160,8 +2280,7 @@ var ProjectMapComponent = /** @class */ (function () {
             _this.projectService
                 .nodes(_this.server, _this.project.project_id)
                 .subscribe(function (nodes) {
-                _this.nodes = nodes;
-                _this.mapChild.reload();
+                _this.nodesDataSource.set(nodes);
             });
         });
     };
@@ -2228,8 +2347,7 @@ var ProjectMapComponent = /** @class */ (function () {
             .createLink(this.server, source_node, source_port, target_node, target_port)
             .subscribe(function () {
             _this.projectService.links(_this.server, _this.project.project_id).subscribe(function (links) {
-                _this.links = links;
-                _this.mapChild.reload();
+                _this.linksDataSource.set(links);
             });
         });
     };
@@ -2261,7 +2379,10 @@ var ProjectMapComponent = /** @class */ (function () {
             _shared_services_link_service__WEBPACK_IMPORTED_MODULE_20__["LinkService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_12__["MatDialog"],
             _shared_progress_dialog_progress_dialog_service__WEBPACK_IMPORTED_MODULE_15__["ProgressDialogService"],
-            _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_21__["ToasterService"]])
+            _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_21__["ToasterService"],
+            _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_24__["ProjectWebServiceHandler"],
+            _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_22__["NodesDataSource"],
+            _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_23__["LinksDataSource"]])
     ], ProjectMapComponent);
     return ProjectMapComponent;
 }());
@@ -2655,6 +2776,78 @@ var ServerDataSource = /** @class */ (function (_super) {
     ServerDataSource.prototype.disconnect = function () { };
     return ServerDataSource;
 }(_angular_cdk_collections__WEBPACK_IMPORTED_MODULE_3__["DataSource"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/handlers/project-web-service-handler.ts":
+/*!****************************************************************!*\
+  !*** ./src/app/shared/handlers/project-web-service-handler.ts ***!
+  \****************************************************************/
+/*! exports provided: WebServiceMessage, ProjectWebServiceHandler */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WebServiceMessage", function() { return WebServiceMessage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProjectWebServiceHandler", function() { return ProjectWebServiceHandler; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../cartography/shared/datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var WebServiceMessage = /** @class */ (function () {
+    function WebServiceMessage() {
+    }
+    return WebServiceMessage;
+}());
+
+var ProjectWebServiceHandler = /** @class */ (function () {
+    function ProjectWebServiceHandler(nodesDataSource, linksDataSource) {
+        this.nodesDataSource = nodesDataSource;
+        this.linksDataSource = linksDataSource;
+    }
+    ProjectWebServiceHandler.prototype.connect = function (ws) {
+        var _this = this;
+        ws.subscribe(function (message) {
+            if (message.action === 'node.updated') {
+                _this.nodesDataSource.update(message.event);
+            }
+            if (message.action === 'node.created') {
+                _this.nodesDataSource.add(message.event);
+            }
+            if (message.action === 'node.deleted') {
+                _this.nodesDataSource.remove(message.event);
+            }
+            if (message.action === 'link.created') {
+                _this.linksDataSource.add(message.event);
+            }
+            if (message.action === 'link.updated') {
+                _this.linksDataSource.update(message.event);
+            }
+            if (message.action === 'link.deleted') {
+                _this.linksDataSource.remove(message.event);
+            }
+        });
+    };
+    ProjectWebServiceHandler = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_1__["NodesDataSource"],
+            _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_2__["LinksDataSource"]])
+    ], ProjectWebServiceHandler);
+    return ProjectWebServiceHandler;
+}());
 
 
 
