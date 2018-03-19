@@ -1098,16 +1098,11 @@ var SelectionTool = /** @class */ (function () {
         this.context = context;
     };
     SelectionTool.prototype.activate = function () {
-        var _this = this;
         var self = this;
-        var transformation = function (p) {
-            var transformation_point = _this.context.getZeroZeroTransformationPoint();
-            return [p[0] - transformation_point.x, p[1] - transformation_point.y];
-        };
         this.selection.on("mousedown", function () {
             var subject = Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(window);
             var parent = this.parentElement;
-            var start = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
+            var start = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
             self.startSelection(start);
             // clear selection
             self.selection
@@ -1115,10 +1110,10 @@ var SelectionTool = /** @class */ (function () {
                 .classed("selected", false);
             subject
                 .on("mousemove.selection", function () {
-                var end = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
+                var end = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
                 self.moveSelection(start, end);
             }).on("mouseup.selection", function () {
-                var end = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
+                var end = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
                 self.endSelection(start, end);
                 subject
                     .on("mousemove.selection", null)
@@ -1174,6 +1169,10 @@ var SelectionTool = /** @class */ (function () {
     };
     SelectionTool.prototype.rect = function (x, y, w, h) {
         return "M" + [x, y] + " l" + [w, 0] + " l" + [0, h] + " l" + [-w, 0] + "z";
+    };
+    SelectionTool.prototype.transformation = function (point) {
+        var transformation_point = this.context.getZeroZeroTransformationPoint();
+        return [point[0] - transformation_point.x, point[1] - transformation_point.y];
     };
     SelectionTool.SELECTABLE_CLASS = '.selectable';
     return SelectionTool;
