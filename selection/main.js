@@ -1086,9 +1086,12 @@ var MovingTool = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectionTool", function() { return SelectionTool; });
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs/_esm5/Subject.js");
+
 
 var SelectionTool = /** @class */ (function () {
     function SelectionTool() {
+        this.selectedSubject = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
     }
     SelectionTool.prototype.connect = function (selection, context) {
         this.selection = selection;
@@ -1107,22 +1110,16 @@ var SelectionTool = /** @class */ (function () {
             var start = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
             self.startSelection(start);
             // clear selection
-            self.selection.selectAll('.selectable').classed("selected", false);
+            self.selection
+                .selectAll(SelectionTool.SELECTABLE_CLASS)
+                .classed("selected", false);
             subject
                 .on("mousemove.selection", function () {
                 var end = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
                 self.moveSelection(start, end);
-                var x = Math.min(start[0], end[0]);
-                var y = Math.min(start[1], end[1]);
-                var width = Math.abs(start[0] - end[0]);
-                var height = Math.abs(start[1] - end[1]);
-                self.selection
-                    .selectAll('.selectable')
-                    .classed('selected', function (node, i) {
-                    return (x <= node.x && node.x < (x + width) && y <= node.y && node.y < (y + height));
-                });
             }).on("mouseup.selection", function () {
-                self.endSelection(start, transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent)));
+                var end = transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
+                self.endSelection(start, end);
                 subject
                     .on("mousemove.selection", null)
                     .on("mouseup.selection", null);
@@ -1151,13 +1148,34 @@ var SelectionTool = /** @class */ (function () {
     };
     SelectionTool.prototype.moveSelection = function (start, move) {
         this.path.attr("d", this.rect(start[0], start[1], move[0] - start[0], move[1] - start[1]));
+        this.getSelectedNodes(start, move);
     };
     SelectionTool.prototype.endSelection = function (start, end) {
         this.path.attr("visibility", "hidden");
+        var selected_nodes = this.getSelectedNodes(start, end);
+        this.selectedSubject.next(selected_nodes);
+    };
+    SelectionTool.prototype.getSelectedNodes = function (start, end) {
+        var x = Math.min(start[0], end[0]);
+        var y = Math.min(start[1], end[1]);
+        var width = Math.abs(start[0] - end[0]);
+        var height = Math.abs(start[1] - end[1]);
+        var nodes = [];
+        this.selection
+            .selectAll(SelectionTool.SELECTABLE_CLASS)
+            .classed('selected', function (node) {
+            var in_rect = (x <= node.x && node.x < (x + width) && y <= node.y && node.y < (y + height));
+            if (in_rect) {
+                nodes.push(node);
+            }
+            return in_rect;
+        });
+        return nodes;
     };
     SelectionTool.prototype.rect = function (x, y, w, h) {
         return "M" + [x, y] + " l" + [w, 0] + " l" + [0, h] + " l" + [-w, 0] + "z";
     };
+    SelectionTool.SELECTABLE_CLASS = '.selectable';
     return SelectionTool;
 }());
 
@@ -1904,7 +1922,7 @@ module.exports = "<h1 mat-dialog-title>Create snapshot</h1>\n<div mat-dialog-con
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n  /*}*/\n  /*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n  /*}*/\n  /*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n  /*}*/\n  g.node:hover {\n  background-color: #0097a7;\n}\n  .project-map {\n  background-color: #F0F0F0;\n}\n  .project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n  .loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n  g.node text {\n  font-family: Roboto !important;\n}\n  svg image:hover, svg image.chosen, .selectable.selected {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n  .selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n  g.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n  /* Disable outline after button click */\n  .project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n"
+module.exports = "/*html {*/\n  /*position: static;*/\n  /*height: 100%;*/\n  /*}*/\n  /*body {*/\n  /*height: 100%;*/\n  /*margin: 0;*/\n  /*margin-bottom: 0 !important;*/\n  /*}*/\n  /*app-root, app-project-map, .project-map, app-map, svg {*/\n  /*height: 100%;*/\n  /*}*/\n  g.node:hover {\n  background-color: #0097a7;\n}\n  .project-map {\n  background-color: #F0F0F0;\n}\n  .project-toolbar {\n  width: 70px;\n  position: absolute;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n  .loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n  g.node text {\n  font-family: Roboto !important;\n}\n  svg image:hover, svg image.chosen, .selectable.selected {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n  link.selectable.selected {\n  color: darkred;\n}\n  .selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n  g.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n  /* Disable outline after button click */\n  .project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n"
 
 /***/ }),
 
