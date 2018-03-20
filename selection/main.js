@@ -207,12 +207,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./shared/handlers/project-web-service-handler */ "./src/app/shared/handlers/project-web-service-handler.ts");
 /* harmony import */ var _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./cartography/shared/datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
 /* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _cartography_shared_datasources_symbols_datasource__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./cartography/shared/datasources/symbols-datasource */ "./src/app/cartography/shared/datasources/symbols-datasource.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -312,7 +314,8 @@ var AppModule = /** @class */ (function () {
                 _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_35__["ToasterService"],
                 _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_36__["ProjectWebServiceHandler"],
                 _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_37__["LinksDataSource"],
-                _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_38__["NodesDataSource"]
+                _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_38__["NodesDataSource"],
+                _cartography_shared_datasources_symbols_datasource__WEBPACK_IMPORTED_MODULE_39__["SymbolsDataSource"]
             ],
             entryComponents: [
                 _servers_servers_component__WEBPACK_IMPORTED_MODULE_27__["AddServerDialogComponent"],
@@ -739,7 +742,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
 /* harmony import */ var _shared_widgets_graph_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/widgets/graph.widget */ "./src/app/cartography/shared/widgets/graph.widget.ts");
 /* harmony import */ var _map_models_context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../map/models/context */ "./src/app/map/models/context.ts");
-/* harmony import */ var _shared_models_size_model__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/size.model */ "./src/app/cartography/shared/models/size.model.ts");
+/* harmony import */ var _shared_models_size__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/size */ "./src/app/cartography/shared/models/size.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -805,7 +808,7 @@ var MapComponent = /** @class */ (function () {
                 this.graphContext.setSize(this.getSize());
             }
             else {
-                this.graphContext.setSize(new _shared_models_size_model__WEBPACK_IMPORTED_MODULE_5__["Size"](this.width, this.height));
+                this.graphContext.setSize(new _shared_models_size__WEBPACK_IMPORTED_MODULE_5__["Size"](this.width, this.height));
             }
             this.graphLayout = new _shared_widgets_graph_widget__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
             this.graphLayout.connect(this.svg, this.graphContext);
@@ -822,7 +825,7 @@ var MapComponent = /** @class */ (function () {
         }
     };
     MapComponent.prototype.getSize = function () {
-        return new _shared_models_size_model__WEBPACK_IMPORTED_MODULE_5__["Size"](document.documentElement.clientWidth, document.documentElement.clientHeight);
+        return new _shared_models_size__WEBPACK_IMPORTED_MODULE_5__["Size"](document.documentElement.clientWidth, document.documentElement.clientHeight);
     };
     MapComponent.prototype.changeLayout = function () {
         if (this.windowFullSize) {
@@ -1069,10 +1072,58 @@ var NodesDataSource = /** @class */ (function (_super) {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/models/drawing-line.model.ts":
-/*!*****************************************************************!*\
-  !*** ./src/app/cartography/shared/models/drawing-line.model.ts ***!
-  \*****************************************************************/
+/***/ "./src/app/cartography/shared/datasources/symbols-datasource.ts":
+/*!**********************************************************************!*\
+  !*** ./src/app/cartography/shared/datasources/symbols-datasource.ts ***!
+  \**********************************************************************/
+/*! exports provided: SymbolsDataSource */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SymbolsDataSource", function() { return SymbolsDataSource; });
+/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datasource */ "./src/app/cartography/shared/datasources/datasource.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var SymbolsDataSource = /** @class */ (function (_super) {
+    __extends(SymbolsDataSource, _super);
+    function SymbolsDataSource() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SymbolsDataSource.prototype.findIndex = function (symbol) {
+        return this.data.findIndex(function (s) { return s.symbol_id === symbol.symbol_id; });
+    };
+    SymbolsDataSource = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+    ], SymbolsDataSource);
+    return SymbolsDataSource;
+}(_datasource__WEBPACK_IMPORTED_MODULE_0__["DataSource"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawing-line.ts":
+/*!***********************************************************!*\
+  !*** ./src/app/cartography/shared/models/drawing-line.ts ***!
+  \***********************************************************/
 /*! exports provided: DrawingLine */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1089,10 +1140,10 @@ var DrawingLine = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/models/link-status.model.ts":
-/*!****************************************************************!*\
-  !*** ./src/app/cartography/shared/models/link-status.model.ts ***!
-  \****************************************************************/
+/***/ "./src/app/cartography/shared/models/link-status.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/cartography/shared/models/link-status.ts ***!
+  \**********************************************************/
 /*! exports provided: LinkStatus */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1112,10 +1163,10 @@ var LinkStatus = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/models/node.model.ts":
-/*!*********************************************************!*\
-  !*** ./src/app/cartography/shared/models/node.model.ts ***!
-  \*********************************************************/
+/***/ "./src/app/cartography/shared/models/node.ts":
+/*!***************************************************!*\
+  !*** ./src/app/cartography/shared/models/node.ts ***!
+  \***************************************************/
 /*! exports provided: Node */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1132,10 +1183,10 @@ var Node = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/models/point.model.ts":
-/*!**********************************************************!*\
-  !*** ./src/app/cartography/shared/models/point.model.ts ***!
-  \**********************************************************/
+/***/ "./src/app/cartography/shared/models/point.ts":
+/*!****************************************************!*\
+  !*** ./src/app/cartography/shared/models/point.ts ***!
+  \****************************************************/
 /*! exports provided: Point */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1155,10 +1206,10 @@ var Point = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/models/size.model.ts":
-/*!*********************************************************!*\
-  !*** ./src/app/cartography/shared/models/size.model.ts ***!
-  \*********************************************************/
+/***/ "./src/app/cartography/shared/models/size.ts":
+/*!***************************************************!*\
+  !*** ./src/app/cartography/shared/models/size.ts ***!
+  \***************************************************/
 /*! exports provided: Size */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1344,8 +1395,8 @@ var SelectionTool = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DrawingLineWidget", function() { return DrawingLineWidget; });
-/* harmony import */ var _models_drawing_line_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/drawing-line.model */ "./src/app/cartography/shared/models/drawing-line.model.ts");
-/* harmony import */ var _models_point_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/point.model */ "./src/app/cartography/shared/models/point.model.ts");
+/* harmony import */ var _models_drawing_line__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/drawing-line */ "./src/app/cartography/shared/models/drawing-line.ts");
+/* harmony import */ var _models_point__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/point */ "./src/app/cartography/shared/models/point.ts");
 /* harmony import */ var d3_shape__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3-shape */ "./node_modules/d3-shape/index.js");
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
 
@@ -1354,7 +1405,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var DrawingLineWidget = /** @class */ (function () {
     function DrawingLineWidget() {
-        this.drawingLine = new _models_drawing_line_model__WEBPACK_IMPORTED_MODULE_0__["DrawingLine"]();
+        this.drawingLine = new _models_drawing_line__WEBPACK_IMPORTED_MODULE_0__["DrawingLine"]();
         this.drawing = false;
         this.data = {};
     }
@@ -1362,8 +1413,8 @@ var DrawingLineWidget = /** @class */ (function () {
         var self = this;
         this.drawing = true;
         this.data = data;
-        this.drawingLine.start = new _models_point_model__WEBPACK_IMPORTED_MODULE_1__["Point"](x, y);
-        this.drawingLine.end = new _models_point_model__WEBPACK_IMPORTED_MODULE_1__["Point"](x, y);
+        this.drawingLine.start = new _models_point__WEBPACK_IMPORTED_MODULE_1__["Point"](x, y);
+        this.drawingLine.end = new _models_point__WEBPACK_IMPORTED_MODULE_1__["Point"](x, y);
         var over = function (d, i) {
             var node = self.selection.select('g.canvas').node();
             var coordinates = Object(d3_selection__WEBPACK_IMPORTED_MODULE_3__["mouse"])(node);
@@ -1626,7 +1677,7 @@ var GraphLayout = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LinksWidget", function() { return LinksWidget; });
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
-/* harmony import */ var _models_link_status_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/link-status.model */ "./src/app/cartography/shared/models/link-status.model.ts");
+/* harmony import */ var _models_link_status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/link-status */ "./src/app/cartography/shared/models/link-status.ts");
 /* harmony import */ var _map_helpers_multi_link_calculator_helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../map/helpers/multi-link-calculator-helper */ "./src/app/cartography/map/helpers/multi-link-calculator-helper.ts");
 /* harmony import */ var _serial_link_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./serial-link.widget */ "./src/app/cartography/shared/widgets/serial-link.widget.ts");
 /* harmony import */ var _ethernet_link_widget__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ethernet-link.widget */ "./src/app/cartography/shared/widgets/ethernet-link.widget.ts");
@@ -1659,8 +1710,8 @@ var LinksWidget = /** @class */ (function () {
             var start_point = link_path.node().getPointAtLength(50);
             var end_point = link_path.node().getPointAtLength(link_path.node().getTotalLength() - 50);
             var statuses = [
-                new _models_link_status_model__WEBPACK_IMPORTED_MODULE_1__["LinkStatus"](start_point.x, start_point.y, l.source.status),
-                new _models_link_status_model__WEBPACK_IMPORTED_MODULE_1__["LinkStatus"](end_point.x, end_point.y, l.target.status)
+                new _models_link_status__WEBPACK_IMPORTED_MODULE_1__["LinkStatus"](start_point.x, start_point.y, l.source.status),
+                new _models_link_status__WEBPACK_IMPORTED_MODULE_1__["LinkStatus"](end_point.x, end_point.y, l.target.status)
             ];
             var status_started = link_group
                 .selectAll('circle.status_started')
@@ -2031,15 +2082,15 @@ var DefaultLayoutComponent = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Context", function() { return Context; });
-/* harmony import */ var _cartography_shared_models_size_model__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../cartography/shared/models/size.model */ "./src/app/cartography/shared/models/size.model.ts");
-/* harmony import */ var _cartography_shared_models_point_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../cartography/shared/models/point.model */ "./src/app/cartography/shared/models/point.model.ts");
+/* harmony import */ var _cartography_shared_models_size__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../cartography/shared/models/size */ "./src/app/cartography/shared/models/size.ts");
+/* harmony import */ var _cartography_shared_models_point__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../cartography/shared/models/point */ "./src/app/cartography/shared/models/point.ts");
 
 
 var Context = /** @class */ (function () {
     function Context(centerZeroZeroPoint) {
         if (centerZeroZeroPoint === void 0) { centerZeroZeroPoint = false; }
         this.centerZeroZeroPoint = centerZeroZeroPoint;
-        this.size = new _cartography_shared_models_size_model__WEBPACK_IMPORTED_MODULE_0__["Size"](0, 0);
+        this.size = new _cartography_shared_models_size__WEBPACK_IMPORTED_MODULE_0__["Size"](0, 0);
     }
     Context.prototype.getSize = function () {
         return this.size;
@@ -2049,9 +2100,9 @@ var Context = /** @class */ (function () {
     };
     Context.prototype.getZeroZeroTransformationPoint = function () {
         if (this.centerZeroZeroPoint) {
-            return new _cartography_shared_models_point_model__WEBPACK_IMPORTED_MODULE_1__["Point"](this.getSize().width / 2., this.getSize().height / 2.);
+            return new _cartography_shared_models_point__WEBPACK_IMPORTED_MODULE_1__["Point"](this.getSize().width / 2., this.getSize().height / 2.);
         }
-        return new _cartography_shared_models_point_model__WEBPACK_IMPORTED_MODULE_1__["Point"](0, 0);
+        return new _cartography_shared_models_point__WEBPACK_IMPORTED_MODULE_1__["Point"](0, 0);
     };
     return Context;
 }());
@@ -2920,7 +2971,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var _models_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../models/server */ "./src/app/shared/models/server.ts");
 /* harmony import */ var _services_node_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../services/node.service */ "./src/app/shared/services/node.service.ts");
-/* harmony import */ var _cartography_shared_models_node_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../cartography/shared/models/node.model */ "./src/app/cartography/shared/models/node.model.ts");
+/* harmony import */ var _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../cartography/shared/models/node */ "./src/app/cartography/shared/models/node.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2951,7 +3002,7 @@ var StartNodeActionComponent = /** @class */ (function () {
     ], StartNodeActionComponent.prototype, "server", void 0);
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", _cartography_shared_models_node_model__WEBPACK_IMPORTED_MODULE_3__["Node"])
+        __metadata("design:type", _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_3__["Node"])
     ], StartNodeActionComponent.prototype, "node", void 0);
     StartNodeActionComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -2991,7 +3042,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var _models_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../models/server */ "./src/app/shared/models/server.ts");
 /* harmony import */ var _services_node_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../services/node.service */ "./src/app/shared/services/node.service.ts");
-/* harmony import */ var _cartography_shared_models_node_model__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../cartography/shared/models/node.model */ "./src/app/cartography/shared/models/node.model.ts");
+/* harmony import */ var _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../cartography/shared/models/node */ "./src/app/cartography/shared/models/node.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3023,7 +3074,7 @@ var StopNodeActionComponent = /** @class */ (function () {
     ], StopNodeActionComponent.prototype, "server", void 0);
     __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
-        __metadata("design:type", _cartography_shared_models_node_model__WEBPACK_IMPORTED_MODULE_3__["Node"])
+        __metadata("design:type", _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_3__["Node"])
     ], StopNodeActionComponent.prototype, "node", void 0);
     StopNodeActionComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
