@@ -3531,8 +3531,8 @@ var HttpServer = /** @class */ (function () {
     };
     HttpServer.prototype.getOptionsForServer = function (server, url, options) {
         url = "http://" + server.ip + ":" + server.port + "/v2" + url;
-        if (options.headers === null) {
-            options.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]();
+        if (!options.headers) {
+            options.headers = {};
         }
         if (server.authorization === "basic") {
             var credentials = btoa(server.login + ":" + server.password);
