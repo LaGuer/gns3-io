@@ -464,7 +464,9 @@ var ApplianceDatabase = /** @class */ (function () {
         this.server = server;
         this.applianceService = applianceService;
         this.dataChange = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"]([]);
-        this.applianceService.list(this.server).subscribe(function (appliances) {
+        this.applianceService
+            .list(this.server)
+            .subscribe(function (appliances) {
             _this.dataChange.next(appliances);
         });
     }
@@ -3430,8 +3432,7 @@ var ApplianceService = /** @class */ (function () {
     }
     ApplianceService.prototype.list = function (server) {
         return this.httpServer
-            .get(server, '/appliances')
-            .map(function (response) { return response.json(); });
+            .get(server, '/appliances');
     };
     ApplianceService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -3455,7 +3456,7 @@ var ApplianceService = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HttpServer", function() { return HttpServer; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var _angular_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/http */ "./node_modules/@angular/http/esm5/http.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/esm5/http.js");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3467,55 +3468,84 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+/* tslint:enable:interface-over-type-literal */
 var HttpServer = /** @class */ (function () {
     function HttpServer(http) {
         this.http = http;
     }
     HttpServer.prototype.get = function (server, url, options) {
-        options = this.getOptionsForServer(server, url, options);
-        return this.http.get(url, options);
+        options = this.getJsonOptions(options);
+        var intercepted = this.getOptionsForServer(server, url, options);
+        return this.http.get(intercepted.url, intercepted.options);
+    };
+    HttpServer.prototype.getText = function (server, url, options) {
+        options = this.getTextOptions(options);
+        var intercepted = this.getOptionsForServer(server, url, options);
+        return this.http.get(intercepted.url, intercepted.options);
     };
     HttpServer.prototype.post = function (server, url, body, options) {
-        options = this.getOptionsForServer(server, url, options);
-        return this.http.post(url, body, options);
+        options = this.getJsonOptions(options);
+        var intercepted = this.getOptionsForServer(server, url, options);
+        return this.http.post(intercepted.url, body, intercepted.options);
     };
     HttpServer.prototype.put = function (server, url, body, options) {
-        options = this.getOptionsForServer(server, url, options);
-        return this.http.put(url, body, options);
+        options = this.getJsonOptions(options);
+        var intercepted = this.getOptionsForServer(server, url, options);
+        return this.http.put(intercepted.url, body, intercepted.options);
     };
     HttpServer.prototype.delete = function (server, url, options) {
-        options = this.getOptionsForServer(server, url, options);
-        return this.http.delete(url, options);
+        options = this.getJsonOptions(options);
+        var intercepted = this.getOptionsForServer(server, url, options);
+        return this.http.delete(intercepted.url, intercepted.options);
     };
     HttpServer.prototype.patch = function (server, url, body, options) {
-        options = this.getOptionsForServer(server, url, options);
-        return this.http.patch(url, body, options);
+        options = this.getJsonOptions(options);
+        var intercepted = this.getOptionsForServer(server, url, options);
+        return this.http.patch(intercepted.url, body, intercepted.options);
     };
     HttpServer.prototype.head = function (server, url, options) {
-        options = this.getOptionsForServer(server, url, options);
-        return this.http.patch(url, options);
+        options = this.getJsonOptions(options);
+        var intercepted = this.getOptionsForServer(server, url, options);
+        return this.http.head(intercepted.url, intercepted.options);
     };
     HttpServer.prototype.options = function (server, url, options) {
-        options = this.getOptionsForServer(server, url, options);
-        return this.http.options(url, options);
+        options = this.getJsonOptions(options);
+        var intercepted = this.getOptionsForServer(server, url, options);
+        return this.http.options(intercepted.url, intercepted.options);
     };
-    HttpServer.prototype.getOptionsForServer = function (server, url, options) {
-        if (options === undefined) {
-            options = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["RequestOptions"]();
-        }
-        options.url = "http://" + server.ip + ":" + server.port + "/v2" + url;
-        if (options.headers === null) {
-            options.headers = new _angular_http__WEBPACK_IMPORTED_MODULE_1__["Headers"]();
-        }
-        if (server.authorization === "basic") {
-            var credentials = btoa(server.login + ":" + server.password);
-            options.headers.append('Authorization', "Basic " + credentials);
+    HttpServer.prototype.getJsonOptions = function (options) {
+        if (!options) {
+            return {
+                responseType: "json"
+            };
         }
         return options;
     };
+    HttpServer.prototype.getTextOptions = function (options) {
+        if (!options) {
+            return {
+                responseType: "text"
+            };
+        }
+        return options;
+    };
+    HttpServer.prototype.getOptionsForServer = function (server, url, options) {
+        url = "http://" + server.ip + ":" + server.port + "/v2" + url;
+        if (options.headers === null) {
+            options.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]();
+        }
+        if (server.authorization === "basic") {
+            var credentials = btoa(server.login + ":" + server.password);
+            options.headers['Authorization'] = "Basic " + credentials;
+        }
+        return {
+            url: url,
+            options: options
+        };
+    };
     HttpServer = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
-        __metadata("design:paramtypes", [_angular_http__WEBPACK_IMPORTED_MODULE_1__["Http"]])
+        __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]])
     ], HttpServer);
     return HttpServer;
 }());
@@ -3651,13 +3681,11 @@ var NodeService = /** @class */ (function () {
     }
     NodeService.prototype.start = function (server, node) {
         return this.httpServer
-            .post(server, "/projects/" + node.project_id + "/nodes/" + node.node_id + "/start", {})
-            .map(function (response) { return response.json(); });
+            .post(server, "/projects/" + node.project_id + "/nodes/" + node.node_id + "/start", {});
     };
     NodeService.prototype.stop = function (server, node) {
         return this.httpServer
-            .post(server, "/projects/" + node.project_id + "/nodes/" + node.node_id + "/stop", {})
-            .map(function (response) { return response.json(); });
+            .post(server, "/projects/" + node.project_id + "/nodes/" + node.node_id + "/stop", {});
     };
     NodeService.prototype.createFromAppliance = function (server, project, appliance, x, y, compute_id) {
         return this.httpServer
@@ -3668,8 +3696,7 @@ var NodeService = /** @class */ (function () {
             .put(server, "/projects/" + node.project_id + "/nodes/" + node.node_id, {
             'x': x,
             'y': y
-        })
-            .map(function (response) { return response.json(); });
+        });
     };
     NodeService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -3713,33 +3740,27 @@ var ProjectService = /** @class */ (function () {
     }
     ProjectService.prototype.get = function (server, project_id) {
         return this.httpServer
-            .get(server, "/projects/" + project_id)
-            .map(function (response) { return response.json(); });
+            .get(server, "/projects/" + project_id);
     };
     ProjectService.prototype.open = function (server, project_id) {
         return this.httpServer
-            .post(server, "/projects/" + project_id + "/open", {})
-            .map(function (response) { return response.json(); });
+            .post(server, "/projects/" + project_id + "/open", {});
     };
     ProjectService.prototype.list = function (server) {
         return this.httpServer
-            .get(server, '/projects')
-            .map(function (response) { return response.json(); });
+            .get(server, '/projects');
     };
     ProjectService.prototype.nodes = function (server, project_id) {
         return this.httpServer
-            .get(server, "/projects/" + project_id + "/nodes")
-            .map(function (response) { return response.json(); });
+            .get(server, "/projects/" + project_id + "/nodes");
     };
     ProjectService.prototype.links = function (server, project_id) {
         return this.httpServer
-            .get(server, "/projects/" + project_id + "/links")
-            .map(function (response) { return response.json(); });
+            .get(server, "/projects/" + project_id + "/links");
     };
     ProjectService.prototype.drawings = function (server, project_id) {
         return this.httpServer
-            .get(server, "/projects/" + project_id + "/drawings")
-            .map(function (response) { return response.json(); });
+            .get(server, "/projects/" + project_id + "/drawings");
     };
     ProjectService.prototype.delete = function (server, project_id) {
         return this.httpServer
@@ -3877,13 +3898,11 @@ var SnapshotService = /** @class */ (function () {
     }
     SnapshotService.prototype.create = function (server, project_id, snapshot) {
         return this.httpServer
-            .post(server, "/projects/" + project_id + "/snapshots", snapshot)
-            .map(function (response) { return response.json(); });
+            .post(server, "/projects/" + project_id + "/snapshots", snapshot);
     };
     SnapshotService.prototype.list = function (server, project_id) {
         return this.httpServer
-            .get(server, "/projects/" + project_id + "/snapshots")
-            .map(function (response) { return response.json(); });
+            .get(server, "/projects/" + project_id + "/snapshots");
     };
     SnapshotService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -3954,14 +3973,12 @@ var SymbolService = /** @class */ (function () {
     };
     SymbolService.prototype.list = function (server) {
         return this.httpServer
-            .get(server, '/symbols')
-            .map(function (response) { return response.json(); });
+            .get(server, '/symbols');
     };
     SymbolService.prototype.raw = function (server, symbol_id) {
         var encoded_uri = encodeURI(symbol_id);
         return this.httpServer
-            .get(server, "/symbols/" + encoded_uri + "/raw")
-            .map(function (response) { return response.text(); });
+            .getText(server, "/symbols/" + encoded_uri + "/raw");
     };
     SymbolService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -4049,8 +4066,7 @@ var VersionService = /** @class */ (function () {
     }
     VersionService.prototype.get = function (server) {
         return this.httpServer
-            .get(server, '/version')
-            .map(function (response) { return response.json(); });
+            .get(server, '/version');
     };
     VersionService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
