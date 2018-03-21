@@ -3474,42 +3474,62 @@ var HttpServer = /** @class */ (function () {
         this.http = http;
     }
     HttpServer.prototype.get = function (server, url, options) {
+        options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
         return this.http.get(intercepted.url, intercepted.options);
     };
-    ;
     HttpServer.prototype.getText = function (server, url, options) {
+        options = this.getTextOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
         return this.http.get(intercepted.url, intercepted.options);
     };
     HttpServer.prototype.post = function (server, url, body, options) {
+        options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
         return this.http.post(intercepted.url, body, intercepted.options);
     };
     HttpServer.prototype.put = function (server, url, body, options) {
+        options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
         return this.http.put(intercepted.url, body, intercepted.options);
     };
     HttpServer.prototype.delete = function (server, url, options) {
+        options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
         return this.http.delete(intercepted.url, intercepted.options);
     };
     HttpServer.prototype.patch = function (server, url, body, options) {
+        options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
         return this.http.patch(intercepted.url, body, intercepted.options);
     };
     HttpServer.prototype.head = function (server, url, options) {
+        options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
         return this.http.head(intercepted.url, intercepted.options);
     };
     HttpServer.prototype.options = function (server, url, options) {
+        options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
         return this.http.options(intercepted.url, intercepted.options);
     };
-    HttpServer.prototype.getOptionsForServer = function (server, url, options) {
-        if (options === null) {
-            options = {};
+    HttpServer.prototype.getJsonOptions = function (options) {
+        if (!options) {
+            return {
+                responseType: "json"
+            };
         }
+        return options;
+    };
+    HttpServer.prototype.getTextOptions = function (options) {
+        if (!options) {
+            return {
+                responseType: "text"
+            };
+        }
+        return options;
+    };
+    HttpServer.prototype.getOptionsForServer = function (server, url, options) {
         url = "http://" + server.ip + ":" + server.port + "/v2" + url;
         if (options.headers === null) {
             options.headers = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]();
@@ -3944,7 +3964,7 @@ var SymbolService = /** @class */ (function () {
             var streams = symbols.map(function (symbol) { return _this.raw(server, symbol.symbol_id); });
             rxjs_Observable__WEBPACK_IMPORTED_MODULE_1__["Observable"].forkJoin(streams).subscribe(function (results) {
                 symbols.forEach(function (symbol, i) {
-                    symbol.raw = results[i].body;
+                    symbol.raw = results[i];
                 });
                 _this.symbols.next(symbols);
             });
