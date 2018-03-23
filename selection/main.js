@@ -784,7 +784,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var d3_ng2_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3-ng2-service */ "./node_modules/d3-ng2-service/index.js");
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
 /* harmony import */ var _shared_widgets_graph_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/widgets/graph.widget */ "./src/app/cartography/shared/widgets/graph.widget.ts");
-/* harmony import */ var _map_models_context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../map/models/context */ "./src/app/map/models/context.ts");
+/* harmony import */ var _shared_models_context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/models/context */ "./src/app/cartography/shared/models/context.ts");
 /* harmony import */ var _shared_models_size__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/size */ "./src/app/cartography/shared/models/size.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -846,7 +846,7 @@ var MapComponent = /** @class */ (function () {
         if (this.parentNativeElement !== null) {
             rootElement = d3.select(this.parentNativeElement);
             this.svg = rootElement.select('svg');
-            this.graphContext = new _map_models_context__WEBPACK_IMPORTED_MODULE_4__["Context"](true);
+            this.graphContext = new _shared_models_context__WEBPACK_IMPORTED_MODULE_4__["Context"](true);
             if (this.windowFullSize) {
                 this.graphContext.setSize(this.getSize());
             }
@@ -1252,6 +1252,45 @@ var SelectionManager = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/models/context.ts":
+/*!******************************************************!*\
+  !*** ./src/app/cartography/shared/models/context.ts ***!
+  \******************************************************/
+/*! exports provided: Context */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Context", function() { return Context; });
+/* harmony import */ var _size__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./size */ "./src/app/cartography/shared/models/size.ts");
+/* harmony import */ var _point__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./point */ "./src/app/cartography/shared/models/point.ts");
+
+
+var Context = /** @class */ (function () {
+    function Context(centerZeroZeroPoint) {
+        if (centerZeroZeroPoint === void 0) { centerZeroZeroPoint = false; }
+        this.centerZeroZeroPoint = centerZeroZeroPoint;
+        this.size = new _size__WEBPACK_IMPORTED_MODULE_0__["Size"](0, 0);
+    }
+    Context.prototype.getSize = function () {
+        return this.size;
+    };
+    Context.prototype.setSize = function (size) {
+        this.size = size;
+    };
+    Context.prototype.getZeroZeroTransformationPoint = function () {
+        if (this.centerZeroZeroPoint) {
+            return new _point__WEBPACK_IMPORTED_MODULE_1__["Point"](this.getSize().width / 2., this.getSize().height / 2.);
+        }
+        return new _point__WEBPACK_IMPORTED_MODULE_1__["Point"](0, 0);
+    };
+    return Context;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/models/drawing-line.ts":
 /*!***********************************************************!*\
   !*** ./src/app/cartography/shared/models/drawing-line.ts ***!
@@ -1445,10 +1484,10 @@ var MovingTool = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectionTool", function() { return SelectionTool; });
-/* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
-/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs/_esm5/Subject.js");
-/* harmony import */ var _models_rectangle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../models/rectangle */ "./src/app/cartography/shared/models/rectangle.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs/_esm5/Subject.js");
+/* harmony import */ var _models_rectangle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../models/rectangle */ "./src/app/cartography/shared/models/rectangle.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1464,7 +1503,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var SelectionTool = /** @class */ (function () {
     function SelectionTool() {
-        this.rectangleSelected = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
+        this.rectangleSelected = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
     }
     SelectionTool_1 = SelectionTool;
     SelectionTool.prototype.connect = function (selection, context) {
@@ -1474,9 +1513,9 @@ var SelectionTool = /** @class */ (function () {
     SelectionTool.prototype.activate = function () {
         var self = this;
         this.selection.on("mousedown", function () {
-            var subject = Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(window);
+            var subject = Object(d3_selection__WEBPACK_IMPORTED_MODULE_1__["select"])(window);
             var parent = this.parentElement;
-            var start = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
+            var start = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_1__["mouse"])(parent));
             self.startSelection(start);
             // clear selection
             self.selection
@@ -1484,10 +1523,10 @@ var SelectionTool = /** @class */ (function () {
                 .classed("selected", false);
             subject
                 .on("mousemove.selection", function () {
-                var end = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
+                var end = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_1__["mouse"])(parent));
                 self.moveSelection(start, end);
             }).on("mouseup.selection", function () {
-                var end = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["mouse"])(parent));
+                var end = self.transformation(Object(d3_selection__WEBPACK_IMPORTED_MODULE_1__["mouse"])(parent));
                 self.endSelection(start, end);
                 subject
                     .on("mousemove.selection", null)
@@ -1518,7 +1557,6 @@ var SelectionTool = /** @class */ (function () {
     SelectionTool.prototype.moveSelection = function (start, move) {
         this.path.attr("d", this.rect(start[0], start[1], move[0] - start[0], move[1] - start[1]));
         this.selectedEvent(start, move);
-        // this.getSelectedItems(start, move);
     };
     SelectionTool.prototype.endSelection = function (start, end) {
         this.path.attr("visibility", "hidden");
@@ -1529,7 +1567,7 @@ var SelectionTool = /** @class */ (function () {
         var y = Math.min(start[1], end[1]);
         var width = Math.abs(start[0] - end[0]);
         var height = Math.abs(start[1] - end[1]);
-        this.rectangleSelected.next(new _models_rectangle__WEBPACK_IMPORTED_MODULE_2__["Rectangle"](x, y, width, height));
+        this.rectangleSelected.next(new _models_rectangle__WEBPACK_IMPORTED_MODULE_3__["Rectangle"](x, y, width, height));
     };
     SelectionTool.prototype.rect = function (x, y, w, h) {
         return "M" + [x, y] + " l" + [w, 0] + " l" + [0, h] + " l" + [-w, 0] + "z";
@@ -1540,7 +1578,7 @@ var SelectionTool = /** @class */ (function () {
     };
     SelectionTool.SELECTABLE_CLASS = '.selectable';
     SelectionTool = SelectionTool_1 = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])(),
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [])
     ], SelectionTool);
     return SelectionTool;
@@ -2235,45 +2273,6 @@ var DefaultLayoutComponent = /** @class */ (function () {
         __metadata("design:paramtypes", [])
     ], DefaultLayoutComponent);
     return DefaultLayoutComponent;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/map/models/context.ts":
-/*!***************************************!*\
-  !*** ./src/app/map/models/context.ts ***!
-  \***************************************/
-/*! exports provided: Context */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Context", function() { return Context; });
-/* harmony import */ var _cartography_shared_models_size__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../cartography/shared/models/size */ "./src/app/cartography/shared/models/size.ts");
-/* harmony import */ var _cartography_shared_models_point__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../cartography/shared/models/point */ "./src/app/cartography/shared/models/point.ts");
-
-
-var Context = /** @class */ (function () {
-    function Context(centerZeroZeroPoint) {
-        if (centerZeroZeroPoint === void 0) { centerZeroZeroPoint = false; }
-        this.centerZeroZeroPoint = centerZeroZeroPoint;
-        this.size = new _cartography_shared_models_size__WEBPACK_IMPORTED_MODULE_0__["Size"](0, 0);
-    }
-    Context.prototype.getSize = function () {
-        return this.size;
-    };
-    Context.prototype.setSize = function (size) {
-        this.size = size;
-    };
-    Context.prototype.getZeroZeroTransformationPoint = function () {
-        if (this.centerZeroZeroPoint) {
-            return new _cartography_shared_models_point__WEBPACK_IMPORTED_MODULE_1__["Point"](this.getSize().width / 2., this.getSize().height / 2.);
-        }
-        return new _cartography_shared_models_point__WEBPACK_IMPORTED_MODULE_1__["Point"](0, 0);
-    };
-    return Context;
 }());
 
 
