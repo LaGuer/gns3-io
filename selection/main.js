@@ -1219,25 +1219,39 @@ var SelectionManager = /** @class */ (function () {
         return this.selectedLinks;
     };
     SelectionManager.prototype.setSelectedNodes = function (nodes) {
-        this.selectedNodes = nodes;
+        this.selectedNodes = this.setSelectedItems(this.nodesDataSource, function (node) {
+            return !!nodes.find(function (n) { return node.node_id === n.node_id; });
+        });
     };
     SelectionManager.prototype.setSelectedLinks = function (links) {
-        this.selectedLinks = links;
+        this.selectedLinks = this.setSelectedItems(this.linksDataSource, function (link) {
+            return !!links.find(function (l) { return link.link_id === l.link_id; });
+        });
     };
     SelectionManager.prototype.getSelectedItemsInRectangle = function (dataSource, rectangle) {
         var _this = this;
-        var items = [];
+        return this.setSelectedItems(dataSource, function (item) {
+            return _this.inRectangleHelper.inRectangle(item, rectangle);
+        });
+    };
+    SelectionManager.prototype.setSelected = function (item, isSelected, dataSource) {
+        if (item.is_selected !== isSelected) {
+            item.is_selected = isSelected;
+            dataSource.update(item);
+        }
+        return item.is_selected;
+    };
+    SelectionManager.prototype.setSelectedItems = function (dataSource, discriminator) {
+        var _this = this;
+        var selected = [];
         dataSource.getItems().forEach(function (item) {
-            var is_selected = _this.inRectangleHelper.inRectangle(item, rectangle);
-            if (item.is_selected !== is_selected) {
-                item.is_selected = is_selected;
-                dataSource.update(item);
-                if (is_selected) {
-                    items.push(item);
-                }
+            var isSelected = discriminator(item);
+            _this.setSelected(item, isSelected, dataSource);
+            if (isSelected) {
+                selected.push(item);
             }
         });
-        return items;
+        return selected;
     };
     SelectionManager = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
@@ -1760,7 +1774,6 @@ var EthernetLinkWidget = /** @class */ (function () {
             ]];
         var value_line = Object(d3_shape__WEBPACK_IMPORTED_MODULE_0__["line"])();
         var link_path = view.select('path');
-        link_path.classed('selectable', true);
         link_path.classed('selected', function (l) { return l.is_selected; });
         if (!link_path.node()) {
             link_path = view.append('path');
@@ -2074,7 +2087,7 @@ var NodesWidget = /** @class */ (function () {
         var node_enter = node
             .enter()
             .append('g')
-            .attr('class', 'node selectable');
+            .attr('class', 'node');
         node_enter
             .append('image')
             .attr('xlink:href', function (n) {
@@ -2481,10 +2494,12 @@ var ProjectMapComponent = /** @class */ (function () {
     };
     ProjectMapComponent.prototype.setUpMapCallbacks = function (project) {
         var _this = this;
+        var selectionManager = new _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_25__["SelectionManager"](this.nodesDataSource, this.linksDataSource, new _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_26__["InRectangleHelper"]());
         this.mapChild.graphLayout.getNodesWidget().setOnContextMenuCallback(function (event, node) {
             _this.nodeContextMenu.open(node, event.clientY, event.clientX);
         });
         this.mapChild.graphLayout.getNodesWidget().setOnNodeClickedCallback(function (event, node) {
+            selectionManager.setSelectedNodes([node]);
             if (_this.drawLineMode) {
                 _this.nodeSelectInterfaceMenu.open(node, event.clientY, event.clientX);
             }
@@ -2497,7 +2512,6 @@ var ProjectMapComponent = /** @class */ (function () {
                 _this.nodesDataSource.update(n);
             });
         });
-        var selectionManager = new _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_25__["SelectionManager"](this.nodesDataSource, this.linksDataSource, new _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_26__["InRectangleHelper"]());
         selectionManager.subscribe(this.mapChild.graphLayout.getSelectionTool().rectangleSelected);
     };
     ProjectMapComponent.prototype.onNodeCreation = function (appliance) {
