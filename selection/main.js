@@ -1180,9 +1180,9 @@ var SymbolsDataSource = /** @class */ (function (_super) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SelectionManager", function() { return SelectionManager; });
-/* harmony import */ var _datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
-/* harmony import */ var _datasources_links_datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _datasources_links_datasource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
 /* harmony import */ var _map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../map/helpers/in-rectangle-helper */ "./src/app/cartography/map/helpers/in-rectangle-helper.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1202,37 +1202,41 @@ var SelectionManager = /** @class */ (function () {
         this.nodesDataSource = nodesDataSource;
         this.linksDataSource = linksDataSource;
         this.inRectangleHelper = inRectangleHelper;
-        this.selectedItems = [];
+        this.selectedNodes = [];
+        this.selectedLinks = [];
     }
-    SelectionManager.prototype.setSelectedItemsInRectangle = function (rectangle) {
-        var self = this;
-        var nodes = [];
-        this.nodesDataSource.getItems().forEach(function (node) {
-            var is_selected = self.inRectangleHelper.inRectangle(node, rectangle);
-            if (node.is_selected !== is_selected) {
-                node.is_selected = is_selected;
-                self.nodesDataSource.update(node);
-                if (is_selected) {
-                    nodes.push(node);
-                }
-            }
-        });
-        var links = [];
-        this.linksDataSource.getItems().forEach(function (link) {
-            var is_selected = self.inRectangleHelper.inRectangle(link, rectangle);
-            if (link.is_selected !== is_selected) {
-                link.is_selected = is_selected;
-                self.linksDataSource.update(link);
-                if (is_selected) {
-                    links.push(link);
-                }
-            }
+    SelectionManager.prototype.subscribe = function (subject) {
+        var _this = this;
+        this.subscription = subject.subscribe(function (rectangle) {
+            _this.selectedNodes = _this.getSelectedItemsInRectangle(_this.nodesDataSource, rectangle);
+            _this.selectedLinks = _this.getSelectedItemsInRectangle(_this.linksDataSource, rectangle);
         });
     };
+    SelectionManager.prototype.getSelectedNodes = function () {
+        return this.selectedNodes;
+    };
+    SelectionManager.prototype.getSelectedLinks = function () {
+        return this.selectedLinks;
+    };
+    SelectionManager.prototype.getSelectedItemsInRectangle = function (dataSource, rectangle) {
+        var _this = this;
+        var items = [];
+        dataSource.getItems().forEach(function (item) {
+            var is_selected = _this.inRectangleHelper.inRectangle(item, rectangle);
+            if (item.is_selected !== is_selected) {
+                item.is_selected = is_selected;
+                dataSource.update(item);
+                if (is_selected) {
+                    items.push(item);
+                }
+            }
+        });
+        return items;
+    };
     SelectionManager = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["Injectable"])(),
-        __metadata("design:paramtypes", [_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_0__["NodesDataSource"],
-            _datasources_links_datasource__WEBPACK_IMPORTED_MODULE_1__["LinksDataSource"],
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
+        __metadata("design:paramtypes", [_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_1__["NodesDataSource"],
+            _datasources_links_datasource__WEBPACK_IMPORTED_MODULE_2__["LinksDataSource"],
             _map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_3__["InRectangleHelper"]])
     ], SelectionManager);
     return SelectionManager;
@@ -1438,15 +1442,25 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
 /* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs/_esm5/Subject.js");
 /* harmony import */ var _models_rectangle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../models/rectangle */ "./src/app/cartography/shared/models/rectangle.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
 
 
 
 var SelectionTool = /** @class */ (function () {
-    // public selectedSubject: Subject<Selectable[]>;
     function SelectionTool() {
         this.rectangleSelected = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_1__["Subject"]();
-        // this.selectedSubject = new Subject<Selectable[]>();
     }
+    SelectionTool_1 = SelectionTool;
     SelectionTool.prototype.connect = function (selection, context) {
         this.selection = selection;
         this.context = context;
@@ -1460,7 +1474,7 @@ var SelectionTool = /** @class */ (function () {
             self.startSelection(start);
             // clear selection
             self.selection
-                .selectAll(SelectionTool.SELECTABLE_CLASS)
+                .selectAll(SelectionTool_1.SELECTABLE_CLASS)
                 .classed("selected", false);
             subject
                 .on("mousemove.selection", function () {
@@ -1502,8 +1516,7 @@ var SelectionTool = /** @class */ (function () {
     };
     SelectionTool.prototype.endSelection = function (start, end) {
         this.path.attr("visibility", "hidden");
-        // const selected_items = this.getSelectedItems(start, end);
-        // this.selectedSubject.next(selected_items);
+        this.selectedEvent(start, end);
     };
     SelectionTool.prototype.selectedEvent = function (start, end) {
         var x = Math.min(start[0], end[0]);
@@ -1512,26 +1525,6 @@ var SelectionTool = /** @class */ (function () {
         var height = Math.abs(start[1] - end[1]);
         this.rectangleSelected.next(new _models_rectangle__WEBPACK_IMPORTED_MODULE_2__["Rectangle"](x, y, width, height));
     };
-    // private getSelectedItems(start, end): Selectable[] {
-    //   const x = Math.min(start[0], end[0]);
-    //   const y = Math.min(start[1], end[1]);
-    //   const width = Math.abs(start[0] - end[0]);
-    //   const height = Math.abs(start[1] - end[1]);
-    //   const items: Selectable[] = [];
-    //
-    //   this.selection
-    //     .selectAll<null, Selectable>(SelectionTool.SELECTABLE_CLASS)
-    //     .classed('selected', (item: Selectable) => {
-    //
-    //       const in_rect = (x <= item.x && item.x < (x + width) && y <= item.y && item.y < (y + height));
-    //       if (in_rect) {
-    //         items.push(item);
-    //       }
-    //       return in_rect;
-    //     });
-    //
-    //   return items;
-    // }
     SelectionTool.prototype.rect = function (x, y, w, h) {
         return "M" + [x, y] + " l" + [w, 0] + " l" + [0, h] + " l" + [-w, 0] + "z";
     };
@@ -1540,7 +1533,12 @@ var SelectionTool = /** @class */ (function () {
         return [point[0] - transformation_point.x, point[1] - transformation_point.y];
     };
     SelectionTool.SELECTABLE_CLASS = '.selectable';
+    SelectionTool = SelectionTool_1 = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_3__["Injectable"])(),
+        __metadata("design:paramtypes", [])
+    ], SelectionTool);
     return SelectionTool;
+    var SelectionTool_1;
 }());
 
 
@@ -2495,9 +2493,7 @@ var ProjectMapComponent = /** @class */ (function () {
             });
         });
         var selectionManager = new _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_25__["SelectionManager"](this.nodesDataSource, this.linksDataSource, new _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_26__["InRectangleHelper"]());
-        this.mapChild.graphLayout.getSelectionTool().rectangleSelected.subscribe(function (rectangle) {
-            selectionManager.setSelectedItemsInRectangle(rectangle);
-        });
+        selectionManager.subscribe(this.mapChild.graphLayout.getSelectionTool().rectangleSelected);
     };
     ProjectMapComponent.prototype.onNodeCreation = function (appliance) {
         var _this = this;
