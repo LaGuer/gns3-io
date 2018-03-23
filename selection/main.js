@@ -1218,6 +1218,12 @@ var SelectionManager = /** @class */ (function () {
     SelectionManager.prototype.getSelectedLinks = function () {
         return this.selectedLinks;
     };
+    SelectionManager.prototype.setSelectedNodes = function (nodes) {
+        this.selectedNodes = nodes;
+    };
+    SelectionManager.prototype.setSelectedLinks = function (links) {
+        this.selectedLinks = links;
+    };
     SelectionManager.prototype.getSelectedItemsInRectangle = function (dataSource, rectangle) {
         var _this = this;
         var items = [];
