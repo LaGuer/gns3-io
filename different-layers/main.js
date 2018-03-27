@@ -2652,18 +2652,18 @@ var ProjectMapComponent = /** @class */ (function () {
         this.symbolService
             .load(this.server)
             .flatMap(function () {
-            return _this.projectService.drawings(_this.server, project.project_id);
+            return _this.projectService.nodes(_this.server, project.project_id);
         })
-            .flatMap(function (drawings) {
-            _this.drawingsDataSource.set(drawings);
+            .flatMap(function (nodes) {
+            _this.nodesDataSource.set(nodes);
             return _this.projectService.links(_this.server, project.project_id);
         })
             .flatMap(function (links) {
             _this.linksDataSource.set(links);
-            return _this.projectService.nodes(_this.server, project.project_id);
+            return _this.projectService.drawings(_this.server, project.project_id);
         })
-            .subscribe(function (nodes) {
-            _this.nodesDataSource.set(nodes);
+            .subscribe(function (drawings) {
+            _this.drawingsDataSource.set(drawings);
             _this.setUpMapCallbacks(project);
             _this.setUpWS(project);
             _this.isLoading = false;
