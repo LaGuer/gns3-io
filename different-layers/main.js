@@ -786,7 +786,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var d3_ng2_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3-ng2-service */ "./node_modules/d3-ng2-service/index.js");
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
-/* harmony import */ var _shared_widgets_graph_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/widgets/graph.widget */ "./src/app/cartography/shared/widgets/graph.widget.ts");
+/* harmony import */ var _shared_widgets_graph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/widgets/graph */ "./src/app/cartography/shared/widgets/graph.ts");
 /* harmony import */ var _shared_models_context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/models/context */ "./src/app/cartography/shared/models/context.ts");
 /* harmony import */ var _shared_models_size__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/size */ "./src/app/cartography/shared/models/size.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
@@ -856,7 +856,7 @@ var MapComponent = /** @class */ (function () {
             else {
                 this.graphContext.setSize(new _shared_models_size__WEBPACK_IMPORTED_MODULE_5__["Size"](this.width, this.height));
             }
-            this.graphLayout = new _shared_widgets_graph_widget__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
+            this.graphLayout = new _shared_widgets_graph__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
             this.graphLayout.connect(this.svg, this.graphContext);
             this.graphLayout.getNodesWidget().addOnNodeDraggingCallback(function (event, n) {
                 var linksWidget = _this.graphLayout.getLinksWidget();
@@ -1674,10 +1674,10 @@ var SelectionTool = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/drawing-line.widget.ts":
-/*!*******************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/drawing-line.widget.ts ***!
-  \*******************************************************************/
+/***/ "./src/app/cartography/shared/widgets/drawing-line.ts":
+/*!************************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/drawing-line.ts ***!
+  \************************************************************/
 /*! exports provided: DrawingLineWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1760,10 +1760,10 @@ var DrawingLineWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/drawings.widget.ts":
-/*!***************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/drawings.widget.ts ***!
-  \***************************************************************/
+/***/ "./src/app/cartography/shared/widgets/drawings.ts":
+/*!********************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/drawings.ts ***!
+  \********************************************************/
 /*! exports provided: DrawingsWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1826,10 +1826,10 @@ var DrawingsWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/ethernet-link.widget.ts":
-/*!********************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/ethernet-link.widget.ts ***!
-  \********************************************************************/
+/***/ "./src/app/cartography/shared/widgets/ethernet-link.ts":
+/*!*************************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/ethernet-link.ts ***!
+  \*************************************************************/
 /*! exports provided: EthernetLinkWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1865,23 +1865,23 @@ var EthernetLinkWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/graph.widget.ts":
-/*!************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/graph.widget.ts ***!
-  \************************************************************/
+/***/ "./src/app/cartography/shared/widgets/graph.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/graph.ts ***!
+  \*****************************************************/
 /*! exports provided: GraphLayout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphLayout", function() { return GraphLayout; });
-/* harmony import */ var _nodes_widget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./nodes.widget */ "./src/app/cartography/shared/widgets/nodes.widget.ts");
-/* harmony import */ var _links_widget__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./links.widget */ "./src/app/cartography/shared/widgets/links.widget.ts");
-/* harmony import */ var _drawings_widget__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./drawings.widget */ "./src/app/cartography/shared/widgets/drawings.widget.ts");
-/* harmony import */ var _drawing_line_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./drawing-line.widget */ "./src/app/cartography/shared/widgets/drawing-line.widget.ts");
+/* harmony import */ var _nodes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./nodes */ "./src/app/cartography/shared/widgets/nodes.ts");
+/* harmony import */ var _links__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./links */ "./src/app/cartography/shared/widgets/links.ts");
+/* harmony import */ var _drawings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./drawings */ "./src/app/cartography/shared/widgets/drawings.ts");
+/* harmony import */ var _drawing_line__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./drawing-line */ "./src/app/cartography/shared/widgets/drawing-line.ts");
 /* harmony import */ var _tools_selection_tool__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tools/selection-tool */ "./src/app/cartography/shared/tools/selection-tool.ts");
 /* harmony import */ var _tools_moving_tool__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tools/moving-tool */ "./src/app/cartography/shared/tools/moving-tool.ts");
-/* harmony import */ var _layers_widget__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layers.widget */ "./src/app/cartography/shared/widgets/layers.widget.ts");
+/* harmony import */ var _layers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layers */ "./src/app/cartography/shared/widgets/layers.ts");
 /* harmony import */ var _models_layer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../models/layer */ "./src/app/cartography/shared/models/layer.ts");
 
 
@@ -1897,13 +1897,13 @@ var GraphLayout = /** @class */ (function () {
         this.links = [];
         this.drawings = [];
         this.centerZeroZeroPoint = true;
-        this.linksWidget = new _links_widget__WEBPACK_IMPORTED_MODULE_1__["LinksWidget"]();
-        this.nodesWidget = new _nodes_widget__WEBPACK_IMPORTED_MODULE_0__["NodesWidget"]();
-        this.drawingsWidget = new _drawings_widget__WEBPACK_IMPORTED_MODULE_2__["DrawingsWidget"]();
-        this.drawingLineTool = new _drawing_line_widget__WEBPACK_IMPORTED_MODULE_3__["DrawingLineWidget"]();
+        this.linksWidget = new _links__WEBPACK_IMPORTED_MODULE_1__["LinksWidget"]();
+        this.nodesWidget = new _nodes__WEBPACK_IMPORTED_MODULE_0__["NodesWidget"]();
+        this.drawingsWidget = new _drawings__WEBPACK_IMPORTED_MODULE_2__["DrawingsWidget"]();
+        this.drawingLineTool = new _drawing_line__WEBPACK_IMPORTED_MODULE_3__["DrawingLineWidget"]();
         this.selectionTool = new _tools_selection_tool__WEBPACK_IMPORTED_MODULE_4__["SelectionTool"]();
         this.movingTool = new _tools_moving_tool__WEBPACK_IMPORTED_MODULE_5__["MovingTool"]();
-        this.layersWidget = new _layers_widget__WEBPACK_IMPORTED_MODULE_6__["LayersWidget"]();
+        this.layersWidget = new _layers__WEBPACK_IMPORTED_MODULE_6__["LayersWidget"]();
     }
     GraphLayout.prototype.setNodes = function (nodes) {
         this.nodes = nodes;
@@ -2005,10 +2005,10 @@ var GraphLayout = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/layers.widget.ts":
-/*!*************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/layers.widget.ts ***!
-  \*************************************************************/
+/***/ "./src/app/cartography/shared/widgets/layers.ts":
+/*!******************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/layers.ts ***!
+  \******************************************************/
 /*! exports provided: LayersWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2047,10 +2047,10 @@ var LayersWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/links.widget.ts":
-/*!************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/links.widget.ts ***!
-  \************************************************************/
+/***/ "./src/app/cartography/shared/widgets/links.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/links.ts ***!
+  \*****************************************************/
 /*! exports provided: LinksWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2060,8 +2060,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
 /* harmony import */ var _models_link_status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/link-status */ "./src/app/cartography/shared/models/link-status.ts");
 /* harmony import */ var _map_helpers_multi_link_calculator_helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../map/helpers/multi-link-calculator-helper */ "./src/app/cartography/map/helpers/multi-link-calculator-helper.ts");
-/* harmony import */ var _serial_link_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./serial-link.widget */ "./src/app/cartography/shared/widgets/serial-link.widget.ts");
-/* harmony import */ var _ethernet_link_widget__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ethernet-link.widget */ "./src/app/cartography/shared/widgets/ethernet-link.widget.ts");
+/* harmony import */ var _serial_link__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./serial-link */ "./src/app/cartography/shared/widgets/serial-link.ts");
+/* harmony import */ var _ethernet_link__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ethernet-link */ "./src/app/cartography/shared/widgets/ethernet-link.ts");
 
 
 
@@ -2073,9 +2073,9 @@ var LinksWidget = /** @class */ (function () {
     }
     LinksWidget.prototype.getLinkWidget = function (link) {
         if (link.link_type === 'serial') {
-            return new _serial_link_widget__WEBPACK_IMPORTED_MODULE_3__["SerialLinkWidget"]();
+            return new _serial_link__WEBPACK_IMPORTED_MODULE_3__["SerialLinkWidget"]();
         }
-        return new _ethernet_link_widget__WEBPACK_IMPORTED_MODULE_4__["EthernetLinkWidget"]();
+        return new _ethernet_link__WEBPACK_IMPORTED_MODULE_4__["EthernetLinkWidget"]();
     };
     LinksWidget.prototype.select = function (view) {
         return view.selectAll("g.link");
@@ -2172,10 +2172,10 @@ var LinksWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/nodes.widget.ts":
-/*!************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/nodes.widget.ts ***!
-  \************************************************************/
+/***/ "./src/app/cartography/shared/widgets/nodes.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/nodes.ts ***!
+  \*****************************************************/
 /*! exports provided: NodesWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2340,10 +2340,10 @@ var NodesWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/serial-link.widget.ts":
-/*!******************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/serial-link.widget.ts ***!
-  \******************************************************************/
+/***/ "./src/app/cartography/shared/widgets/serial-link.ts":
+/*!***********************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/serial-link.ts ***!
+  \***********************************************************/
 /*! exports provided: SerialLinkWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
