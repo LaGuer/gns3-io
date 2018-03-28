@@ -3041,18 +3041,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServerDatabase", function() { return ServerDatabase; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServerDataSource", function() { return ServerDataSource; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var _shared_models_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../shared/models/server */ "./src/app/shared/models/server.ts");
-/* harmony import */ var _shared_services_server_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/services/server.service */ "./src/app/shared/services/server.service.ts");
-/* harmony import */ var _angular_cdk_collections__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/collections */ "./node_modules/@angular/cdk/esm5/collections.es5.js");
-/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs/_esm5/Observable.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs/_esm5/BehaviorSubject.js");
-/* harmony import */ var rxjs_add_operator_startWith__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/add/operator/startWith */ "./node_modules/rxjs/_esm5/add/operator/startWith.js");
-/* harmony import */ var rxjs_add_observable_merge__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/add/observable/merge */ "./node_modules/rxjs/_esm5/add/observable/merge.js");
-/* harmony import */ var rxjs_add_operator_map__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/add/operator/map */ "./node_modules/rxjs/_esm5/add/operator/map.js");
-/* harmony import */ var rxjs_add_operator_debounceTime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/add/operator/debounceTime */ "./node_modules/rxjs/_esm5/add/operator/debounceTime.js");
-/* harmony import */ var rxjs_add_operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs/add/operator/distinctUntilChanged */ "./node_modules/rxjs/_esm5/add/operator/distinctUntilChanged.js");
-/* harmony import */ var rxjs_add_observable_fromEvent__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! rxjs/add/observable/fromEvent */ "./node_modules/rxjs/_esm5/add/observable/fromEvent.js");
+/* harmony import */ var _angular_cdk_collections__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/collections */ "./node_modules/@angular/cdk/esm5/collections.es5.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs/_esm5/Observable.js");
+/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs/_esm5/BehaviorSubject.js");
+/* harmony import */ var rxjs_add_operator_startWith__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/add/operator/startWith */ "./node_modules/rxjs/_esm5/add/operator/startWith.js");
+/* harmony import */ var rxjs_add_observable_merge__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/add/observable/merge */ "./node_modules/rxjs/_esm5/add/observable/merge.js");
+/* harmony import */ var rxjs_add_operator_map__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/add/operator/map */ "./node_modules/rxjs/_esm5/add/operator/map.js");
+/* harmony import */ var rxjs_add_operator_debounceTime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/add/operator/debounceTime */ "./node_modules/rxjs/_esm5/add/operator/debounceTime.js");
+/* harmony import */ var rxjs_add_operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/add/operator/distinctUntilChanged */ "./node_modules/rxjs/_esm5/add/operator/distinctUntilChanged.js");
+/* harmony import */ var rxjs_add_observable_fromEvent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/add/observable/fromEvent */ "./node_modules/rxjs/_esm5/add/observable/fromEvent.js");
+/* harmony import */ var _shared_models_server__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../shared/models/server */ "./src/app/shared/models/server.ts");
+/* harmony import */ var _shared_services_server_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../shared/services/server.service */ "./src/app/shared/services/server.service.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -3127,7 +3127,7 @@ var ServersComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./servers.component.html */ "./src/app/servers/servers.component.html"),
             styles: [__webpack_require__(/*! ./servers.component.css */ "./src/app/servers/servers.component.css")]
         }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"], _shared_services_server_service__WEBPACK_IMPORTED_MODULE_2__["ServerService"]])
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], _shared_services_server_service__WEBPACK_IMPORTED_MODULE_12__["ServerService"]])
     ], ServersComponent);
     return ServersComponent;
 }());
@@ -3136,7 +3136,7 @@ var AddServerDialogComponent = /** @class */ (function () {
     function AddServerDialogComponent(dialogRef, data) {
         this.dialogRef = dialogRef;
         this.data = data;
-        this.server = new _shared_models_server__WEBPACK_IMPORTED_MODULE_1__["Server"]();
+        this.server = new _shared_models_server__WEBPACK_IMPORTED_MODULE_11__["Server"]();
     }
     AddServerDialogComponent.prototype.onAddClick = function () {
         this.dialogRef.close(this.server);
@@ -3149,15 +3149,15 @@ var AddServerDialogComponent = /** @class */ (function () {
             selector: 'app-add-server-dialog',
             template: __webpack_require__(/*! ./add-server-dialog.html */ "./src/app/servers/add-server-dialog.html"),
         }),
-        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_5__["MAT_DIALOG_DATA"])),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialogRef"], Object])
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], Object])
     ], AddServerDialogComponent);
     return AddServerDialogComponent;
 }());
 
 var ServerDatabase = /** @class */ (function () {
     function ServerDatabase() {
-        this.dataChange = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_6__["BehaviorSubject"]([]);
+        this.dataChange = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
     }
     Object.defineProperty(ServerDatabase.prototype, "data", {
         get: function () {
@@ -3193,13 +3193,13 @@ var ServerDataSource = /** @class */ (function (_super) {
     }
     ServerDataSource.prototype.connect = function () {
         var _this = this;
-        return rxjs_Observable__WEBPACK_IMPORTED_MODULE_4__["Observable"].merge(this.serverDatabase.dataChange).map(function () {
+        return rxjs_Observable__WEBPACK_IMPORTED_MODULE_3__["Observable"].merge(this.serverDatabase.dataChange).map(function () {
             return _this.serverDatabase.data;
         });
     };
     ServerDataSource.prototype.disconnect = function () { };
     return ServerDataSource;
-}(_angular_cdk_collections__WEBPACK_IMPORTED_MODULE_3__["DataSource"]));
+}(_angular_cdk_collections__WEBPACK_IMPORTED_MODULE_1__["DataSource"]));
 
 
 
