@@ -786,7 +786,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var d3_ng2_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3-ng2-service */ "./node_modules/d3-ng2-service/index.js");
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
-/* harmony import */ var _shared_widgets_graph__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/widgets/graph */ "./src/app/cartography/shared/widgets/graph.ts");
+/* harmony import */ var _shared_widgets_graph_layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/widgets/graph-layout */ "./src/app/cartography/shared/widgets/graph-layout.ts");
 /* harmony import */ var _shared_models_context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/models/context */ "./src/app/cartography/shared/models/context.ts");
 /* harmony import */ var _shared_models_size__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/size */ "./src/app/cartography/shared/models/size.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
@@ -856,7 +856,7 @@ var MapComponent = /** @class */ (function () {
             else {
                 this.graphContext.setSize(new _shared_models_size__WEBPACK_IMPORTED_MODULE_5__["Size"](this.width, this.height));
             }
-            this.graphLayout = new _shared_widgets_graph__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
+            this.graphLayout = new _shared_widgets_graph_layout__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
             this.graphLayout.connect(this.svg, this.graphContext);
             this.graphLayout.getNodesWidget().addOnNodeDraggingCallback(function (event, n) {
                 var linksWidget = _this.graphLayout.getLinksWidget();
@@ -1221,6 +1221,73 @@ var SymbolsDataSource = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/managers/layers-manager.ts":
+/*!***************************************************************!*\
+  !*** ./src/app/cartography/shared/managers/layers-manager.ts ***!
+  \***************************************************************/
+/*! exports provided: LayersManager */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LayersManager", function() { return LayersManager; });
+/* harmony import */ var _models_layer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/layer */ "./src/app/cartography/shared/models/layer.ts");
+
+var LayersManager = /** @class */ (function () {
+    function LayersManager() {
+        this.layers = {};
+    }
+    LayersManager.prototype.getLayersList = function () {
+        var _this = this;
+        return Object.keys(this.layers).sort(function (a, b) {
+            return Number(a) - Number(b);
+        }).map(function (key) {
+            return _this.layers[key];
+        });
+    };
+    LayersManager.prototype.setNodes = function (nodes) {
+        var _this = this;
+        nodes
+            .forEach(function (node) {
+            var layer = _this.getLayerForKey(node.z.toString());
+            layer.nodes.push(node);
+        });
+    };
+    LayersManager.prototype.setDrawings = function (drawings) {
+        var _this = this;
+        drawings
+            .forEach(function (drawing) {
+            var layer = _this.getLayerForKey(drawing.z.toString());
+            layer.drawings.push(drawing);
+        });
+    };
+    LayersManager.prototype.setLinks = function (links) {
+        var _this = this;
+        links
+            .filter(function (link) { return link.source && link.target; })
+            .forEach(function (link) {
+            var key = Math.min(link.source.z, link.target.z).toString();
+            var layer = _this.getLayerForKey(key);
+            layer.links.push(link);
+        });
+    };
+    LayersManager.prototype.clear = function () {
+        this.layers = {};
+    };
+    LayersManager.prototype.getLayerForKey = function (key) {
+        if (!(key in this.layers)) {
+            this.layers[key] = new _models_layer__WEBPACK_IMPORTED_MODULE_0__["Layer"]();
+            this.layers[key].index = Number(key);
+        }
+        return this.layers[key];
+    };
+    return LayersManager;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/managers/selection-manager.ts":
 /*!******************************************************************!*\
   !*** ./src/app/cartography/shared/managers/selection-manager.ts ***!
@@ -1388,6 +1455,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Layer", function() { return Layer; });
 var Layer = /** @class */ (function () {
     function Layer() {
+        this.nodes = [];
+        this.drawings = [];
+        this.links = [];
     }
     return Layer;
 }());
@@ -1865,10 +1935,10 @@ var EthernetLinkWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/graph.ts":
-/*!*****************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/graph.ts ***!
-  \*****************************************************/
+/***/ "./src/app/cartography/shared/widgets/graph-layout.ts":
+/*!************************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/graph-layout.ts ***!
+  \************************************************************/
 /*! exports provided: GraphLayout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1882,7 +1952,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _tools_selection_tool__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tools/selection-tool */ "./src/app/cartography/shared/tools/selection-tool.ts");
 /* harmony import */ var _tools_moving_tool__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tools/moving-tool */ "./src/app/cartography/shared/tools/moving-tool.ts");
 /* harmony import */ var _layers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layers */ "./src/app/cartography/shared/widgets/layers.ts");
-/* harmony import */ var _models_layer__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../models/layer */ "./src/app/cartography/shared/models/layer.ts");
+/* harmony import */ var _managers_layers_manager__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../managers/layers-manager */ "./src/app/cartography/shared/managers/layers-manager.ts");
 
 
 
@@ -1948,47 +2018,12 @@ var GraphLayout = /** @class */ (function () {
         if (this.centerZeroZeroPoint) {
             canvas.attr('transform', function (ctx) { return "translate(" + ctx.getSize().width / 2 + ", " + ctx.getSize().height / 2 + ")"; });
         }
-        var layers = {};
-        this.nodes.forEach(function (n) {
-            var key = n.z.toString();
-            if (!(key in layers)) {
-                layers[key] = new _models_layer__WEBPACK_IMPORTED_MODULE_7__["Layer"]();
-                layers[key].nodes = [];
-                layers[key].drawings = [];
-                layers[key].links = [];
-            }
-            layers[key].nodes.push(n);
-        });
-        this.drawings.forEach(function (d) {
-            var key = d.z.toString();
-            if (!(key in layers)) {
-                layers[key] = new _models_layer__WEBPACK_IMPORTED_MODULE_7__["Layer"]();
-                layers[key].nodes = [];
-                layers[key].drawings = [];
-                layers[key].links = [];
-            }
-            layers[key].drawings.push(d);
-        });
-        this.links.forEach(function (l) {
-            if (!l.source || !l.target) {
-                return;
-            }
-            var key = Math.min(l.source.z, l.target.z).toString();
-            if (!(key in layers)) {
-                layers[key] = new _models_layer__WEBPACK_IMPORTED_MODULE_7__["Layer"]();
-                layers[key].nodes = [];
-                layers[key].drawings = [];
-                layers[key].links = [];
-            }
-            layers[key].links.push(l);
-        });
-        var layers_list = Object.keys(layers).sort(function (a, b) {
-            return Number(a) - Number(b);
-        }).map(function (key) {
-            return layers[key];
-        });
+        var layersManager = new _managers_layers_manager__WEBPACK_IMPORTED_MODULE_7__["LayersManager"]();
+        layersManager.setNodes(this.nodes);
+        layersManager.setDrawings(this.drawings);
+        layersManager.setLinks(this.links);
         this.layersWidget.graphLayout = this;
-        this.layersWidget.draw(canvas, layers_list);
+        this.layersWidget.draw(canvas, layersManager.getLayersList());
         this.drawingLineTool.draw(view, context);
         this.selectionTool.draw(view, context);
         this.movingTool.draw(view, context);
