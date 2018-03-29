@@ -2062,15 +2062,16 @@ var LayersWidget = /** @class */ (function () {
     LayersWidget.prototype.draw = function (view, layers) {
         var layers_selection = view
             .selectAll('g.layer')
-            .data(layers, function (l) {
-            return l.index.toString();
+            .data(layers, function (layer) {
+            return layer.index.toString();
         });
         var layers_enter = layers_selection
             .enter()
             .append('g')
-            .attr('class', 'layer')
-            .attr('data-index', function (layer) { return layer.index; });
+            .attr('class', 'layer');
         var merge = layers_selection.merge(layers_enter);
+        merge
+            .attr('data-index', function (layer) { return layer.index; });
         layers_selection
             .exit()
             .remove();
