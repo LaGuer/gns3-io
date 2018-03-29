@@ -211,12 +211,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./cartography/shared/managers/selection-manager */ "./src/app/cartography/shared/managers/selection-manager.ts");
 /* harmony import */ var _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./cartography/map/helpers/in-rectangle-helper */ "./src/app/cartography/map/helpers/in-rectangle-helper.ts");
 /* harmony import */ var _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./cartography/shared/datasources/drawings-datasource */ "./src/app/cartography/shared/datasources/drawings-datasource.ts");
+/* harmony import */ var _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts");
+/* harmony import */ var _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -280,6 +284,8 @@ var AppModule = /** @class */ (function () {
                 _appliance_appliance_component__WEBPACK_IMPORTED_MODULE_31__["ApplianceComponent"],
                 _appliance_appliance_list_dialog_appliance_list_dialog_component__WEBPACK_IMPORTED_MODULE_32__["ApplianceListDialogComponent"],
                 _shared_node_select_interface_node_select_interface_component__WEBPACK_IMPORTED_MODULE_33__["NodeSelectInterfaceComponent"],
+                _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_43__["MoveLayerDownActionComponent"],
+                _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_44__["MoveLayerUpActionComponent"],
             ],
             imports: [
                 _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_9__["NgbModule"].forRoot(),
@@ -2056,7 +2062,9 @@ var LayersWidget = /** @class */ (function () {
     LayersWidget.prototype.draw = function (view, layers) {
         var layers_selection = view
             .selectAll('g.layer')
-            .data(layers);
+            .data(layers, function (l) {
+            return l.index.toString();
+        });
         var layers_enter = layers_selection
             .enter()
             .append('g')
@@ -2296,28 +2304,10 @@ var NodesWidget = /** @class */ (function () {
             .enter()
             .append('g')
             .attr('class', 'node');
+        // add image to node
         node_enter
-            .append('image')
-            .attr('xlink:href', function (n) {
-            var symbol = _this.symbols.find(function (s) { return s.symbol_id === n.symbol; });
-            if (symbol) {
-                return 'data:image/svg+xml;base64,' + btoa(symbol.raw);
-            }
-            // @todo; we need to have default image
-            return 'data:image/svg+xml;base64,none';
-        })
-            .attr('width', function (n) { return n.width; })
-            .attr('height', function (n) { return n.height; })
-            .attr('x', function (n) { return -n.width / 2.; })
-            .attr('y', function (n) { return -n.height / 2.; })
-            .on('mouseover', function (n) {
-            Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(this).attr("class", "over");
-        })
-            .on('mouseout', function (n) {
-            Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(this).attr("class", "");
-        });
-        // .attr('width', (n: Node) => n.width)
-        // .attr('height', (n: Node) => n.height);
+            .append('image');
+        // add label of node
         node_enter
             .append('text')
             .attr('class', 'label');
@@ -2345,6 +2335,27 @@ var NodesWidget = /** @class */ (function () {
             if (self.onNodeClickedCallback) {
                 self.onNodeClickedCallback(d3_selection__WEBPACK_IMPORTED_MODULE_0__["event"], n);
             }
+        });
+        // update image of node
+        node_merge
+            .select('image')
+            .attr('xlink:href', function (n) {
+            var symbol = _this.symbols.find(function (s) { return s.symbol_id === n.symbol; });
+            if (symbol) {
+                return 'data:image/svg+xml;base64,' + btoa(symbol.raw);
+            }
+            // @todo; we need to have default image
+            return 'data:image/svg+xml;base64,none';
+        })
+            .attr('width', function (n) { return n.width; })
+            .attr('height', function (n) { return n.height; })
+            .attr('x', function (n) { return -n.width / 2.; })
+            .attr('y', function (n) { return -n.height / 2.; })
+            .on('mouseover', function (n) {
+            Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(this).attr("class", "over");
+        })
+            .on('mouseout', function (n) {
+            Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(this).attr("class", "");
         });
         this.revise(node_merge);
         var callback = function (n) {
@@ -3366,6 +3377,157 @@ var Snapshot = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.html":
+/*!***************************************************************************************************************!*\
+  !*** ./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.html ***!
+  \***************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<button mat-menu-item (click)=\"moveLayerDown()\">\n  <mat-icon>keyboard_arrow_down</mat-icon>\n  <span>Move layer down</span>\n</button>\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts":
+/*!*************************************************************************************************************!*\
+  !*** ./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts ***!
+  \*************************************************************************************************************/
+/*! exports provided: MoveLayerDownActionComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MoveLayerDownActionComponent", function() { return MoveLayerDownActionComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _models_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../models/server */ "./src/app/shared/models/server.ts");
+/* harmony import */ var _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../cartography/shared/models/node */ "./src/app/cartography/shared/models/node.ts");
+/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _services_node_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/node.service */ "./src/app/shared/services/node.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var MoveLayerDownActionComponent = /** @class */ (function () {
+    function MoveLayerDownActionComponent(nodesDataSource, nodeService) {
+        this.nodesDataSource = nodesDataSource;
+        this.nodeService = nodeService;
+    }
+    MoveLayerDownActionComponent.prototype.ngOnInit = function () { };
+    MoveLayerDownActionComponent.prototype.moveLayerDown = function () {
+        this.node.z--;
+        this.nodesDataSource.update(this.node);
+        this.nodeService
+            .update(this.server, this.node)
+            .subscribe(function (node) { });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _models_server__WEBPACK_IMPORTED_MODULE_1__["Server"])
+    ], MoveLayerDownActionComponent.prototype, "server", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_2__["Node"])
+    ], MoveLayerDownActionComponent.prototype, "node", void 0);
+    MoveLayerDownActionComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-move-layer-down-action',
+            template: __webpack_require__(/*! ./move-layer-down-action.component.html */ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.html")
+        }),
+        __metadata("design:paramtypes", [_cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_3__["NodesDataSource"],
+            _services_node_service__WEBPACK_IMPORTED_MODULE_4__["NodeService"]])
+    ], MoveLayerDownActionComponent);
+    return MoveLayerDownActionComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.html":
+/*!***********************************************************************************************************!*\
+  !*** ./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.html ***!
+  \***********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<button mat-menu-item (click)=\"moveLayerUp()\">\n  <mat-icon>keyboard_arrow_up</mat-icon>\n  <span>Move layer up</span>\n</button>\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts":
+/*!*********************************************************************************************************!*\
+  !*** ./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts ***!
+  \*********************************************************************************************************/
+/*! exports provided: MoveLayerUpActionComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MoveLayerUpActionComponent", function() { return MoveLayerUpActionComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _models_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../models/server */ "./src/app/shared/models/server.ts");
+/* harmony import */ var _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../cartography/shared/models/node */ "./src/app/cartography/shared/models/node.ts");
+/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _services_node_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/node.service */ "./src/app/shared/services/node.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var MoveLayerUpActionComponent = /** @class */ (function () {
+    function MoveLayerUpActionComponent(nodesDataSource, nodeService) {
+        this.nodesDataSource = nodesDataSource;
+        this.nodeService = nodeService;
+    }
+    MoveLayerUpActionComponent.prototype.ngOnInit = function () { };
+    MoveLayerUpActionComponent.prototype.moveLayerUp = function () {
+        this.node.z++;
+        this.nodeService
+            .update(this.server, this.node)
+            .subscribe(function (node) { });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _models_server__WEBPACK_IMPORTED_MODULE_1__["Server"])
+    ], MoveLayerUpActionComponent.prototype, "server", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_2__["Node"])
+    ], MoveLayerUpActionComponent.prototype, "node", void 0);
+    MoveLayerUpActionComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-move-layer-up-action',
+            template: __webpack_require__(/*! ./move-layer-up-action.component.html */ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.html")
+        }),
+        __metadata("design:paramtypes", [_cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_3__["NodesDataSource"],
+            _services_node_service__WEBPACK_IMPORTED_MODULE_4__["NodeService"]])
+    ], MoveLayerUpActionComponent);
+    return MoveLayerUpActionComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/shared/node-context-menu/actions/start-node-action/start-node-action.component.html":
 /*!*****************************************************************************************************!*\
   !*** ./src/app/shared/node-context-menu/actions/start-node-action/start-node-action.component.html ***!
@@ -3516,7 +3678,7 @@ var StopNodeActionComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n  </mat-menu>\n</div>\n"
+module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n    <app-move-layer-up-action [server]=\"server\" [node]=\"node\"></app-move-layer-up-action>\n    <app-move-layer-down-action [server]=\"server\" [node]=\"node\"></app-move-layer-down-action>\n  </mat-menu>\n</div>\n"
 
 /***/ }),
 
@@ -4113,6 +4275,14 @@ var NodeService = /** @class */ (function () {
             .put(server, "/projects/" + node.project_id + "/nodes/" + node.node_id, {
             'x': x,
             'y': y
+        });
+    };
+    NodeService.prototype.update = function (server, node) {
+        return this.httpServer
+            .put(server, "/projects/" + node.project_id + "/nodes/" + node.node_id, {
+            'x': node.x,
+            'y': node.y,
+            'z': node.z
         });
     };
     NodeService = __decorate([
