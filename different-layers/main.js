@@ -731,8 +731,8 @@ var MultiLinkCalculatorHelper = /** @class */ (function () {
         var _this = this;
         var links_from_nodes = {};
         links.forEach(function (l, i) {
-            var sid = l.nodes[0].node_id;
-            var tid = l.nodes[1].node_id;
+            var sid = l.source.node_id;
+            var tid = l.target.node_id;
             var key = (sid < tid ? sid + "," + tid : tid + "," + sid);
             var idx = 1;
             if (!(key in links_from_nodes)) {
@@ -2057,23 +2057,24 @@ var LayersWidget = /** @class */ (function () {
         var layers_selection = view
             .selectAll('g.layer')
             .data(layers);
-        layers_selection
+        var layers_enter = layers_selection
             .enter()
             .append('g')
             .attr('class', 'layer')
             .attr('data-index', function (layer) { return layer.index; });
+        var merge = layers_selection.merge(layers_enter);
         layers_selection
             .exit()
             .remove();
         this.graphLayout
             .getLinksWidget()
-            .draw(layers_selection);
+            .draw(merge);
         this.graphLayout
             .getNodesWidget()
-            .draw(layers_selection);
+            .draw(merge);
         this.graphLayout
             .getDrawingsWidget()
-            .draw(layers_selection);
+            .draw(merge);
     };
     return LayersWidget;
 }());
