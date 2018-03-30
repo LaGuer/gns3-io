@@ -2541,17 +2541,6 @@ module.exports = ""
 
 /***/ }),
 
-/***/ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.scss":
-/*!****************************************************************************************!*\
-  !*** ./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.scss ***!
-  \****************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
 /***/ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.ts":
 /*!**************************************************************************************!*\
   !*** ./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.ts ***!
@@ -2619,8 +2608,7 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
     ProjectMapShortcutsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-project-map-shortcuts',
-            template: __webpack_require__(/*! ./project-map-shortcuts.component.html */ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.html"),
-            styles: [__webpack_require__(/*! ./project-map-shortcuts.component.scss */ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.scss")]
+            template: __webpack_require__(/*! ./project-map-shortcuts.component.html */ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.html")
         }),
         __metadata("design:paramtypes", [angular2_hotkeys__WEBPACK_IMPORTED_MODULE_1__["HotkeysService"],
             _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_5__["ToasterService"],
