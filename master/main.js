@@ -210,12 +210,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _cartography_shared_datasources_symbols_datasource__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./cartography/shared/datasources/symbols-datasource */ "./src/app/cartography/shared/datasources/symbols-datasource.ts");
 /* harmony import */ var _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./cartography/shared/managers/selection-manager */ "./src/app/cartography/shared/managers/selection-manager.ts");
 /* harmony import */ var _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./cartography/map/helpers/in-rectangle-helper */ "./src/app/cartography/map/helpers/in-rectangle-helper.ts");
+/* harmony import */ var _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./cartography/shared/datasources/drawings-datasource */ "./src/app/cartography/shared/datasources/drawings-datasource.ts");
+/* harmony import */ var _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts");
+/* harmony import */ var _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
+
 
 
 
@@ -278,6 +284,8 @@ var AppModule = /** @class */ (function () {
                 _appliance_appliance_component__WEBPACK_IMPORTED_MODULE_31__["ApplianceComponent"],
                 _appliance_appliance_list_dialog_appliance_list_dialog_component__WEBPACK_IMPORTED_MODULE_32__["ApplianceListDialogComponent"],
                 _shared_node_select_interface_node_select_interface_component__WEBPACK_IMPORTED_MODULE_33__["NodeSelectInterfaceComponent"],
+                _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_43__["MoveLayerDownActionComponent"],
+                _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_44__["MoveLayerUpActionComponent"],
             ],
             imports: [
                 _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_9__["NgbModule"].forRoot(),
@@ -321,7 +329,8 @@ var AppModule = /** @class */ (function () {
                 _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_38__["NodesDataSource"],
                 _cartography_shared_datasources_symbols_datasource__WEBPACK_IMPORTED_MODULE_39__["SymbolsDataSource"],
                 _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_40__["SelectionManager"],
-                _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_41__["InRectangleHelper"]
+                _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_41__["InRectangleHelper"],
+                _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_42__["DrawingsDataSource"]
             ],
             entryComponents: [
                 _servers_servers_component__WEBPACK_IMPORTED_MODULE_27__["AddServerDialogComponent"],
@@ -728,8 +737,8 @@ var MultiLinkCalculatorHelper = /** @class */ (function () {
         var _this = this;
         var links_from_nodes = {};
         links.forEach(function (l, i) {
-            var sid = l.nodes[0].node_id;
-            var tid = l.nodes[1].node_id;
+            var sid = l.source.node_id;
+            var tid = l.target.node_id;
             var key = (sid < tid ? sid + "," + tid : tid + "," + sid);
             var idx = 1;
             if (!(key in links_from_nodes)) {
@@ -783,7 +792,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var d3_ng2_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3-ng2-service */ "./node_modules/d3-ng2-service/index.js");
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
-/* harmony import */ var _shared_widgets_graph_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/widgets/graph.widget */ "./src/app/cartography/shared/widgets/graph.widget.ts");
+/* harmony import */ var _shared_widgets_graph_layout__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/widgets/graph-layout */ "./src/app/cartography/shared/widgets/graph-layout.ts");
 /* harmony import */ var _shared_models_context__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/models/context */ "./src/app/cartography/shared/models/context.ts");
 /* harmony import */ var _shared_models_size__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../shared/models/size */ "./src/app/cartography/shared/models/size.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
@@ -853,7 +862,7 @@ var MapComponent = /** @class */ (function () {
             else {
                 this.graphContext.setSize(new _shared_models_size__WEBPACK_IMPORTED_MODULE_5__["Size"](this.width, this.height));
             }
-            this.graphLayout = new _shared_widgets_graph_widget__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
+            this.graphLayout = new _shared_widgets_graph_layout__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
             this.graphLayout.connect(this.svg, this.graphContext);
             this.graphLayout.getNodesWidget().addOnNodeDraggingCallback(function (event, n) {
                 var linksWidget = _this.graphLayout.getLinksWidget();
@@ -1026,6 +1035,54 @@ var DataSource = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/datasources/drawings-datasource.ts":
+/*!***********************************************************************!*\
+  !*** ./src/app/cartography/shared/datasources/drawings-datasource.ts ***!
+  \***********************************************************************/
+/*! exports provided: DrawingsDataSource */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DrawingsDataSource", function() { return DrawingsDataSource; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./datasource */ "./src/app/cartography/shared/datasources/datasource.ts");
+var __extends = (undefined && undefined.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var DrawingsDataSource = /** @class */ (function (_super) {
+    __extends(DrawingsDataSource, _super);
+    function DrawingsDataSource() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    DrawingsDataSource.prototype.findIndex = function (drawing) {
+        return this.data.findIndex(function (d) { return d.drawing_id === drawing.drawing_id; });
+    };
+    DrawingsDataSource = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])()
+    ], DrawingsDataSource);
+    return DrawingsDataSource;
+}(_datasource__WEBPACK_IMPORTED_MODULE_1__["DataSource"]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/datasources/links-datasource.ts":
 /*!********************************************************************!*\
   !*** ./src/app/cartography/shared/datasources/links-datasource.ts ***!
@@ -1084,8 +1141,8 @@ var LinksDataSource = /** @class */ (function (_super) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "NodesDataSource", function() { return NodesDataSource; });
-/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datasource */ "./src/app/cartography/shared/datasources/datasource.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./datasource */ "./src/app/cartography/shared/datasources/datasource.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1113,10 +1170,10 @@ var NodesDataSource = /** @class */ (function (_super) {
         return this.data.findIndex(function (n) { return n.node_id === node.node_id; });
     };
     NodesDataSource = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])()
     ], NodesDataSource);
     return NodesDataSource;
-}(_datasource__WEBPACK_IMPORTED_MODULE_0__["DataSource"]));
+}(_datasource__WEBPACK_IMPORTED_MODULE_1__["DataSource"]));
 
 
 
@@ -1132,8 +1189,8 @@ var NodesDataSource = /** @class */ (function (_super) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SymbolsDataSource", function() { return SymbolsDataSource; });
-/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./datasource */ "./src/app/cartography/shared/datasources/datasource.ts");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./datasource */ "./src/app/cartography/shared/datasources/datasource.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -1161,10 +1218,77 @@ var SymbolsDataSource = /** @class */ (function (_super) {
         return this.data.findIndex(function (s) { return s.symbol_id === symbol.symbol_id; });
     };
     SymbolsDataSource = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])()
     ], SymbolsDataSource);
     return SymbolsDataSource;
-}(_datasource__WEBPACK_IMPORTED_MODULE_0__["DataSource"]));
+}(_datasource__WEBPACK_IMPORTED_MODULE_1__["DataSource"]));
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/managers/layers-manager.ts":
+/*!***************************************************************!*\
+  !*** ./src/app/cartography/shared/managers/layers-manager.ts ***!
+  \***************************************************************/
+/*! exports provided: LayersManager */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LayersManager", function() { return LayersManager; });
+/* harmony import */ var _models_layer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/layer */ "./src/app/cartography/shared/models/layer.ts");
+
+var LayersManager = /** @class */ (function () {
+    function LayersManager() {
+        this.layers = {};
+    }
+    LayersManager.prototype.getLayersList = function () {
+        var _this = this;
+        return Object.keys(this.layers).sort(function (a, b) {
+            return Number(a) - Number(b);
+        }).map(function (key) {
+            return _this.layers[key];
+        });
+    };
+    LayersManager.prototype.setNodes = function (nodes) {
+        var _this = this;
+        nodes
+            .forEach(function (node) {
+            var layer = _this.getLayerForKey(node.z.toString());
+            layer.nodes.push(node);
+        });
+    };
+    LayersManager.prototype.setDrawings = function (drawings) {
+        var _this = this;
+        drawings
+            .forEach(function (drawing) {
+            var layer = _this.getLayerForKey(drawing.z.toString());
+            layer.drawings.push(drawing);
+        });
+    };
+    LayersManager.prototype.setLinks = function (links) {
+        var _this = this;
+        links
+            .filter(function (link) { return link.source && link.target; })
+            .forEach(function (link) {
+            var key = Math.min(link.source.z, link.target.z).toString();
+            var layer = _this.getLayerForKey(key);
+            layer.links.push(link);
+        });
+    };
+    LayersManager.prototype.clear = function () {
+        this.layers = {};
+    };
+    LayersManager.prototype.getLayerForKey = function (key) {
+        if (!(key in this.layers)) {
+            this.layers[key] = new _models_layer__WEBPACK_IMPORTED_MODULE_0__["Layer"]();
+            this.layers[key].index = Number(key);
+        }
+        return this.layers[key];
+    };
+    return LayersManager;
+}());
 
 
 
@@ -1319,6 +1443,29 @@ var DrawingLine = /** @class */ (function () {
     function DrawingLine() {
     }
     return DrawingLine;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/layer.ts":
+/*!****************************************************!*\
+  !*** ./src/app/cartography/shared/models/layer.ts ***!
+  \****************************************************/
+/*! exports provided: Layer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Layer", function() { return Layer; });
+var Layer = /** @class */ (function () {
+    function Layer() {
+        this.nodes = [];
+        this.drawings = [];
+        this.links = [];
+    }
+    return Layer;
 }());
 
 
@@ -1603,27 +1750,27 @@ var SelectionTool = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/drawing-line.widget.ts":
-/*!*******************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/drawing-line.widget.ts ***!
-  \*******************************************************************/
+/***/ "./src/app/cartography/shared/widgets/drawing-line.ts":
+/*!************************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/drawing-line.ts ***!
+  \************************************************************/
 /*! exports provided: DrawingLineWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DrawingLineWidget", function() { return DrawingLineWidget; });
-/* harmony import */ var _models_drawing_line__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../models/drawing-line */ "./src/app/cartography/shared/models/drawing-line.ts");
-/* harmony import */ var _models_point__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/point */ "./src/app/cartography/shared/models/point.ts");
-/* harmony import */ var d3_shape__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! d3-shape */ "./node_modules/d3-shape/index.js");
-/* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
+/* harmony import */ var d3_shape__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3-shape */ "./node_modules/d3-shape/index.js");
+/* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
+/* harmony import */ var _models_drawing_line__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../models/drawing-line */ "./src/app/cartography/shared/models/drawing-line.ts");
+/* harmony import */ var _models_point__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../models/point */ "./src/app/cartography/shared/models/point.ts");
 
 
 
 
 var DrawingLineWidget = /** @class */ (function () {
     function DrawingLineWidget() {
-        this.drawingLine = new _models_drawing_line__WEBPACK_IMPORTED_MODULE_0__["DrawingLine"]();
+        this.drawingLine = new _models_drawing_line__WEBPACK_IMPORTED_MODULE_2__["DrawingLine"]();
         this.drawing = false;
         this.data = {};
     }
@@ -1631,11 +1778,11 @@ var DrawingLineWidget = /** @class */ (function () {
         var self = this;
         this.drawing = true;
         this.data = data;
-        this.drawingLine.start = new _models_point__WEBPACK_IMPORTED_MODULE_1__["Point"](x, y);
-        this.drawingLine.end = new _models_point__WEBPACK_IMPORTED_MODULE_1__["Point"](x, y);
+        this.drawingLine.start = new _models_point__WEBPACK_IMPORTED_MODULE_3__["Point"](x, y);
+        this.drawingLine.end = new _models_point__WEBPACK_IMPORTED_MODULE_3__["Point"](x, y);
         var over = function (d, i) {
             var node = self.selection.select('g.canvas').node();
-            var coordinates = Object(d3_selection__WEBPACK_IMPORTED_MODULE_3__["mouse"])(node);
+            var coordinates = Object(d3_selection__WEBPACK_IMPORTED_MODULE_1__["mouse"])(node);
             self.drawingLine.end.x = coordinates[0];
             self.drawingLine.end.y = coordinates[1];
             self.draw(null, null);
@@ -1667,7 +1814,7 @@ var DrawingLineWidget = /** @class */ (function () {
                     [this.drawingLine.end.x, this.drawingLine.end.y]
                 ]];
         }
-        var value_line = Object(d3_shape__WEBPACK_IMPORTED_MODULE_2__["line"])();
+        var value_line = Object(d3_shape__WEBPACK_IMPORTED_MODULE_0__["line"])();
         var drawing_line_tool = this.selection.select('g.drawing-line-tool');
         var tool = drawing_line_tool
             .selectAll('path')
@@ -1689,10 +1836,10 @@ var DrawingLineWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/drawings.widget.ts":
-/*!***************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/drawings.widget.ts ***!
-  \***************************************************************/
+/***/ "./src/app/cartography/shared/widgets/drawings.ts":
+/*!********************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/drawings.ts ***!
+  \********************************************************/
 /*! exports provided: DrawingsWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1703,8 +1850,13 @@ var DrawingsWidget = /** @class */ (function () {
     function DrawingsWidget() {
     }
     DrawingsWidget.prototype.draw = function (view, drawings) {
-        var drawing = view.selectAll('g.drawing')
-            .data(drawings);
+        var drawing = view
+            .selectAll('g.drawing')
+            .data(function (l) {
+            return l.drawings;
+        }, function (d) {
+            return d.drawing_id;
+        });
         var drawing_enter = drawing.enter()
             .append('g')
             .attr('class', 'drawing');
@@ -1743,8 +1895,6 @@ var DrawingsWidget = /** @class */ (function () {
         });
         drawing.exit().remove();
     };
-    DrawingsWidget.prototype.appendSVG = function (svg) {
-    };
     return DrawingsWidget;
 }());
 
@@ -1752,10 +1902,10 @@ var DrawingsWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/ethernet-link.widget.ts":
-/*!********************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/ethernet-link.widget.ts ***!
-  \********************************************************************/
+/***/ "./src/app/cartography/shared/widgets/ethernet-link.ts":
+/*!*************************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/ethernet-link.ts ***!
+  \*************************************************************/
 /*! exports provided: EthernetLinkWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1791,9 +1941,9 @@ var EthernetLinkWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/graph.widget.ts":
+/***/ "./src/app/cartography/shared/widgets/graph-layout.ts":
 /*!************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/graph.widget.ts ***!
+  !*** ./src/app/cartography/shared/widgets/graph-layout.ts ***!
   \************************************************************/
 /*! exports provided: GraphLayout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -1801,12 +1951,16 @@ var EthernetLinkWidget = /** @class */ (function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GraphLayout", function() { return GraphLayout; });
-/* harmony import */ var _nodes_widget__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./nodes.widget */ "./src/app/cartography/shared/widgets/nodes.widget.ts");
-/* harmony import */ var _links_widget__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./links.widget */ "./src/app/cartography/shared/widgets/links.widget.ts");
-/* harmony import */ var _drawings_widget__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./drawings.widget */ "./src/app/cartography/shared/widgets/drawings.widget.ts");
-/* harmony import */ var _drawing_line_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./drawing-line.widget */ "./src/app/cartography/shared/widgets/drawing-line.widget.ts");
+/* harmony import */ var _nodes__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./nodes */ "./src/app/cartography/shared/widgets/nodes.ts");
+/* harmony import */ var _links__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./links */ "./src/app/cartography/shared/widgets/links.ts");
+/* harmony import */ var _drawings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./drawings */ "./src/app/cartography/shared/widgets/drawings.ts");
+/* harmony import */ var _drawing_line__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./drawing-line */ "./src/app/cartography/shared/widgets/drawing-line.ts");
 /* harmony import */ var _tools_selection_tool__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../tools/selection-tool */ "./src/app/cartography/shared/tools/selection-tool.ts");
 /* harmony import */ var _tools_moving_tool__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../tools/moving-tool */ "./src/app/cartography/shared/tools/moving-tool.ts");
+/* harmony import */ var _layers__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./layers */ "./src/app/cartography/shared/widgets/layers.ts");
+/* harmony import */ var _managers_layers_manager__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../managers/layers-manager */ "./src/app/cartography/shared/managers/layers-manager.ts");
+
+
 
 
 
@@ -1819,12 +1973,13 @@ var GraphLayout = /** @class */ (function () {
         this.links = [];
         this.drawings = [];
         this.centerZeroZeroPoint = true;
-        this.linksWidget = new _links_widget__WEBPACK_IMPORTED_MODULE_1__["LinksWidget"]();
-        this.nodesWidget = new _nodes_widget__WEBPACK_IMPORTED_MODULE_0__["NodesWidget"]();
-        this.drawingsWidget = new _drawings_widget__WEBPACK_IMPORTED_MODULE_2__["DrawingsWidget"]();
-        this.drawingLineTool = new _drawing_line_widget__WEBPACK_IMPORTED_MODULE_3__["DrawingLineWidget"]();
+        this.linksWidget = new _links__WEBPACK_IMPORTED_MODULE_1__["LinksWidget"]();
+        this.nodesWidget = new _nodes__WEBPACK_IMPORTED_MODULE_0__["NodesWidget"]();
+        this.drawingsWidget = new _drawings__WEBPACK_IMPORTED_MODULE_2__["DrawingsWidget"]();
+        this.drawingLineTool = new _drawing_line__WEBPACK_IMPORTED_MODULE_3__["DrawingLineWidget"]();
         this.selectionTool = new _tools_selection_tool__WEBPACK_IMPORTED_MODULE_4__["SelectionTool"]();
         this.movingTool = new _tools_moving_tool__WEBPACK_IMPORTED_MODULE_5__["MovingTool"]();
+        this.layersWidget = new _layers__WEBPACK_IMPORTED_MODULE_6__["LayersWidget"]();
     }
     GraphLayout.prototype.setNodes = function (nodes) {
         this.nodes = nodes;
@@ -1840,6 +1995,9 @@ var GraphLayout = /** @class */ (function () {
     };
     GraphLayout.prototype.getLinksWidget = function () {
         return this.linksWidget;
+    };
+    GraphLayout.prototype.getDrawingsWidget = function () {
+        return this.drawingsWidget;
     };
     GraphLayout.prototype.getDrawingLineTool = function () {
         return this.drawingLineTool;
@@ -1866,9 +2024,12 @@ var GraphLayout = /** @class */ (function () {
         if (this.centerZeroZeroPoint) {
             canvas.attr('transform', function (ctx) { return "translate(" + ctx.getSize().width / 2 + ", " + ctx.getSize().height / 2 + ")"; });
         }
-        this.linksWidget.draw(canvas, this.links);
-        this.nodesWidget.draw(canvas, this.nodes);
-        this.drawingsWidget.draw(canvas, this.drawings);
+        var layersManager = new _managers_layers_manager__WEBPACK_IMPORTED_MODULE_7__["LayersManager"]();
+        layersManager.setNodes(this.nodes);
+        layersManager.setDrawings(this.drawings);
+        layersManager.setLinks(this.links);
+        this.layersWidget.graphLayout = this;
+        this.layersWidget.draw(canvas, layersManager.getLayersList());
         this.drawingLineTool.draw(view, context);
         this.selectionTool.draw(view, context);
         this.movingTool.draw(view, context);
@@ -1885,10 +2046,56 @@ var GraphLayout = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/links.widget.ts":
-/*!************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/links.widget.ts ***!
-  \************************************************************/
+/***/ "./src/app/cartography/shared/widgets/layers.ts":
+/*!******************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/layers.ts ***!
+  \******************************************************/
+/*! exports provided: LayersWidget */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LayersWidget", function() { return LayersWidget; });
+var LayersWidget = /** @class */ (function () {
+    function LayersWidget() {
+    }
+    LayersWidget.prototype.draw = function (view, layers) {
+        var layers_selection = view
+            .selectAll('g.layer')
+            .data(layers, function (layer) {
+            return layer.index.toString();
+        });
+        var layers_enter = layers_selection
+            .enter()
+            .append('g')
+            .attr('class', 'layer');
+        var merge = layers_selection.merge(layers_enter);
+        merge
+            .attr('data-index', function (layer) { return layer.index; });
+        layers_selection
+            .exit()
+            .remove();
+        this.graphLayout
+            .getLinksWidget()
+            .draw(merge);
+        this.graphLayout
+            .getNodesWidget()
+            .draw(merge);
+        this.graphLayout
+            .getDrawingsWidget()
+            .draw(merge);
+    };
+    return LayersWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/links.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/links.ts ***!
+  \*****************************************************/
 /*! exports provided: LinksWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1898,8 +2105,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var d3_selection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! d3-selection */ "./node_modules/d3-selection/index.js");
 /* harmony import */ var _models_link_status__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../models/link-status */ "./src/app/cartography/shared/models/link-status.ts");
 /* harmony import */ var _map_helpers_multi_link_calculator_helper__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../map/helpers/multi-link-calculator-helper */ "./src/app/cartography/map/helpers/multi-link-calculator-helper.ts");
-/* harmony import */ var _serial_link_widget__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./serial-link.widget */ "./src/app/cartography/shared/widgets/serial-link.widget.ts");
-/* harmony import */ var _ethernet_link_widget__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ethernet-link.widget */ "./src/app/cartography/shared/widgets/ethernet-link.widget.ts");
+/* harmony import */ var _serial_link__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./serial-link */ "./src/app/cartography/shared/widgets/serial-link.ts");
+/* harmony import */ var _ethernet_link__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./ethernet-link */ "./src/app/cartography/shared/widgets/ethernet-link.ts");
 
 
 
@@ -1911,9 +2118,9 @@ var LinksWidget = /** @class */ (function () {
     }
     LinksWidget.prototype.getLinkWidget = function (link) {
         if (link.link_type === 'serial') {
-            return new _serial_link_widget__WEBPACK_IMPORTED_MODULE_3__["SerialLinkWidget"]();
+            return new _serial_link__WEBPACK_IMPORTED_MODULE_3__["SerialLinkWidget"]();
         }
-        return new _ethernet_link_widget__WEBPACK_IMPORTED_MODULE_4__["EthernetLinkWidget"]();
+        return new _ethernet_link__WEBPACK_IMPORTED_MODULE_4__["EthernetLinkWidget"]();
     };
     LinksWidget.prototype.select = function (view) {
         return view.selectAll("g.link");
@@ -1976,18 +2183,21 @@ var LinksWidget = /** @class */ (function () {
         });
     };
     LinksWidget.prototype.draw = function (view, links) {
-        var self = this;
-        this.multiLinkCalculatorHelper.assignDataToLinks(links);
-        var linksLayer = view.selectAll("g.links").data([{}]);
-        linksLayer
-            .enter()
-            .append('g')
-            .attr("class", "links");
-        var link = linksLayer
+        var _this = this;
+        var link = view
             .selectAll("g.link")
-            .data(links.filter(function (l) {
-            return l.target && l.source;
-        }));
+            .data(function (layer) {
+            if (layer.links) {
+                var layer_links = layer.links.filter(function (l) {
+                    return l.target && l.source;
+                });
+                _this.multiLinkCalculatorHelper.assignDataToLinks(layer_links);
+                return layer_links;
+            }
+            return [];
+        }, function (l) {
+            return l.link_id;
+        });
         var link_enter = link.enter()
             .append('g')
             .attr('class', 'link')
@@ -2007,10 +2217,10 @@ var LinksWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/nodes.widget.ts":
-/*!************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/nodes.widget.ts ***!
-  \************************************************************/
+/***/ "./src/app/cartography/shared/widgets/nodes.ts":
+/*!*****************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/nodes.ts ***!
+  \*****************************************************/
 /*! exports provided: NodesWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2079,17 +2289,57 @@ var NodesWidget = /** @class */ (function () {
     NodesWidget.prototype.draw = function (view, nodes) {
         var _this = this;
         var self = this;
-        var node = view
-            .selectAll('g.node')
-            .data(nodes, function (n) {
-            return n.node_id;
-        });
-        var node_enter = node
+        var nodes_selection = view
+            .selectAll('g.node');
+        if (nodes) {
+            nodes_selection = nodes_selection.data(nodes);
+        }
+        else {
+            nodes_selection = nodes_selection.data(function (l) {
+                return l.nodes;
+            }, function (n) {
+                return n.node_id;
+            });
+        }
+        var node_enter = nodes_selection
             .enter()
             .append('g')
             .attr('class', 'node');
+        // add image to node
         node_enter
-            .append('image')
+            .append('image');
+        // add label of node
+        node_enter
+            .append('text')
+            .attr('class', 'label');
+        if (this.debug) {
+            node_enter
+                .append('circle')
+                .attr('class', 'node_point')
+                .attr('r', 2);
+            node_enter
+                .append('text')
+                .attr('class', 'node_point_label')
+                .attr('x', '-100')
+                .attr('y', '0');
+        }
+        var node_merge = nodes_selection
+            .merge(node_enter)
+            .classed('selected', function (n) { return n.is_selected; })
+            .on("contextmenu", function (n, i) {
+            d3_selection__WEBPACK_IMPORTED_MODULE_0__["event"].preventDefault();
+            if (self.onContextMenuCallback !== null) {
+                self.onContextMenuCallback(d3_selection__WEBPACK_IMPORTED_MODULE_0__["event"], n);
+            }
+        })
+            .on('click', function (n) {
+            if (self.onNodeClickedCallback) {
+                self.onNodeClickedCallback(d3_selection__WEBPACK_IMPORTED_MODULE_0__["event"], n);
+            }
+        });
+        // update image of node
+        node_merge
+            .select('image')
             .attr('xlink:href', function (n) {
             var symbol = _this.symbols.find(function (s) { return s.symbol_id === n.symbol; });
             if (symbol) {
@@ -2107,36 +2357,6 @@ var NodesWidget = /** @class */ (function () {
         })
             .on('mouseout', function (n) {
             Object(d3_selection__WEBPACK_IMPORTED_MODULE_0__["select"])(this).attr("class", "");
-        });
-        // .attr('width', (n: Node) => n.width)
-        // .attr('height', (n: Node) => n.height);
-        node_enter
-            .append('text')
-            .attr('class', 'label');
-        if (this.debug) {
-            node_enter
-                .append('circle')
-                .attr('class', 'node_point')
-                .attr('r', 2);
-            node_enter
-                .append('text')
-                .attr('class', 'node_point_label')
-                .attr('x', '-100')
-                .attr('y', '0');
-        }
-        var node_merge = node
-            .merge(node_enter)
-            .classed('selected', function (n) { return n.is_selected; })
-            .on("contextmenu", function (n, i) {
-            d3_selection__WEBPACK_IMPORTED_MODULE_0__["event"].preventDefault();
-            if (self.onContextMenuCallback !== null) {
-                self.onContextMenuCallback(d3_selection__WEBPACK_IMPORTED_MODULE_0__["event"], n);
-            }
-        })
-            .on('click', function (n) {
-            if (self.onNodeClickedCallback) {
-                self.onNodeClickedCallback(d3_selection__WEBPACK_IMPORTED_MODULE_0__["event"], n);
-            }
         });
         this.revise(node_merge);
         var callback = function (n) {
@@ -2157,7 +2377,7 @@ var NodesWidget = /** @class */ (function () {
             });
         };
         node_merge.call(dragging());
-        node
+        nodes_selection
             .exit()
             .remove();
     };
@@ -2168,10 +2388,10 @@ var NodesWidget = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/cartography/shared/widgets/serial-link.widget.ts":
-/*!******************************************************************!*\
-  !*** ./src/app/cartography/shared/widgets/serial-link.widget.ts ***!
-  \******************************************************************/
+/***/ "./src/app/cartography/shared/widgets/serial-link.ts":
+/*!***********************************************************!*\
+  !*** ./src/app/cartography/shared/widgets/serial-link.ts ***!
+  \***********************************************************/
 /*! exports provided: SerialLinkWidget */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2363,6 +2583,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ../shared/handlers/project-web-service-handler */ "./src/app/shared/handlers/project-web-service-handler.ts");
 /* harmony import */ var _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ../cartography/shared/managers/selection-manager */ "./src/app/cartography/shared/managers/selection-manager.ts");
 /* harmony import */ var _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ../cartography/map/helpers/in-rectangle-helper */ "./src/app/cartography/map/helpers/in-rectangle-helper.ts");
+/* harmony import */ var _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ../cartography/shared/datasources/drawings-datasource */ "./src/app/cartography/shared/datasources/drawings-datasource.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2402,8 +2623,9 @@ var __param = (undefined && undefined.__param) || function (paramIndex, decorato
 
 
 
+
 var ProjectMapComponent = /** @class */ (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toaster, projectWebServiceHandler, nodesDataSource, linksDataSource) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toaster, projectWebServiceHandler, nodesDataSource, linksDataSource, drawingsDataSource) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
@@ -2417,6 +2639,7 @@ var ProjectMapComponent = /** @class */ (function () {
         this.projectWebServiceHandler = projectWebServiceHandler;
         this.nodesDataSource = nodesDataSource;
         this.linksDataSource = linksDataSource;
+        this.drawingsDataSource = drawingsDataSource;
         this.nodes = [];
         this.links = [];
         this.drawings = [];
@@ -2453,6 +2676,12 @@ var ProjectMapComponent = /** @class */ (function () {
         this.symbolService.symbols.subscribe(function (symbols) {
             _this.symbols = symbols;
         });
+        this.drawingsDataSource.connect().subscribe(function (drawings) {
+            _this.drawings = drawings;
+            if (_this.mapChild) {
+                _this.mapChild.reload();
+            }
+        });
         this.nodesDataSource.connect().subscribe(function (nodes) {
             _this.nodes = nodes;
             if (_this.mapChild) {
@@ -2471,18 +2700,18 @@ var ProjectMapComponent = /** @class */ (function () {
         this.symbolService
             .load(this.server)
             .flatMap(function () {
-            return _this.projectService.drawings(_this.server, project.project_id);
+            return _this.projectService.nodes(_this.server, project.project_id);
         })
-            .flatMap(function (drawings) {
-            _this.drawings = drawings;
+            .flatMap(function (nodes) {
+            _this.nodesDataSource.set(nodes);
             return _this.projectService.links(_this.server, project.project_id);
         })
             .flatMap(function (links) {
             _this.linksDataSource.set(links);
-            return _this.projectService.nodes(_this.server, project.project_id);
+            return _this.projectService.drawings(_this.server, project.project_id);
         })
-            .subscribe(function (nodes) {
-            _this.nodesDataSource.set(nodes);
+            .subscribe(function (drawings) {
+            _this.drawingsDataSource.set(drawings);
             _this.setUpMapCallbacks(project);
             _this.setUpWS(project);
             _this.isLoading = false;
@@ -2624,7 +2853,8 @@ var ProjectMapComponent = /** @class */ (function () {
             _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_21__["ToasterService"],
             _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_24__["ProjectWebServiceHandler"],
             _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_22__["NodesDataSource"],
-            _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_23__["LinksDataSource"]])
+            _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_23__["LinksDataSource"],
+            _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_27__["DrawingsDataSource"]])
     ], ProjectMapComponent);
     return ProjectMapComponent;
 }());
@@ -2859,18 +3089,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServerDatabase", function() { return ServerDatabase; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServerDataSource", function() { return ServerDataSource; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var _shared_models_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../shared/models/server */ "./src/app/shared/models/server.ts");
-/* harmony import */ var _shared_services_server_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/services/server.service */ "./src/app/shared/services/server.service.ts");
-/* harmony import */ var _angular_cdk_collections__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/collections */ "./node_modules/@angular/cdk/esm5/collections.es5.js");
-/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs/_esm5/Observable.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs/_esm5/BehaviorSubject.js");
-/* harmony import */ var rxjs_add_operator_startWith__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/add/operator/startWith */ "./node_modules/rxjs/_esm5/add/operator/startWith.js");
-/* harmony import */ var rxjs_add_observable_merge__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/add/observable/merge */ "./node_modules/rxjs/_esm5/add/observable/merge.js");
-/* harmony import */ var rxjs_add_operator_map__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/add/operator/map */ "./node_modules/rxjs/_esm5/add/operator/map.js");
-/* harmony import */ var rxjs_add_operator_debounceTime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/add/operator/debounceTime */ "./node_modules/rxjs/_esm5/add/operator/debounceTime.js");
-/* harmony import */ var rxjs_add_operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! rxjs/add/operator/distinctUntilChanged */ "./node_modules/rxjs/_esm5/add/operator/distinctUntilChanged.js");
-/* harmony import */ var rxjs_add_observable_fromEvent__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! rxjs/add/observable/fromEvent */ "./node_modules/rxjs/_esm5/add/observable/fromEvent.js");
+/* harmony import */ var _angular_cdk_collections__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/cdk/collections */ "./node_modules/@angular/cdk/esm5/collections.es5.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs/_esm5/Observable.js");
+/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs/_esm5/BehaviorSubject.js");
+/* harmony import */ var rxjs_add_operator_startWith__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/add/operator/startWith */ "./node_modules/rxjs/_esm5/add/operator/startWith.js");
+/* harmony import */ var rxjs_add_observable_merge__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/add/observable/merge */ "./node_modules/rxjs/_esm5/add/observable/merge.js");
+/* harmony import */ var rxjs_add_operator_map__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/add/operator/map */ "./node_modules/rxjs/_esm5/add/operator/map.js");
+/* harmony import */ var rxjs_add_operator_debounceTime__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/add/operator/debounceTime */ "./node_modules/rxjs/_esm5/add/operator/debounceTime.js");
+/* harmony import */ var rxjs_add_operator_distinctUntilChanged__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/add/operator/distinctUntilChanged */ "./node_modules/rxjs/_esm5/add/operator/distinctUntilChanged.js");
+/* harmony import */ var rxjs_add_observable_fromEvent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! rxjs/add/observable/fromEvent */ "./node_modules/rxjs/_esm5/add/observable/fromEvent.js");
+/* harmony import */ var _shared_models_server__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../shared/models/server */ "./src/app/shared/models/server.ts");
+/* harmony import */ var _shared_services_server_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../shared/services/server.service */ "./src/app/shared/services/server.service.ts");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -2945,7 +3175,7 @@ var ServersComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./servers.component.html */ "./src/app/servers/servers.component.html"),
             styles: [__webpack_require__(/*! ./servers.component.css */ "./src/app/servers/servers.component.css")]
         }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialog"], _shared_services_server_service__WEBPACK_IMPORTED_MODULE_2__["ServerService"]])
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"], _shared_services_server_service__WEBPACK_IMPORTED_MODULE_12__["ServerService"]])
     ], ServersComponent);
     return ServersComponent;
 }());
@@ -2954,7 +3184,7 @@ var AddServerDialogComponent = /** @class */ (function () {
     function AddServerDialogComponent(dialogRef, data) {
         this.dialogRef = dialogRef;
         this.data = data;
-        this.server = new _shared_models_server__WEBPACK_IMPORTED_MODULE_1__["Server"]();
+        this.server = new _shared_models_server__WEBPACK_IMPORTED_MODULE_11__["Server"]();
     }
     AddServerDialogComponent.prototype.onAddClick = function () {
         this.dialogRef.close(this.server);
@@ -2967,15 +3197,15 @@ var AddServerDialogComponent = /** @class */ (function () {
             selector: 'app-add-server-dialog',
             template: __webpack_require__(/*! ./add-server-dialog.html */ "./src/app/servers/add-server-dialog.html"),
         }),
-        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_5__["MAT_DIALOG_DATA"])),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_5__["MatDialogRef"], Object])
+        __param(1, Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Inject"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MAT_DIALOG_DATA"])),
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialogRef"], Object])
     ], AddServerDialogComponent);
     return AddServerDialogComponent;
 }());
 
 var ServerDatabase = /** @class */ (function () {
     function ServerDatabase() {
-        this.dataChange = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_6__["BehaviorSubject"]([]);
+        this.dataChange = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
     }
     Object.defineProperty(ServerDatabase.prototype, "data", {
         get: function () {
@@ -3011,13 +3241,13 @@ var ServerDataSource = /** @class */ (function (_super) {
     }
     ServerDataSource.prototype.connect = function () {
         var _this = this;
-        return rxjs_Observable__WEBPACK_IMPORTED_MODULE_4__["Observable"].merge(this.serverDatabase.dataChange).map(function () {
+        return rxjs_Observable__WEBPACK_IMPORTED_MODULE_3__["Observable"].merge(this.serverDatabase.dataChange).map(function () {
             return _this.serverDatabase.data;
         });
     };
     ServerDataSource.prototype.disconnect = function () { };
     return ServerDataSource;
-}(_angular_cdk_collections__WEBPACK_IMPORTED_MODULE_3__["DataSource"]));
+}(_angular_cdk_collections__WEBPACK_IMPORTED_MODULE_1__["DataSource"]));
 
 
 
@@ -3037,6 +3267,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
 /* harmony import */ var _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../cartography/shared/datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
+/* harmony import */ var _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../cartography/shared/datasources/drawings-datasource */ "./src/app/cartography/shared/datasources/drawings-datasource.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3049,6 +3280,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var WebServiceMessage = /** @class */ (function () {
     function WebServiceMessage() {
     }
@@ -3056,9 +3288,10 @@ var WebServiceMessage = /** @class */ (function () {
 }());
 
 var ProjectWebServiceHandler = /** @class */ (function () {
-    function ProjectWebServiceHandler(nodesDataSource, linksDataSource) {
+    function ProjectWebServiceHandler(nodesDataSource, linksDataSource, drawingsDataSource) {
         this.nodesDataSource = nodesDataSource;
         this.linksDataSource = linksDataSource;
+        this.drawingsDataSource = drawingsDataSource;
     }
     ProjectWebServiceHandler.prototype.connect = function (ws) {
         var _this = this;
@@ -3081,12 +3314,22 @@ var ProjectWebServiceHandler = /** @class */ (function () {
             if (message.action === 'link.deleted') {
                 _this.linksDataSource.remove(message.event);
             }
+            if (message.action === 'drawing.created') {
+                _this.drawingsDataSource.add(message.event);
+            }
+            if (message.action === 'drawing.updated') {
+                _this.drawingsDataSource.update(message.event);
+            }
+            if (message.action === 'drawing.deleted') {
+                _this.drawingsDataSource.remove(message.event);
+            }
         });
     };
     ProjectWebServiceHandler = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [_cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_1__["NodesDataSource"],
-            _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_2__["LinksDataSource"]])
+            _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_2__["LinksDataSource"],
+            _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_3__["DrawingsDataSource"]])
     ], ProjectWebServiceHandler);
     return ProjectWebServiceHandler;
 }());
@@ -3129,6 +3372,157 @@ var Snapshot = /** @class */ (function () {
     function Snapshot() {
     }
     return Snapshot;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.html":
+/*!***************************************************************************************************************!*\
+  !*** ./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.html ***!
+  \***************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<button mat-menu-item (click)=\"moveLayerDown()\">\n  <mat-icon>keyboard_arrow_down</mat-icon>\n  <span>Move layer down</span>\n</button>\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts":
+/*!*************************************************************************************************************!*\
+  !*** ./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts ***!
+  \*************************************************************************************************************/
+/*! exports provided: MoveLayerDownActionComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MoveLayerDownActionComponent", function() { return MoveLayerDownActionComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _models_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../models/server */ "./src/app/shared/models/server.ts");
+/* harmony import */ var _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../cartography/shared/models/node */ "./src/app/cartography/shared/models/node.ts");
+/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _services_node_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/node.service */ "./src/app/shared/services/node.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var MoveLayerDownActionComponent = /** @class */ (function () {
+    function MoveLayerDownActionComponent(nodesDataSource, nodeService) {
+        this.nodesDataSource = nodesDataSource;
+        this.nodeService = nodeService;
+    }
+    MoveLayerDownActionComponent.prototype.ngOnInit = function () { };
+    MoveLayerDownActionComponent.prototype.moveLayerDown = function () {
+        this.node.z--;
+        this.nodesDataSource.update(this.node);
+        this.nodeService
+            .update(this.server, this.node)
+            .subscribe(function (node) { });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _models_server__WEBPACK_IMPORTED_MODULE_1__["Server"])
+    ], MoveLayerDownActionComponent.prototype, "server", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_2__["Node"])
+    ], MoveLayerDownActionComponent.prototype, "node", void 0);
+    MoveLayerDownActionComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-move-layer-down-action',
+            template: __webpack_require__(/*! ./move-layer-down-action.component.html */ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.html")
+        }),
+        __metadata("design:paramtypes", [_cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_3__["NodesDataSource"],
+            _services_node_service__WEBPACK_IMPORTED_MODULE_4__["NodeService"]])
+    ], MoveLayerDownActionComponent);
+    return MoveLayerDownActionComponent;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.html":
+/*!***********************************************************************************************************!*\
+  !*** ./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.html ***!
+  \***********************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<button mat-menu-item (click)=\"moveLayerUp()\">\n  <mat-icon>keyboard_arrow_up</mat-icon>\n  <span>Move layer up</span>\n</button>\n"
+
+/***/ }),
+
+/***/ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts":
+/*!*********************************************************************************************************!*\
+  !*** ./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts ***!
+  \*********************************************************************************************************/
+/*! exports provided: MoveLayerUpActionComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MoveLayerUpActionComponent", function() { return MoveLayerUpActionComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var _models_server__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../models/server */ "./src/app/shared/models/server.ts");
+/* harmony import */ var _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../cartography/shared/models/node */ "./src/app/cartography/shared/models/node.ts");
+/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _services_node_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../services/node.service */ "./src/app/shared/services/node.service.ts");
+var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (undefined && undefined.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+var MoveLayerUpActionComponent = /** @class */ (function () {
+    function MoveLayerUpActionComponent(nodesDataSource, nodeService) {
+        this.nodesDataSource = nodesDataSource;
+        this.nodeService = nodeService;
+    }
+    MoveLayerUpActionComponent.prototype.ngOnInit = function () { };
+    MoveLayerUpActionComponent.prototype.moveLayerUp = function () {
+        this.node.z++;
+        this.nodeService
+            .update(this.server, this.node)
+            .subscribe(function (node) { });
+    };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _models_server__WEBPACK_IMPORTED_MODULE_1__["Server"])
+    ], MoveLayerUpActionComponent.prototype, "server", void 0);
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"])(),
+        __metadata("design:type", _cartography_shared_models_node__WEBPACK_IMPORTED_MODULE_2__["Node"])
+    ], MoveLayerUpActionComponent.prototype, "node", void 0);
+    MoveLayerUpActionComponent = __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
+            selector: 'app-move-layer-up-action',
+            template: __webpack_require__(/*! ./move-layer-up-action.component.html */ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.html")
+        }),
+        __metadata("design:paramtypes", [_cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_3__["NodesDataSource"],
+            _services_node_service__WEBPACK_IMPORTED_MODULE_4__["NodeService"]])
+    ], MoveLayerUpActionComponent);
+    return MoveLayerUpActionComponent;
 }());
 
 
@@ -3285,7 +3679,7 @@ var StopNodeActionComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n  </mat-menu>\n</div>\n"
+module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n    <app-move-layer-up-action [server]=\"server\" [node]=\"node\"></app-move-layer-up-action>\n    <app-move-layer-down-action [server]=\"server\" [node]=\"node\"></app-move-layer-down-action>\n  </mat-menu>\n</div>\n"
 
 /***/ }),
 
@@ -3882,6 +4276,14 @@ var NodeService = /** @class */ (function () {
             .put(server, "/projects/" + node.project_id + "/nodes/" + node.node_id, {
             'x': x,
             'y': y
+        });
+    };
+    NodeService.prototype.update = function (server, node) {
+        return this.httpServer
+            .put(server, "/projects/" + node.project_id + "/nodes/" + node.node_id, {
+            'x': node.x,
+            'y': node.y,
+            'z': node.z
         });
     };
     NodeService = __decorate([
