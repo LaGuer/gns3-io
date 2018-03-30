@@ -219,12 +219,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts");
 /* harmony import */ var _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts");
 /* harmony import */ var _project_map_project_map_shortcuts_project_map_shortcuts_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./project-map/project-map-shortcuts/project-map-shortcuts.component */ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ../environments/environment */ "./src/environments/environment.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -280,7 +282,9 @@ var RavenErrorHandler = /** @class */ (function () {
     }
     RavenErrorHandler.prototype.handleError = function (err) {
         console.error(err.originalError || err);
-        raven_js__WEBPACK_IMPORTED_MODULE_0__["captureException"](err.originalError || err);
+        if (_environments_environment__WEBPACK_IMPORTED_MODULE_48__["environment"].production) {
+            raven_js__WEBPACK_IMPORTED_MODULE_0__["captureException"](err.originalError || err);
+        }
     };
     return RavenErrorHandler;
 }());
