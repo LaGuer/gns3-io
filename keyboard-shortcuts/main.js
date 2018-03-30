@@ -4280,16 +4280,20 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 var IndexedDbService = /** @class */ (function () {
     function IndexedDbService() {
-        this.db = new angular2_indexeddb__WEBPACK_IMPORTED_MODULE_1__["AngularIndexedDB"]('gns3-web-ui', 1);
+        this.db = new angular2_indexeddb__WEBPACK_IMPORTED_MODULE_1__["AngularIndexedDB"](IndexedDbService_1.DATABASE, IndexedDbService_1.VERSION);
     }
+    IndexedDbService_1 = IndexedDbService;
     IndexedDbService.prototype.get = function () {
         return this.db;
     };
-    IndexedDbService = __decorate([
+    IndexedDbService.VERSION = 1;
+    IndexedDbService.DATABASE = 'gns3-web-ui';
+    IndexedDbService = IndexedDbService_1 = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])(),
         __metadata("design:paramtypes", [])
     ], IndexedDbService);
     return IndexedDbService;
+    var IndexedDbService_1;
 }());
 
 
