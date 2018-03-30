@@ -2076,21 +2076,39 @@ var LayersWidget = /** @class */ (function () {
             .enter()
             .append('g')
             .attr('class', 'layer');
+        // add container for links
+        layers_enter
+            .append('g')
+            .attr('class', 'links');
+        // add container for nodes
+        layers_enter
+            .append('g')
+            .attr('class', 'nodes');
+        // add container for drawings
+        layers_enter
+            .append('g')
+            .attr('class', 'drawings');
         var merge = layers_selection.merge(layers_enter);
         merge
             .attr('data-index', function (layer) { return layer.index; });
+        var links_container = merge
+            .select('g.links');
+        var nodes_container = merge
+            .select('g.nodes');
+        var drawings_container = merge
+            .select('g.drawings');
         layers_selection
             .exit()
             .remove();
         this.graphLayout
             .getLinksWidget()
-            .draw(merge);
+            .draw(links_container);
         this.graphLayout
             .getNodesWidget()
-            .draw(merge);
+            .draw(nodes_container);
         this.graphLayout
             .getDrawingsWidget()
-            .draw(merge);
+            .draw(drawings_container);
     };
     return LayersWidget;
 }());
