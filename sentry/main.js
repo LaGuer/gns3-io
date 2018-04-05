@@ -2509,7 +2509,7 @@ module.exports = "html, body {\n  height: 100%;\n}\n\napp-root, app-default-layo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<header>\n  <mat-toolbar color=\"primary\">\n    <button mat-icon-button>\n      <mat-icon svgIcon=\"gns3\"></mat-icon>\n    </button>\n\n    <button mat-button routerLink=\"/servers\" >Servers</button>\n\n    <span class=\"fill-space\"></span>\n\n    <button mat-button routerLink=\"/settings\" >\n      <mat-icon>settings</mat-icon>\n    </button>\n  </mat-toolbar>\n</header>\n\n<main class=\"mat-app-background\">\n  <router-outlet></router-outlet>\n</main>\n\n<footer class=\"footer mat-app-background\">\n  GNS3 Web UI demo &copy; 2017\n</footer>\n\n"
+module.exports = "<header>\n  <mat-toolbar color=\"primary\">\n    <button mat-icon-button>\n      <mat-icon svgIcon=\"gns3\"></mat-icon>\n    </button>\n\n    <button mat-button routerLink=\"/servers\" >Servers</button>\n\n    <span class=\"fill-space\"></span>\n\n    <button mat-button routerLink=\"/settings\" >\n      <mat-icon>settings</mat-icon>\n    </button>\n  </mat-toolbar>\n</header>\n\n<main class=\"mat-app-background\">\n  <router-outlet></router-outlet>\n</main>\n\n<footer class=\"footer mat-app-background\">\n  GNS3 Web UI demo &copy; 2018\n</footer>\n\n"
 
 /***/ }),
 
