@@ -152,6 +152,7 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         if (this.electronService.isElectronApp) {
             this.settingsService.subscribe(function (settings) {
+                console.log("settings changed on angular");
                 _this.electronService.ipcRenderer.send('settings.changed', settings);
             });
         }
@@ -4765,7 +4766,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SettingsService", function() { return SettingsService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var angular_persistence__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! angular-persistence */ "./node_modules/angular-persistence/index.js");
-/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs/_esm5/Subject.js");
+/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs/_esm5/BehaviorSubject.js");
 var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -4789,8 +4790,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var SettingsService = /** @class */ (function () {
     function SettingsService(persistenceService) {
         this.persistenceService = persistenceService;
-        this.settingsSubject = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
-        this.settingsSubject.next(this.getAll());
+        this.settingsSubject = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_2__["BehaviorSubject"](this.getAll());
     }
     SettingsService_1 = SettingsService;
     SettingsService.prototype.get = function (key) {
