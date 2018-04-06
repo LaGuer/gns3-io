@@ -126,6 +126,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/esm5/platform-browser.js");
+/* harmony import */ var ngx_electron__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-electron */ "./node_modules/ngx-electron/index.js");
+/* harmony import */ var _shared_services_settings_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./shared/services/settings.service */ "./src/app/shared/services/settings.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -138,11 +140,21 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
+
 var AppComponent = /** @class */ (function () {
-    function AppComponent(iconReg, sanitizer) {
+    function AppComponent(iconReg, sanitizer, settingsService, electronService) {
+        this.settingsService = settingsService;
+        this.electronService = electronService;
         iconReg.addSvgIcon('gns3', sanitizer.bypassSecurityTrustResourceUrl('./assets/gns3_icon.svg'));
     }
     AppComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        if (this.electronService.isElectronApp) {
+            this.settingsService.subscribe(function (settings) {
+                _this.electronService.ipcRenderer.send('settings.changed', settings);
+            });
+        }
     };
     AppComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
@@ -150,7 +162,10 @@ var AppComponent = /** @class */ (function () {
             template: __webpack_require__(/*! ./app.component.html */ "./src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.css */ "./src/app/app.component.css")]
         }),
-        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatIconRegistry"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["DomSanitizer"]])
+        __metadata("design:paramtypes", [_angular_material__WEBPACK_IMPORTED_MODULE_1__["MatIconRegistry"],
+            _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["DomSanitizer"],
+            _shared_services_settings_service__WEBPACK_IMPORTED_MODULE_4__["SettingsService"],
+            ngx_electron__WEBPACK_IMPORTED_MODULE_3__["ElectronService"]])
     ], AppComponent);
     return AppComponent;
 }());
@@ -183,51 +198,53 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var angular2_hotkeys__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! angular2-hotkeys */ "./node_modules/angular2-hotkeys/index.js");
 /* harmony import */ var angular2_hotkeys__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(angular2_hotkeys__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var angular_persistence__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! angular-persistence */ "./node_modules/angular-persistence/index.js");
-/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
-/* harmony import */ var _shared_services_version_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./shared/services/version.service */ "./src/app/shared/services/version.service.ts");
-/* harmony import */ var _shared_services_project_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./shared/services/project.service */ "./src/app/shared/services/project.service.ts");
-/* harmony import */ var _shared_services_symbol_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./shared/services/symbol.service */ "./src/app/shared/services/symbol.service.ts");
-/* harmony import */ var _shared_services_server_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./shared/services/server.service */ "./src/app/shared/services/server.service.ts");
-/* harmony import */ var _shared_services_indexed_db_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./shared/services/indexed-db.service */ "./src/app/shared/services/indexed-db.service.ts");
-/* harmony import */ var _shared_services_http_server_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./shared/services/http-server.service */ "./src/app/shared/services/http-server.service.ts");
-/* harmony import */ var _shared_services_snapshot_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./shared/services/snapshot.service */ "./src/app/shared/services/snapshot.service.ts");
-/* harmony import */ var _shared_progress_dialog_progress_dialog_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./shared/progress-dialog/progress-dialog.service */ "./src/app/shared/progress-dialog/progress-dialog.service.ts");
-/* harmony import */ var _shared_services_node_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./shared/services/node.service */ "./src/app/shared/services/node.service.ts");
-/* harmony import */ var _shared_services_appliance_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./shared/services/appliance.service */ "./src/app/shared/services/appliance.service.ts");
-/* harmony import */ var _shared_services_link_service__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./shared/services/link.service */ "./src/app/shared/services/link.service.ts");
-/* harmony import */ var _projects_projects_component__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./projects/projects.component */ "./src/app/projects/projects.component.ts");
-/* harmony import */ var _default_layout_default_layout_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./default-layout/default-layout.component */ "./src/app/default-layout/default-layout.component.ts");
-/* harmony import */ var _shared_progress_dialog_progress_dialog_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./shared/progress-dialog/progress-dialog.component */ "./src/app/shared/progress-dialog/progress-dialog.component.ts");
-/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
-/* harmony import */ var _project_map_project_map_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./project-map/project-map.component */ "./src/app/project-map/project-map.component.ts");
-/* harmony import */ var _servers_servers_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./servers/servers.component */ "./src/app/servers/servers.component.ts");
-/* harmony import */ var _shared_node_context_menu_node_context_menu_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./shared/node-context-menu/node-context-menu.component */ "./src/app/shared/node-context-menu/node-context-menu.component.ts");
-/* harmony import */ var _shared_node_context_menu_actions_start_node_action_start_node_action_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./shared/node-context-menu/actions/start-node-action/start-node-action.component */ "./src/app/shared/node-context-menu/actions/start-node-action/start-node-action.component.ts");
-/* harmony import */ var _shared_node_context_menu_actions_stop_node_action_stop_node_action_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./shared/node-context-menu/actions/stop-node-action/stop-node-action.component */ "./src/app/shared/node-context-menu/actions/stop-node-action/stop-node-action.component.ts");
-/* harmony import */ var _appliance_appliance_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./appliance/appliance.component */ "./src/app/appliance/appliance.component.ts");
-/* harmony import */ var _appliance_appliance_list_dialog_appliance_list_dialog_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./appliance/appliance-list-dialog/appliance-list-dialog.component */ "./src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.ts");
-/* harmony import */ var _shared_node_select_interface_node_select_interface_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./shared/node-select-interface/node-select-interface.component */ "./src/app/shared/node-select-interface/node-select-interface.component.ts");
-/* harmony import */ var _cartography_cartography_module__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./cartography/cartography.module */ "./src/app/cartography/cartography.module.ts");
-/* harmony import */ var _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./shared/services/toaster.service */ "./src/app/shared/services/toaster.service.ts");
-/* harmony import */ var _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./shared/handlers/project-web-service-handler */ "./src/app/shared/handlers/project-web-service-handler.ts");
-/* harmony import */ var _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./cartography/shared/datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
-/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
-/* harmony import */ var _cartography_shared_datasources_symbols_datasource__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./cartography/shared/datasources/symbols-datasource */ "./src/app/cartography/shared/datasources/symbols-datasource.ts");
-/* harmony import */ var _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./cartography/shared/managers/selection-manager */ "./src/app/cartography/shared/managers/selection-manager.ts");
-/* harmony import */ var _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./cartography/map/helpers/in-rectangle-helper */ "./src/app/cartography/map/helpers/in-rectangle-helper.ts");
-/* harmony import */ var _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./cartography/shared/datasources/drawings-datasource */ "./src/app/cartography/shared/datasources/drawings-datasource.ts");
-/* harmony import */ var _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts");
-/* harmony import */ var _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts");
-/* harmony import */ var _project_map_project_map_shortcuts_project_map_shortcuts_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./project-map/project-map-shortcuts/project-map-shortcuts.component */ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.ts");
-/* harmony import */ var _settings_settings_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./settings/settings.component */ "./src/app/settings/settings.component.ts");
-/* harmony import */ var _shared_services_settings_service__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./shared/services/settings.service */ "./src/app/shared/services/settings.service.ts");
-/* harmony import */ var _raven_error_handler__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./raven-error-handler */ "./src/app/raven-error-handler.ts");
+/* harmony import */ var ngx_electron__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ngx-electron */ "./node_modules/ngx-electron/index.js");
+/* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
+/* harmony import */ var _shared_services_version_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./shared/services/version.service */ "./src/app/shared/services/version.service.ts");
+/* harmony import */ var _shared_services_project_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./shared/services/project.service */ "./src/app/shared/services/project.service.ts");
+/* harmony import */ var _shared_services_symbol_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./shared/services/symbol.service */ "./src/app/shared/services/symbol.service.ts");
+/* harmony import */ var _shared_services_server_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./shared/services/server.service */ "./src/app/shared/services/server.service.ts");
+/* harmony import */ var _shared_services_indexed_db_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./shared/services/indexed-db.service */ "./src/app/shared/services/indexed-db.service.ts");
+/* harmony import */ var _shared_services_http_server_service__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./shared/services/http-server.service */ "./src/app/shared/services/http-server.service.ts");
+/* harmony import */ var _shared_services_snapshot_service__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./shared/services/snapshot.service */ "./src/app/shared/services/snapshot.service.ts");
+/* harmony import */ var _shared_progress_dialog_progress_dialog_service__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./shared/progress-dialog/progress-dialog.service */ "./src/app/shared/progress-dialog/progress-dialog.service.ts");
+/* harmony import */ var _shared_services_node_service__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./shared/services/node.service */ "./src/app/shared/services/node.service.ts");
+/* harmony import */ var _shared_services_appliance_service__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./shared/services/appliance.service */ "./src/app/shared/services/appliance.service.ts");
+/* harmony import */ var _shared_services_link_service__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./shared/services/link.service */ "./src/app/shared/services/link.service.ts");
+/* harmony import */ var _projects_projects_component__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./projects/projects.component */ "./src/app/projects/projects.component.ts");
+/* harmony import */ var _default_layout_default_layout_component__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./default-layout/default-layout.component */ "./src/app/default-layout/default-layout.component.ts");
+/* harmony import */ var _shared_progress_dialog_progress_dialog_component__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./shared/progress-dialog/progress-dialog.component */ "./src/app/shared/progress-dialog/progress-dialog.component.ts");
+/* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _project_map_project_map_component__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./project-map/project-map.component */ "./src/app/project-map/project-map.component.ts");
+/* harmony import */ var _servers_servers_component__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ./servers/servers.component */ "./src/app/servers/servers.component.ts");
+/* harmony import */ var _shared_node_context_menu_node_context_menu_component__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./shared/node-context-menu/node-context-menu.component */ "./src/app/shared/node-context-menu/node-context-menu.component.ts");
+/* harmony import */ var _shared_node_context_menu_actions_start_node_action_start_node_action_component__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(/*! ./shared/node-context-menu/actions/start-node-action/start-node-action.component */ "./src/app/shared/node-context-menu/actions/start-node-action/start-node-action.component.ts");
+/* harmony import */ var _shared_node_context_menu_actions_stop_node_action_stop_node_action_component__WEBPACK_IMPORTED_MODULE_33__ = __webpack_require__(/*! ./shared/node-context-menu/actions/stop-node-action/stop-node-action.component */ "./src/app/shared/node-context-menu/actions/stop-node-action/stop-node-action.component.ts");
+/* harmony import */ var _appliance_appliance_component__WEBPACK_IMPORTED_MODULE_34__ = __webpack_require__(/*! ./appliance/appliance.component */ "./src/app/appliance/appliance.component.ts");
+/* harmony import */ var _appliance_appliance_list_dialog_appliance_list_dialog_component__WEBPACK_IMPORTED_MODULE_35__ = __webpack_require__(/*! ./appliance/appliance-list-dialog/appliance-list-dialog.component */ "./src/app/appliance/appliance-list-dialog/appliance-list-dialog.component.ts");
+/* harmony import */ var _shared_node_select_interface_node_select_interface_component__WEBPACK_IMPORTED_MODULE_36__ = __webpack_require__(/*! ./shared/node-select-interface/node-select-interface.component */ "./src/app/shared/node-select-interface/node-select-interface.component.ts");
+/* harmony import */ var _cartography_cartography_module__WEBPACK_IMPORTED_MODULE_37__ = __webpack_require__(/*! ./cartography/cartography.module */ "./src/app/cartography/cartography.module.ts");
+/* harmony import */ var _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_38__ = __webpack_require__(/*! ./shared/services/toaster.service */ "./src/app/shared/services/toaster.service.ts");
+/* harmony import */ var _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_39__ = __webpack_require__(/*! ./shared/handlers/project-web-service-handler */ "./src/app/shared/handlers/project-web-service-handler.ts");
+/* harmony import */ var _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_40__ = __webpack_require__(/*! ./cartography/shared/datasources/links-datasource */ "./src/app/cartography/shared/datasources/links-datasource.ts");
+/* harmony import */ var _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_41__ = __webpack_require__(/*! ./cartography/shared/datasources/nodes-datasource */ "./src/app/cartography/shared/datasources/nodes-datasource.ts");
+/* harmony import */ var _cartography_shared_datasources_symbols_datasource__WEBPACK_IMPORTED_MODULE_42__ = __webpack_require__(/*! ./cartography/shared/datasources/symbols-datasource */ "./src/app/cartography/shared/datasources/symbols-datasource.ts");
+/* harmony import */ var _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_43__ = __webpack_require__(/*! ./cartography/shared/managers/selection-manager */ "./src/app/cartography/shared/managers/selection-manager.ts");
+/* harmony import */ var _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_44__ = __webpack_require__(/*! ./cartography/map/helpers/in-rectangle-helper */ "./src/app/cartography/map/helpers/in-rectangle-helper.ts");
+/* harmony import */ var _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_45__ = __webpack_require__(/*! ./cartography/shared/datasources/drawings-datasource */ "./src/app/cartography/shared/datasources/drawings-datasource.ts");
+/* harmony import */ var _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-down-action/move-layer-down-action.component.ts");
+/* harmony import */ var _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ./shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component */ "./src/app/shared/node-context-menu/actions/move-layer-up-action/move-layer-up-action.component.ts");
+/* harmony import */ var _project_map_project_map_shortcuts_project_map_shortcuts_component__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ./project-map/project-map-shortcuts/project-map-shortcuts.component */ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.ts");
+/* harmony import */ var _settings_settings_component__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ./settings/settings.component */ "./src/app/settings/settings.component.ts");
+/* harmony import */ var _shared_services_settings_service__WEBPACK_IMPORTED_MODULE_50__ = __webpack_require__(/*! ./shared/services/settings.service */ "./src/app/shared/services/settings.service.ts");
+/* harmony import */ var _raven_error_handler__WEBPACK_IMPORTED_MODULE_51__ = __webpack_require__(/*! ./raven-error-handler */ "./src/app/raven-error-handler.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -287,30 +304,30 @@ var AppModule = /** @class */ (function () {
     AppModule = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_2__["NgModule"])({
             declarations: [
-                _app_component__WEBPACK_IMPORTED_MODULE_27__["AppComponent"],
-                _project_map_project_map_component__WEBPACK_IMPORTED_MODULE_28__["ProjectMapComponent"],
-                _servers_servers_component__WEBPACK_IMPORTED_MODULE_29__["ServersComponent"],
-                _servers_servers_component__WEBPACK_IMPORTED_MODULE_29__["AddServerDialogComponent"],
-                _project_map_project_map_component__WEBPACK_IMPORTED_MODULE_28__["CreateSnapshotDialogComponent"],
-                _projects_projects_component__WEBPACK_IMPORTED_MODULE_24__["ProjectsComponent"],
-                _default_layout_default_layout_component__WEBPACK_IMPORTED_MODULE_25__["DefaultLayoutComponent"],
-                _shared_progress_dialog_progress_dialog_component__WEBPACK_IMPORTED_MODULE_26__["ProgressDialogComponent"],
-                _shared_node_context_menu_node_context_menu_component__WEBPACK_IMPORTED_MODULE_30__["NodeContextMenuComponent"],
-                _shared_node_context_menu_actions_start_node_action_start_node_action_component__WEBPACK_IMPORTED_MODULE_31__["StartNodeActionComponent"],
-                _shared_node_context_menu_actions_stop_node_action_stop_node_action_component__WEBPACK_IMPORTED_MODULE_32__["StopNodeActionComponent"],
-                _appliance_appliance_component__WEBPACK_IMPORTED_MODULE_33__["ApplianceComponent"],
-                _appliance_appliance_list_dialog_appliance_list_dialog_component__WEBPACK_IMPORTED_MODULE_34__["ApplianceListDialogComponent"],
-                _shared_node_select_interface_node_select_interface_component__WEBPACK_IMPORTED_MODULE_35__["NodeSelectInterfaceComponent"],
-                _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_45__["MoveLayerDownActionComponent"],
-                _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_46__["MoveLayerUpActionComponent"],
-                _project_map_project_map_shortcuts_project_map_shortcuts_component__WEBPACK_IMPORTED_MODULE_47__["ProjectMapShortcutsComponent"],
-                _settings_settings_component__WEBPACK_IMPORTED_MODULE_48__["SettingsComponent"],
+                _app_component__WEBPACK_IMPORTED_MODULE_28__["AppComponent"],
+                _project_map_project_map_component__WEBPACK_IMPORTED_MODULE_29__["ProjectMapComponent"],
+                _servers_servers_component__WEBPACK_IMPORTED_MODULE_30__["ServersComponent"],
+                _servers_servers_component__WEBPACK_IMPORTED_MODULE_30__["AddServerDialogComponent"],
+                _project_map_project_map_component__WEBPACK_IMPORTED_MODULE_29__["CreateSnapshotDialogComponent"],
+                _projects_projects_component__WEBPACK_IMPORTED_MODULE_25__["ProjectsComponent"],
+                _default_layout_default_layout_component__WEBPACK_IMPORTED_MODULE_26__["DefaultLayoutComponent"],
+                _shared_progress_dialog_progress_dialog_component__WEBPACK_IMPORTED_MODULE_27__["ProgressDialogComponent"],
+                _shared_node_context_menu_node_context_menu_component__WEBPACK_IMPORTED_MODULE_31__["NodeContextMenuComponent"],
+                _shared_node_context_menu_actions_start_node_action_start_node_action_component__WEBPACK_IMPORTED_MODULE_32__["StartNodeActionComponent"],
+                _shared_node_context_menu_actions_stop_node_action_stop_node_action_component__WEBPACK_IMPORTED_MODULE_33__["StopNodeActionComponent"],
+                _appliance_appliance_component__WEBPACK_IMPORTED_MODULE_34__["ApplianceComponent"],
+                _appliance_appliance_list_dialog_appliance_list_dialog_component__WEBPACK_IMPORTED_MODULE_35__["ApplianceListDialogComponent"],
+                _shared_node_select_interface_node_select_interface_component__WEBPACK_IMPORTED_MODULE_36__["NodeSelectInterfaceComponent"],
+                _shared_node_context_menu_actions_move_layer_down_action_move_layer_down_action_component__WEBPACK_IMPORTED_MODULE_46__["MoveLayerDownActionComponent"],
+                _shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__WEBPACK_IMPORTED_MODULE_47__["MoveLayerUpActionComponent"],
+                _project_map_project_map_shortcuts_project_map_shortcuts_component__WEBPACK_IMPORTED_MODULE_48__["ProjectMapShortcutsComponent"],
+                _settings_settings_component__WEBPACK_IMPORTED_MODULE_49__["SettingsComponent"],
             ],
             imports: [
                 _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_9__["NgbModule"].forRoot(),
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
                 _angular_common_http__WEBPACK_IMPORTED_MODULE_5__["HttpClientModule"],
-                _app_routing_module__WEBPACK_IMPORTED_MODULE_12__["AppRoutingModule"],
+                _app_routing_module__WEBPACK_IMPORTED_MODULE_13__["AppRoutingModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_6__["BrowserAnimationsModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatButtonModule"],
@@ -329,41 +346,42 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatListModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatExpansionModule"],
                 _angular_cdk_table__WEBPACK_IMPORTED_MODULE_4__["CdkTableModule"],
-                _cartography_cartography_module__WEBPACK_IMPORTED_MODULE_36__["CartographyModule"],
+                _cartography_cartography_module__WEBPACK_IMPORTED_MODULE_37__["CartographyModule"],
                 angular2_hotkeys__WEBPACK_IMPORTED_MODULE_10__["HotkeyModule"].forRoot(),
-                angular_persistence__WEBPACK_IMPORTED_MODULE_11__["PersistenceModule"]
+                angular_persistence__WEBPACK_IMPORTED_MODULE_11__["PersistenceModule"],
+                ngx_electron__WEBPACK_IMPORTED_MODULE_12__["NgxElectronModule"]
             ],
             providers: [
-                _shared_services_settings_service__WEBPACK_IMPORTED_MODULE_49__["SettingsService"],
-                { provide: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ErrorHandler"], useClass: _raven_error_handler__WEBPACK_IMPORTED_MODULE_50__["RavenErrorHandler"] },
+                _shared_services_settings_service__WEBPACK_IMPORTED_MODULE_50__["SettingsService"],
+                { provide: _angular_core__WEBPACK_IMPORTED_MODULE_2__["ErrorHandler"], useClass: _raven_error_handler__WEBPACK_IMPORTED_MODULE_51__["RavenErrorHandler"] },
                 d3_ng2_service__WEBPACK_IMPORTED_MODULE_8__["D3Service"],
-                _shared_services_version_service__WEBPACK_IMPORTED_MODULE_13__["VersionService"],
-                _shared_services_project_service__WEBPACK_IMPORTED_MODULE_14__["ProjectService"],
-                _shared_services_symbol_service__WEBPACK_IMPORTED_MODULE_15__["SymbolService"],
-                _shared_services_server_service__WEBPACK_IMPORTED_MODULE_16__["ServerService"],
-                _shared_services_appliance_service__WEBPACK_IMPORTED_MODULE_22__["ApplianceService"],
-                _shared_services_node_service__WEBPACK_IMPORTED_MODULE_21__["NodeService"],
-                _shared_services_link_service__WEBPACK_IMPORTED_MODULE_23__["LinkService"],
-                _shared_services_indexed_db_service__WEBPACK_IMPORTED_MODULE_17__["IndexedDbService"],
-                _shared_services_http_server_service__WEBPACK_IMPORTED_MODULE_18__["HttpServer"],
-                _shared_services_snapshot_service__WEBPACK_IMPORTED_MODULE_19__["SnapshotService"],
-                _shared_progress_dialog_progress_dialog_service__WEBPACK_IMPORTED_MODULE_20__["ProgressDialogService"],
-                _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_37__["ToasterService"],
-                _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_38__["ProjectWebServiceHandler"],
-                _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_39__["LinksDataSource"],
-                _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_40__["NodesDataSource"],
-                _cartography_shared_datasources_symbols_datasource__WEBPACK_IMPORTED_MODULE_41__["SymbolsDataSource"],
-                _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_42__["SelectionManager"],
-                _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_43__["InRectangleHelper"],
-                _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_44__["DrawingsDataSource"]
+                _shared_services_version_service__WEBPACK_IMPORTED_MODULE_14__["VersionService"],
+                _shared_services_project_service__WEBPACK_IMPORTED_MODULE_15__["ProjectService"],
+                _shared_services_symbol_service__WEBPACK_IMPORTED_MODULE_16__["SymbolService"],
+                _shared_services_server_service__WEBPACK_IMPORTED_MODULE_17__["ServerService"],
+                _shared_services_appliance_service__WEBPACK_IMPORTED_MODULE_23__["ApplianceService"],
+                _shared_services_node_service__WEBPACK_IMPORTED_MODULE_22__["NodeService"],
+                _shared_services_link_service__WEBPACK_IMPORTED_MODULE_24__["LinkService"],
+                _shared_services_indexed_db_service__WEBPACK_IMPORTED_MODULE_18__["IndexedDbService"],
+                _shared_services_http_server_service__WEBPACK_IMPORTED_MODULE_19__["HttpServer"],
+                _shared_services_snapshot_service__WEBPACK_IMPORTED_MODULE_20__["SnapshotService"],
+                _shared_progress_dialog_progress_dialog_service__WEBPACK_IMPORTED_MODULE_21__["ProgressDialogService"],
+                _shared_services_toaster_service__WEBPACK_IMPORTED_MODULE_38__["ToasterService"],
+                _shared_handlers_project_web_service_handler__WEBPACK_IMPORTED_MODULE_39__["ProjectWebServiceHandler"],
+                _cartography_shared_datasources_links_datasource__WEBPACK_IMPORTED_MODULE_40__["LinksDataSource"],
+                _cartography_shared_datasources_nodes_datasource__WEBPACK_IMPORTED_MODULE_41__["NodesDataSource"],
+                _cartography_shared_datasources_symbols_datasource__WEBPACK_IMPORTED_MODULE_42__["SymbolsDataSource"],
+                _cartography_shared_managers_selection_manager__WEBPACK_IMPORTED_MODULE_43__["SelectionManager"],
+                _cartography_map_helpers_in_rectangle_helper__WEBPACK_IMPORTED_MODULE_44__["InRectangleHelper"],
+                _cartography_shared_datasources_drawings_datasource__WEBPACK_IMPORTED_MODULE_45__["DrawingsDataSource"]
             ],
             entryComponents: [
-                _servers_servers_component__WEBPACK_IMPORTED_MODULE_29__["AddServerDialogComponent"],
-                _project_map_project_map_component__WEBPACK_IMPORTED_MODULE_28__["CreateSnapshotDialogComponent"],
-                _shared_progress_dialog_progress_dialog_component__WEBPACK_IMPORTED_MODULE_26__["ProgressDialogComponent"],
-                _appliance_appliance_list_dialog_appliance_list_dialog_component__WEBPACK_IMPORTED_MODULE_34__["ApplianceListDialogComponent"]
+                _servers_servers_component__WEBPACK_IMPORTED_MODULE_30__["AddServerDialogComponent"],
+                _project_map_project_map_component__WEBPACK_IMPORTED_MODULE_29__["CreateSnapshotDialogComponent"],
+                _shared_progress_dialog_progress_dialog_component__WEBPACK_IMPORTED_MODULE_27__["ProgressDialogComponent"],
+                _appliance_appliance_list_dialog_appliance_list_dialog_component__WEBPACK_IMPORTED_MODULE_35__["ApplianceListDialogComponent"]
             ],
-            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_27__["AppComponent"]]
+            bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_28__["AppComponent"]]
         })
     ], AppModule);
     return AppModule;
@@ -4747,6 +4765,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SettingsService", function() { return SettingsService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var angular_persistence__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! angular-persistence */ "./node_modules/angular-persistence/index.js");
+/* harmony import */ var rxjs_Subject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/Subject */ "./node_modules/rxjs/_esm5/Subject.js");
 var __assign = (undefined && undefined.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -4766,9 +4785,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 };
 
 
+
 var SettingsService = /** @class */ (function () {
     function SettingsService(persistenceService) {
         this.persistenceService = persistenceService;
+        this.settingsSubject = new rxjs_Subject__WEBPACK_IMPORTED_MODULE_2__["Subject"]();
+        this.settingsSubject.next(this.getAll());
     }
     SettingsService_1 = SettingsService;
     SettingsService.prototype.get = function (key) {
@@ -4786,6 +4808,7 @@ var SettingsService = /** @class */ (function () {
             throw Error("Key '" + key + "' doesn't exist in settings");
         }
         this.persistenceService.set(key, value, { type: angular_persistence__WEBPACK_IMPORTED_MODULE_1__["StorageType"].LOCAL });
+        this.settingsSubject.next(this.getAll());
     };
     SettingsService.prototype.getAll = function () {
         var _this = this;
@@ -4800,6 +4823,9 @@ var SettingsService = /** @class */ (function () {
         Object.keys(settings).forEach(function (key) {
             _this.set(key, settings[key]);
         });
+    };
+    SettingsService.prototype.subscribe = function (subscriber) {
+        return this.settingsSubject.subscribe(subscriber);
     };
     SettingsService.DEFAULTS = {
         'crash_reports': true
