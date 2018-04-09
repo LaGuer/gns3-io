@@ -900,10 +900,10 @@ var MapComponent = /** @class */ (function () {
             this.svg = rootElement.select('svg');
             this.graphContext = new _shared_models_context__WEBPACK_IMPORTED_MODULE_4__["Context"](true);
             if (this.windowFullSize) {
-                this.graphContext.setSize(this.getSize());
+                this.graphContext.size = this.getSize();
             }
             else {
-                this.graphContext.setSize(new _shared_models_size__WEBPACK_IMPORTED_MODULE_5__["Size"](this.width, this.height));
+                this.graphContext.size = new _shared_models_size__WEBPACK_IMPORTED_MODULE_5__["Size"](this.width, this.height);
             }
             this.graphLayout = new _shared_widgets_graph_layout__WEBPACK_IMPORTED_MODULE_3__["GraphLayout"]();
             this.graphLayout.connect(this.svg, this.graphContext);
@@ -923,17 +923,13 @@ var MapComponent = /** @class */ (function () {
         return new _shared_models_size__WEBPACK_IMPORTED_MODULE_5__["Size"](document.documentElement.clientWidth, document.documentElement.clientHeight);
     };
     MapComponent.prototype.changeLayout = function () {
-        if (this.windowFullSize) {
-            if (this.parentNativeElement != null) {
-                this.graphContext.setSize(this.getSize());
-            }
-        }
-        else {
+        if (this.parentNativeElement != null) {
+            this.graphContext.size = this.getSize();
         }
         if (this.graphContext != null) {
             this.svg
-                .attr('width', this.graphContext.getSize().width)
-                .attr('height', this.graphContext.getSize().height);
+                .attr('width', this.graphContext.size.width)
+                .attr('height', this.graphContext.size.height);
         }
         this.graphLayout.setNodes(this.nodes);
         this.graphLayout.setLinks(this.links);
@@ -1437,31 +1433,36 @@ var SelectionManager = /** @class */ (function () {
 /*!******************************************************!*\
   !*** ./src/app/cartography/shared/models/context.ts ***!
   \******************************************************/
-/*! exports provided: Context */
+/*! exports provided: Transformation, Context */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Transformation", function() { return Transformation; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Context", function() { return Context; });
 /* harmony import */ var _size__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./size */ "./src/app/cartography/shared/models/size.ts");
 /* harmony import */ var _point__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./point */ "./src/app/cartography/shared/models/point.ts");
 
 
+var Transformation = /** @class */ (function () {
+    function Transformation(x, y, k) {
+        this.x = x;
+        this.y = y;
+        this.k = k;
+    }
+    return Transformation;
+}());
+
 var Context = /** @class */ (function () {
     function Context(centerZeroZeroPoint) {
-        if (centerZeroZeroPoint === void 0) { centerZeroZeroPoint = false; }
+        if (centerZeroZeroPoint === void 0) { centerZeroZeroPoint = true; }
         this.centerZeroZeroPoint = centerZeroZeroPoint;
         this.size = new _size__WEBPACK_IMPORTED_MODULE_0__["Size"](0, 0);
+        this.transformation = new Transformation(0, 0, 1);
     }
-    Context.prototype.getSize = function () {
-        return this.size;
-    };
-    Context.prototype.setSize = function (size) {
-        this.size = size;
-    };
     Context.prototype.getZeroZeroTransformationPoint = function () {
         if (this.centerZeroZeroPoint) {
-            return new _point__WEBPACK_IMPORTED_MODULE_1__["Point"](this.getSize().width / 2., this.getSize().height / 2.);
+            return new _point__WEBPACK_IMPORTED_MODULE_1__["Point"](this.size.width / 2., this.size.height / 2.);
         }
         return new _point__WEBPACK_IMPORTED_MODULE_1__["Point"](0, 0);
     };
@@ -1660,8 +1661,15 @@ var MovingTool = /** @class */ (function () {
         var onZoom = function () {
             var canvas = self.selection.select("g.canvas");
             var e = d3_selection__WEBPACK_IMPORTED_MODULE_1__["event"];
-            canvas.attr('transform', "translate(" + (self.context.getSize().width / 2 + e.transform.x) + ", " +
-                (self.context.getSize().height / 2 + e.transform.y + ") scale(" + e.transform.k + ")"));
+            canvas.attr('transform', function () {
+                self.context.transformation.x = e.transform.x;
+                self.context.transformation.y = e.transform.y;
+                self.context.transformation.k = e.transform.k;
+                var xTrans = self.context.getZeroZeroTransformationPoint().x + self.context.transformation.x;
+                var yTrans = self.context.getZeroZeroTransformationPoint().y + self.context.transformation.y;
+                var kTrans = self.context.transformation.k;
+                return "translate(" + xTrans + ", " + yTrans + ") scale(" + kTrans + ")";
+            });
         };
         this.zoom.on('zoom', onZoom);
         this.selection.call(this.zoom);
@@ -1778,7 +1786,10 @@ var SelectionTool = /** @class */ (function () {
     };
     SelectionTool.prototype.transformation = function (point) {
         var transformation_point = this.context.getZeroZeroTransformationPoint();
-        return [point[0] - transformation_point.x, point[1] - transformation_point.y];
+        return [
+            point[0] - transformation_point.x - this.context.transformation.x,
+            point[1] - transformation_point.y - this.context.transformation.y
+        ];
     };
     SelectionTool.SELECTABLE_CLASS = '.selectable';
     SelectionTool = SelectionTool_1 = __decorate([
@@ -2015,7 +2026,6 @@ var GraphLayout = /** @class */ (function () {
         this.nodes = [];
         this.links = [];
         this.drawings = [];
-        this.centerZeroZeroPoint = true;
         this.linksWidget = new _links__WEBPACK_IMPORTED_MODULE_1__["LinksWidget"]();
         this.nodesWidget = new _nodes__WEBPACK_IMPORTED_MODULE_0__["NodesWidget"]();
         this.drawingsWidget = new _drawings__WEBPACK_IMPORTED_MODULE_2__["DrawingsWidget"]();
@@ -2064,9 +2074,14 @@ var GraphLayout = /** @class */ (function () {
         var canvasEnter = canvas.enter()
             .append('g')
             .attr('class', 'canvas');
-        if (this.centerZeroZeroPoint) {
-            canvas.attr('transform', function (ctx) { return "translate(" + ctx.getSize().width / 2 + ", " + ctx.getSize().height / 2 + ")"; });
-        }
+        canvas
+            .merge(canvasEnter)
+            .attr('transform', function (ctx) {
+            var xTrans = ctx.getZeroZeroTransformationPoint().x + ctx.transformation.x;
+            var yTrans = ctx.getZeroZeroTransformationPoint().y + ctx.transformation.y;
+            var kTrans = ctx.transformation.k;
+            return "translate(" + xTrans + ", " + yTrans + ") scale(" + kTrans + ")";
+        });
         var layersManager = new _managers_layers_manager__WEBPACK_IMPORTED_MODULE_7__["LayersManager"]();
         layersManager.setNodes(this.nodes);
         layersManager.setDrawings(this.drawings);
