@@ -59,7 +59,7 @@ module.exports = "/**\n * Applies styles for users in high contrast mode. Note t
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "img.logo-header {\n  width: 50px;\n}\n\na.table-link {\n  color: #0097a7;\n}\n\n"
+module.exports = "img.logo-header {\n  width: 50px;\n}\n\na.table-link {\n  color: #0097a7;\n}\n\napp-root {\n  width: 100%;\n}\n"
 
 /***/ }),
 
