@@ -152,7 +152,6 @@ var AppComponent = /** @class */ (function () {
         var _this = this;
         if (this.electronService.isElectronApp) {
             this.settingsService.subscribe(function (settings) {
-                console.log("settings changed on angular");
                 _this.electronService.ipcRenderer.send('settings.changed', settings);
             });
         }
