@@ -347,6 +347,7 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatListModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatExpansionModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatSortModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatSelectModule"],
                 _cartography_cartography_module__WEBPACK_IMPORTED_MODULE_37__["CartographyModule"],
                 angular2_hotkeys__WEBPACK_IMPORTED_MODULE_10__["HotkeyModule"].forRoot(),
                 angular_persistence__WEBPACK_IMPORTED_MODULE_11__["PersistenceModule"],
@@ -2530,7 +2531,7 @@ var SerialLinkWidget = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "html, body {\n  height: 100%;\n}\n\napp-root, app-default-layout {\n  height: 100%;\n}\n\napp-default-layout {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  height: 100vh;\n}\n\n.content {\n  /*flex: 1 0 auto;*/\n}\n\n.footer {\n  /*flex-shrink: 0;*/\n  padding: 20px;\n  margin: auto 0 0 0;\n  /*background-color: #0097a7;*/\n  color: white;\n}\n\n.default-content {\n  margin: 0 auto;\n  max-width: 940px;\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\nheader {\n  -webkit-box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);\n          box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);\n  z-index: 10;\n}\n\n/*main {*/\n\n/*height: 100%;*/\n\n/*}*/\n\n.default-header h1 {\n  font-weight: 300;\n  margin: 0;\n  font-size: 20px;\n  padding: 28px 8px;\n  color: white;\n}\n\n.default-header {\n  margin: 0 auto;\n  max-width: 940px;\n  /*background-color: #0097a7;*/\n}\n\n.buttons-bar {\n  padding-top: 10px;\n  text-align: right;\n}\n\n.fill-space {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n}\n\n.example-container > * {\n  width: 100%;\n}\n"
+module.exports = "html, body {\n  height: 100%;\n}\n\napp-root, app-default-layout {\n  height: 100%;\n}\n\napp-default-layout {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  height: 100vh;\n}\n\n.content {\n  /*flex: 1 0 auto;*/\n}\n\n.footer {\n  /*flex-shrink: 0;*/\n  padding: 20px;\n  margin: auto 0 0 0;\n  /*background-color: #0097a7;*/\n  color: white;\n}\n\n.default-content {\n  margin: 0 auto;\n  max-width: 940px;\n  padding-top: 20px;\n  padding-bottom: 20px;\n}\n\nheader {\n  -webkit-box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);\n          box-shadow: 0 3px 5px -1px rgba(0,0,0,.2),0 6px 10px 0 rgba(0,0,0,.14),0 1px 18px 0 rgba(0,0,0,.12);\n  z-index: 10;\n}\n\n/*main {*/\n\n/*height: 100%;*/\n\n/*}*/\n\n.default-header h1 {\n  font-weight: 300;\n  margin: 0;\n  font-size: 20px;\n  padding: 28px 8px;\n  color: white;\n}\n\n.default-header {\n  margin: 0 auto;\n  max-width: 940px;\n  /*background-color: #0097a7;*/\n}\n\n.buttons-bar {\n  padding-top: 10px;\n  text-align: right;\n}\n\n.fill-space {\n  -webkit-box-flex: 1;\n      -ms-flex: 1 1 auto;\n          flex: 1 1 auto;\n}\n\n.example-container > * {\n  width: 100%;\n}\n\n.mat-dialog-content > * {\n  width: 100%;\n}\n"
 
 /***/ }),
 
@@ -3297,7 +3298,7 @@ var RavenErrorHandler = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h1 mat-dialog-title>Add server</h1>\n<div mat-dialog-content>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.name\" placeholder=\"Name\">\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.ip\" placeholder=\"IP\">\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.port\" placeholder=\"Port\">\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" color=\"accent\">No Thanks</button>\n  <button mat-button (click)=\"onAddClick()\" tabindex=\"2\" mat-raised-button color=\"primary\">Add</button>\n</div>\n"
+module.exports = "<h1 mat-dialog-title>Add server</h1>\n<div mat-dialog-content>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.name\" placeholder=\"Name\">\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.ip\" placeholder=\"IP\">\n  </mat-form-field>\n  <mat-form-field>\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.port\" placeholder=\"Port\">\n  </mat-form-field>\n\n  <mat-form-field>\n    <mat-select placeholder=\"Authorization\" [(value)]=\"server.authorization\">\n      <mat-option *ngFor=\"let auth of authorizations\" [value]=\"auth.key\">\n        {{ auth.name }}\n      </mat-option>\n    </mat-select>\n  </mat-form-field>\n\n  <mat-form-field *ngIf=\"server.authorization === 'basic'\">\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.login\" placeholder=\"Login\">\n  </mat-form-field>\n  <mat-form-field *ngIf=\"server.authorization === 'basic'\">\n    <input matInput tabindex=\"1\" [(ngModel)]=\"server.password\" placeholder=\"Password\">\n  </mat-form-field>\n\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"onNoClick()\" tabindex=\"-1\" color=\"accent\">No Thanks</button>\n  <button mat-button (click)=\"onAddClick()\" tabindex=\"2\" mat-raised-button color=\"primary\">Add</button>\n</div>\n"
 
 /***/ }),
 
@@ -3401,7 +3402,7 @@ var ServersComponent = /** @class */ (function () {
     ServersComponent.prototype.createModal = function () {
         var _this = this;
         var dialogRef = this.dialog.open(AddServerDialogComponent, {
-            width: '250px',
+            width: '350px',
         });
         dialogRef.afterClosed().subscribe(function (server) {
             if (server) {
@@ -3433,7 +3434,14 @@ var AddServerDialogComponent = /** @class */ (function () {
         this.dialogRef = dialogRef;
         this.data = data;
         this.server = new _shared_models_server__WEBPACK_IMPORTED_MODULE_11__["Server"]();
+        this.authorizations = [
+            { 'key': 'none', name: 'No authorization' },
+            { 'key': 'basic', name: 'Basic authorization' }
+        ];
     }
+    AddServerDialogComponent.prototype.ngOnInit = function () {
+        this.server.authorization = 'none';
+    };
     AddServerDialogComponent.prototype.onAddClick = function () {
         this.dialogRef.close(this.server);
     };
