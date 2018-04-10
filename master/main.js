@@ -330,6 +330,7 @@ var AppModule = /** @class */ (function () {
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_13__["AppRoutingModule"],
                 _angular_forms__WEBPACK_IMPORTED_MODULE_3__["FormsModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_6__["BrowserAnimationsModule"],
+                _angular_cdk_table__WEBPACK_IMPORTED_MODULE_4__["CdkTableModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatButtonModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatMenuModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatCardModule"],
@@ -345,7 +346,7 @@ var AppModule = /** @class */ (function () {
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatCheckboxModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatListModule"],
                 _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatExpansionModule"],
-                _angular_cdk_table__WEBPACK_IMPORTED_MODULE_4__["CdkTableModule"],
+                _angular_material__WEBPACK_IMPORTED_MODULE_7__["MatSortModule"],
                 _cartography_cartography_module__WEBPACK_IMPORTED_MODULE_37__["CartographyModule"],
                 angular2_hotkeys__WEBPACK_IMPORTED_MODULE_10__["HotkeyModule"].forRoot(),
                 angular_persistence__WEBPACK_IMPORTED_MODULE_11__["PersistenceModule"],
@@ -3074,7 +3075,7 @@ module.exports = ""
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Projects</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\">\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <a [routerLink]=\"['/server', server.id, 'project', row.project_id]\" class=\"table-link\">{{row.name}}</a>\n          </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\" style=\"text-align: right\">\n            <button mat-icon-button (click)=\"delete(row)\">\n              <mat-icon aria-label=\"Delete project\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n  </div>\n</div>\n"
+module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Projects</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\" matSort>\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <a [routerLink]=\"['/server', server.id, 'project', row.project_id]\" class=\"table-link\">{{row.name}}</a>\n          </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\" style=\"text-align: right\">\n            <button mat-icon-button (click)=\"delete(row)\">\n              <mat-icon aria-label=\"Delete project\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -3092,11 +3093,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProjectDataSource", function() { return ProjectDataSource; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/esm5/router.js");
-/* harmony import */ var _shared_services_project_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../shared/services/project.service */ "./src/app/shared/services/project.service.ts");
-/* harmony import */ var _shared_services_server_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/services/server.service */ "./src/app/shared/services/server.service.ts");
-/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs/_esm5/BehaviorSubject.js");
-/* harmony import */ var _angular_cdk_collections__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/cdk/collections */ "./node_modules/@angular/cdk/esm5/collections.es5.js");
-/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs/_esm5/Observable.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _shared_services_project_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../shared/services/project.service */ "./src/app/shared/services/project.service.ts");
+/* harmony import */ var _shared_services_server_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../shared/services/server.service */ "./src/app/shared/services/server.service.ts");
+/* harmony import */ var rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/BehaviorSubject */ "./node_modules/rxjs/_esm5/BehaviorSubject.js");
+/* harmony import */ var _angular_cdk_collections__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/collections */ "./node_modules/@angular/cdk/esm5/collections.es5.js");
+/* harmony import */ var rxjs_Observable__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! rxjs/Observable */ "./node_modules/rxjs/_esm5/Observable.js");
 var __extends = (undefined && undefined.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -3123,6 +3125,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var ProjectsComponent = /** @class */ (function () {
     function ProjectsComponent(route, serverService, projectService) {
         this.route = route;
@@ -3130,10 +3133,14 @@ var ProjectsComponent = /** @class */ (function () {
         this.projectService = projectService;
         this.projectDatabase = new ProjectDatabase();
         this.displayedColumns = ['name', 'actions'];
-        this.dataSource = new ProjectDataSource(this.projectDatabase);
     }
     ProjectsComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.sort.sort({
+            id: 'name',
+            start: 'asc'
+        });
+        this.dataSource = new ProjectDataSource(this.projectDatabase, this.sort);
         this.route.paramMap
             .switchMap(function (params) {
             var server_id = parseInt(params.get('server_id'), 10);
@@ -3154,6 +3161,10 @@ var ProjectsComponent = /** @class */ (function () {
             _this.projectDatabase.remove(project);
         });
     };
+    __decorate([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ViewChild"])(_angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSort"]),
+        __metadata("design:type", _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatSort"])
+    ], ProjectsComponent.prototype, "sort", void 0);
     ProjectsComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-projects',
@@ -3161,15 +3172,15 @@ var ProjectsComponent = /** @class */ (function () {
             styles: [__webpack_require__(/*! ./projects.component.css */ "./src/app/projects/projects.component.css")]
         }),
         __metadata("design:paramtypes", [_angular_router__WEBPACK_IMPORTED_MODULE_1__["ActivatedRoute"],
-            _shared_services_server_service__WEBPACK_IMPORTED_MODULE_3__["ServerService"],
-            _shared_services_project_service__WEBPACK_IMPORTED_MODULE_2__["ProjectService"]])
+            _shared_services_server_service__WEBPACK_IMPORTED_MODULE_4__["ServerService"],
+            _shared_services_project_service__WEBPACK_IMPORTED_MODULE_3__["ProjectService"]])
     ], ProjectsComponent);
     return ProjectsComponent;
 }());
 
 var ProjectDatabase = /** @class */ (function () {
     function ProjectDatabase() {
-        this.dataChange = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_4__["BehaviorSubject"]([]);
+        this.dataChange = new rxjs_BehaviorSubject__WEBPACK_IMPORTED_MODULE_5__["BehaviorSubject"]([]);
     }
     Object.defineProperty(ProjectDatabase.prototype, "data", {
         get: function () {
@@ -3193,20 +3204,34 @@ var ProjectDatabase = /** @class */ (function () {
 
 var ProjectDataSource = /** @class */ (function (_super) {
     __extends(ProjectDataSource, _super);
-    function ProjectDataSource(projectDatabase) {
+    function ProjectDataSource(projectDatabase, sort) {
         var _this = _super.call(this) || this;
         _this.projectDatabase = projectDatabase;
+        _this.sort = sort;
         return _this;
     }
     ProjectDataSource.prototype.connect = function () {
         var _this = this;
-        return rxjs_Observable__WEBPACK_IMPORTED_MODULE_6__["Observable"].merge(this.projectDatabase.dataChange).map(function () {
-            return _this.projectDatabase.data;
+        var displayDataChanges = [
+            this.projectDatabase.dataChange,
+            this.sort.sortChange,
+        ];
+        return rxjs_Observable__WEBPACK_IMPORTED_MODULE_7__["Observable"].merge.apply(rxjs_Observable__WEBPACK_IMPORTED_MODULE_7__["Observable"], displayDataChanges).map(function () {
+            if (!_this.sort.active || _this.sort.direction === '') {
+                return _this.projectDatabase.data;
+            }
+            return _this.projectDatabase.data.sort(function (a, b) {
+                var propertyA = a[_this.sort.active];
+                var propertyB = b[_this.sort.active];
+                var valueA = isNaN(+propertyA) ? propertyA : +propertyA;
+                var valueB = isNaN(+propertyB) ? propertyB : +propertyB;
+                return (valueA < valueB ? -1 : 1) * (_this.sort.direction === 'asc' ? 1 : -1);
+            });
         });
     };
     ProjectDataSource.prototype.disconnect = function () { };
     return ProjectDataSource;
-}(_angular_cdk_collections__WEBPACK_IMPORTED_MODULE_5__["DataSource"]));
+}(_angular_cdk_collections__WEBPACK_IMPORTED_MODULE_6__["DataSource"]));
 
 
 
