@@ -2137,7 +2137,6 @@ var NodesWidget = /** @class */ (function () {
         });
         selection
             .select('text.label')
-            // .attr('y', (n: Node) => n.label.y - n.height / 2. + 10)  // @todo: server computes y in auto way
             .attr('style', function (n) { return n.label.style; })
             .text(function (n) { return n.label.text; })
             .attr('x', function (n) {
