@@ -1365,6 +1365,27 @@ var DrawingLine = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/models/interface-label.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterfaceLabel; });
+var InterfaceLabel = /** @class */ (function () {
+    function InterfaceLabel(x, y, text, style, rotation) {
+        if (rotation === void 0) { rotation = 0; }
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.style = style;
+        this.rotation = rotation;
+    }
+    return InterfaceLabel;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/models/layer.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1921,13 +1942,19 @@ var GraphLayout = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterfaceLabelWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_interface_label__ = __webpack_require__("./src/app/cartography/shared/models/interface-label.ts");
+
 var InterfaceLabelWidget = /** @class */ (function () {
     function InterfaceLabelWidget() {
     }
     InterfaceLabelWidget.prototype.draw = function (selection) {
         var labels = selection
             .selectAll('text.interface_label')
-            .data(function (l) { return [l]; });
+            .data(function (l) {
+            var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.source.x + l.nodes[0].label.x), Math.round(l.source.y + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation);
+            var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.target.x + l.nodes[1].label.x), Math.round(l.target.y + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation);
+            return [sourceInterface, targetInterface];
+        });
         var enter = labels
             .enter()
             .append('text')
@@ -1935,9 +1962,11 @@ var InterfaceLabelWidget = /** @class */ (function () {
         var merge = labels
             .merge(enter);
         merge
-            .text(function (l) { return l.nodes[0].label.text; })
-            .attr('x', function (l) { return Math.round(l.source.x + l.nodes[0].label.x); })
-            .attr('y', function (l) { return Math.round(l.source.y + l.nodes[0].label.y); });
+            .text(function (l) { return l.text; })
+            .attr('x', function (l) { return l.x; })
+            .attr('y', function (l) { return l.y; })
+            .attr('style', function (l) { return l.style; })
+            .attr('transform', function (l) { return "rotate(" + l.rotation + ", " + l.x + ", " + l.y + ")"; });
         labels
             .exit()
             .remove();
