@@ -2057,7 +2057,14 @@ var LayersWidget = /** @class */ (function () {
 var LinksWidget = /** @class */ (function () {
     function LinksWidget() {
         this.multiLinkCalculatorHelper = new __WEBPACK_IMPORTED_MODULE_2__map_helpers_multi_link_calculator_helper__["a" /* MultiLinkCalculatorHelper */]();
+        this.interfaceLabelWidget = new __WEBPACK_IMPORTED_MODULE_5__interface_label__["a" /* InterfaceLabelWidget */]();
     }
+    LinksWidget.prototype.getInterfaceLabelWidget = function () {
+        return this.interfaceLabelWidget;
+    };
+    LinksWidget.prototype.setInterfaceLabelWidget = function (interfaceLabelWidget) {
+        this.interfaceLabelWidget = interfaceLabelWidget;
+    };
     LinksWidget.prototype.getLinkWidget = function (link) {
         if (link.link_type === 'serial') {
             return new __WEBPACK_IMPORTED_MODULE_3__serial_link__["a" /* SerialLinkWidget */]();
@@ -2123,8 +2130,7 @@ var LinksWidget = /** @class */ (function () {
             }
             return null;
         });
-        var interfaceLabel = new __WEBPACK_IMPORTED_MODULE_5__interface_label__["a" /* InterfaceLabelWidget */]();
-        interfaceLabel.draw(selection);
+        this.getInterfaceLabelWidget().draw(selection);
     };
     LinksWidget.prototype.draw = function (view, links) {
         var _this = this;
