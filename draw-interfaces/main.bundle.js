@@ -1958,7 +1958,7 @@ var InterfaceLabelWidget = /** @class */ (function () {
         var enter = labels
             .enter()
             .append('text')
-            .attr('class', 'interface_label');
+            .attr('class', 'interface_label noselect');
         var merge = labels
             .merge(enter);
         merge
