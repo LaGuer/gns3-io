@@ -955,8 +955,14 @@ var DataSource = /** @class */ (function () {
         return this.data;
     };
     DataSource.prototype.add = function (item) {
-        this.data.push(item);
-        this.dataChange.next(this.data);
+        var index = this.findIndex(item);
+        if (index >= 0) {
+            this.update(item);
+        }
+        else {
+            this.data.push(item);
+            this.dataChange.next(this.data);
+        }
     };
     DataSource.prototype.set = function (data) {
         this.data = data;
@@ -1864,8 +1870,8 @@ var EthernetLinkWidget = /** @class */ (function () {
     }
     EthernetLinkWidget.prototype.draw = function (view, link) {
         var link_data = [[
-                [link.source.x, link.source.y],
-                [link.target.x, link.target.y]
+                [link.source.x + link.source.width / 2., link.source.y + link.source.height / 2.],
+                [link.target.x + link.target.width / 2., link.target.y + link.source.height / 2.]
             ]];
         var value_line = Object(__WEBPACK_IMPORTED_MODULE_0_d3_shape__["v" /* line */])();
         var link_path = view.select('path');
@@ -2008,8 +2014,8 @@ var InterfaceLabelWidget = /** @class */ (function () {
         var labels = selection
             .selectAll('text.interface_label')
             .data(function (l) {
-            var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.source.x + l.nodes[0].label.x), Math.round(l.source.y + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation);
-            var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.target.x + l.nodes[1].label.x), Math.round(l.target.y + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation);
+            var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.source.x + l.source.width + l.nodes[0].label.x), Math.round(l.source.y + l.source.height + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation);
+            var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.target.x + l.target.width / 2. + l.nodes[1].label.x), Math.round(l.target.y + l.target.height / 2. + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation);
             return [sourceInterface, targetInterface];
         });
         var enter = labels
@@ -2020,8 +2026,14 @@ var InterfaceLabelWidget = /** @class */ (function () {
             .merge(enter);
         merge
             .text(function (l) { return l.text; })
-            .attr('x', function (l) { return l.x; })
-            .attr('y', function (l) { return l.y; })
+            .attr('x', function (l) {
+            var bbox = this.getBBox();
+            return l.x;
+        })
+            .attr('y', function (l) {
+            var bbox = this.getBBox();
+            return l.y;
+        })
             .attr('style', function (l) { return _this.cssFixer.fix(l.style); })
             .attr('transform', function (l) { return "rotate(" + l.rotation + ", " + l.x + ", " + l.y + ")"; });
         labels
@@ -2139,12 +2151,15 @@ var LinksWidget = /** @class */ (function () {
             var link_widget = self.getLinkWidget(l);
             link_widget.draw(link_group, l);
             var link_path = link_group.select('path');
-            var start_point = link_path.node().getPointAtLength(50);
-            var end_point = link_path.node().getPointAtLength(link_path.node().getTotalLength() - 50);
-            var statuses = [
-                new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](start_point.x, start_point.y, l.source.status),
-                new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](end_point.x, end_point.y, l.target.status)
-            ];
+            var start_point = link_path.node().getPointAtLength(40);
+            var end_point = link_path.node().getPointAtLength(link_path.node().getTotalLength() - 40);
+            var statuses = [];
+            if (link_path.node().getTotalLength() > 2 * 40 + 10) {
+                statuses = [
+                    new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](start_point.x, start_point.y, l.source.status),
+                    new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](end_point.x, end_point.y, l.target.status)
+                ];
+            }
             var status_started = link_group
                 .selectAll('circle.status_started')
                 .data(statuses.filter(function (link_status) { return link_status.status === 'started'; }));
@@ -2156,7 +2171,7 @@ var LinksWidget = /** @class */ (function () {
                 .attr('class', 'status_started')
                 .attr('cx', function (ls) { return ls.x; })
                 .attr('cy', function (ls) { return ls.y; })
-                .attr('r', 4)
+                .attr('r', 6)
                 .attr('fill', '#2ecc71');
             status_started
                 .exit()
@@ -2167,7 +2182,7 @@ var LinksWidget = /** @class */ (function () {
             var status_stopped_enter = status_stopped
                 .enter()
                 .append('rect');
-            var STOPPED_STATUS_RECT_WIDTH = 6;
+            var STOPPED_STATUS_RECT_WIDTH = 10;
             status_stopped
                 .merge(status_stopped_enter)
                 .attr('class', 'status_stopped')
@@ -2278,15 +2293,16 @@ var NodesWidget = /** @class */ (function () {
                 var bbox = this.getBBox();
                 return -bbox.width / 2.;
             }
-            return n.label.x - n.width / 2.;
+            return n.label.x;
         })
             .attr('y', function (n) {
+            var bbox = this.getBBox();
             if (n.label.x === null) {
                 // center
-                var bbox = this.getBBox();
+                bbox = this.getBBox();
                 return -n.height / 2. - bbox.height;
             }
-            return n.label.y - n.height / 2.;
+            return n.label.y + bbox.height;
         });
         selection
             .select('text.node_point_label')
@@ -2356,8 +2372,8 @@ var NodesWidget = /** @class */ (function () {
         })
             .attr('width', function (n) { return n.width; })
             .attr('height', function (n) { return n.height; })
-            .attr('x', function (n) { return -n.width / 2.; })
-            .attr('y', function (n) { return -n.height / 2.; })
+            .attr('x', function (n) { return 0; })
+            .attr('y', function (n) { return 0; })
             .on('mouseover', function (n) {
             Object(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["k" /* select */])(this).attr("class", "over");
         })
