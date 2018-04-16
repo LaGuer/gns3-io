@@ -979,6 +979,10 @@ var DataSource = /** @class */ (function () {
     DataSource.prototype.connect = function () {
         return this.dataChange;
     };
+    DataSource.prototype.clear = function () {
+        this.data = [];
+        this.dataChange.next(this.data);
+    };
     return DataSource;
 }());
 
@@ -1158,6 +1162,54 @@ var SymbolsDataSource = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/helpers/css-fixer.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CssFixer; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_css_tree__ = __webpack_require__("./node_modules/css-tree/lib/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_css_tree___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_css_tree__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var CssFixer = /** @class */ (function () {
+    function CssFixer() {
+    }
+    CssFixer.prototype.fix = function (styles) {
+        var ast = __WEBPACK_IMPORTED_MODULE_0_css_tree__["parse"](styles, {
+            'context': 'declarationList'
+        });
+        // fixes font-size when unit (pt|px) is not defined
+        ast.children.forEach(function (child) {
+            if (child.property === 'font-size') {
+                child.value.children.forEach(function (value) {
+                    if (value.type === 'Number') {
+                        var fontSize = value.value.toString();
+                        if (!(fontSize.indexOf("pt") >= 0 || fontSize.indexOf("px") >= 0)) {
+                            value.value = fontSize + "pt";
+                        }
+                    }
+                });
+            }
+        });
+        return __WEBPACK_IMPORTED_MODULE_0_css_tree__["generate"](ast);
+    };
+    CssFixer = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])()
+    ], CssFixer);
+    return CssFixer;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/managers/layers-manager.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1256,6 +1308,7 @@ var SelectionManager = /** @class */ (function () {
             _this.selectedNodes = _this.getSelectedItemsInRectangle(_this.nodesDataSource, rectangle);
             _this.selectedLinks = _this.getSelectedItemsInRectangle(_this.linksDataSource, rectangle);
         });
+        return this.subscription;
     };
     SelectionManager.prototype.getSelectedNodes = function () {
         return this.selectedNodes;
@@ -1359,6 +1412,27 @@ var DrawingLine = /** @class */ (function () {
     function DrawingLine() {
     }
     return DrawingLine;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/interface-label.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterfaceLabel; });
+var InterfaceLabel = /** @class */ (function () {
+    function InterfaceLabel(x, y, text, style, rotation) {
+        if (rotation === void 0) { rotation = 0; }
+        this.x = x;
+        this.y = y;
+        this.text = text;
+        this.style = style;
+        this.rotation = rotation;
+    }
+    return InterfaceLabel;
 }());
 
 
@@ -1916,6 +1990,51 @@ var GraphLayout = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/widgets/interface-label.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterfaceLabelWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_interface_label__ = __webpack_require__("./src/app/cartography/shared/models/interface-label.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_css_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/css-fixer.ts");
+
+
+var InterfaceLabelWidget = /** @class */ (function () {
+    function InterfaceLabelWidget() {
+        this.cssFixer = new __WEBPACK_IMPORTED_MODULE_1__helpers_css_fixer__["a" /* CssFixer */]();
+    }
+    InterfaceLabelWidget.prototype.draw = function (selection) {
+        var _this = this;
+        var labels = selection
+            .selectAll('text.interface_label')
+            .data(function (l) {
+            var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.source.x + l.nodes[0].label.x), Math.round(l.source.y + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation);
+            var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.target.x + l.nodes[1].label.x), Math.round(l.target.y + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation);
+            return [sourceInterface, targetInterface];
+        });
+        var enter = labels
+            .enter()
+            .append('text')
+            .attr('class', 'interface_label noselect');
+        var merge = labels
+            .merge(enter);
+        merge
+            .text(function (l) { return l.text; })
+            .attr('x', function (l) { return l.x; })
+            .attr('y', function (l) { return l.y; })
+            .attr('style', function (l) { return _this.cssFixer.fix(l.style); })
+            .attr('transform', function (l) { return "rotate(" + l.rotation + ", " + l.x + ", " + l.y + ")"; });
+        labels
+            .exit()
+            .remove();
+    };
+    return InterfaceLabelWidget;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/widgets/layers.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1985,6 +2104,8 @@ var LayersWidget = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__map_helpers_multi_link_calculator_helper__ = __webpack_require__("./src/app/cartography/map/helpers/multi-link-calculator-helper.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__serial_link__ = __webpack_require__("./src/app/cartography/shared/widgets/serial-link.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ethernet_link__ = __webpack_require__("./src/app/cartography/shared/widgets/ethernet-link.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__interface_label__ = __webpack_require__("./src/app/cartography/shared/widgets/interface-label.ts");
+
 
 
 
@@ -1993,7 +2114,14 @@ var LayersWidget = /** @class */ (function () {
 var LinksWidget = /** @class */ (function () {
     function LinksWidget() {
         this.multiLinkCalculatorHelper = new __WEBPACK_IMPORTED_MODULE_2__map_helpers_multi_link_calculator_helper__["a" /* MultiLinkCalculatorHelper */]();
+        this.interfaceLabelWidget = new __WEBPACK_IMPORTED_MODULE_5__interface_label__["a" /* InterfaceLabelWidget */]();
     }
+    LinksWidget.prototype.getInterfaceLabelWidget = function () {
+        return this.interfaceLabelWidget;
+    };
+    LinksWidget.prototype.setInterfaceLabelWidget = function (interfaceLabelWidget) {
+        this.interfaceLabelWidget = interfaceLabelWidget;
+    };
     LinksWidget.prototype.getLinkWidget = function (link) {
         if (link.link_type === 'serial') {
             return new __WEBPACK_IMPORTED_MODULE_3__serial_link__["a" /* SerialLinkWidget */]();
@@ -2059,6 +2187,7 @@ var LinksWidget = /** @class */ (function () {
             }
             return null;
         });
+        this.getInterfaceLabelWidget().draw(selection);
     };
     LinksWidget.prototype.draw = function (view, links) {
         var _this = this;
@@ -2102,6 +2231,8 @@ var LinksWidget = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NodesWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__("./node_modules/d3-selection/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_drag__ = __webpack_require__("./node_modules/d3-drag/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_css_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/css-fixer.ts");
+
 
 
 var NodesWidget = /** @class */ (function () {
@@ -2109,6 +2240,7 @@ var NodesWidget = /** @class */ (function () {
         this.debug = false;
         this.onNodeDraggingCallbacks = [];
         this.symbols = [];
+        this.cssFixer = new __WEBPACK_IMPORTED_MODULE_2__helpers_css_fixer__["a" /* CssFixer */]();
     }
     NodesWidget.prototype.setOnContextMenuCallback = function (onContextMenuCallback) {
         this.onContextMenuCallback = onContextMenuCallback;
@@ -2131,13 +2263,14 @@ var NodesWidget = /** @class */ (function () {
         });
     };
     NodesWidget.prototype.revise = function (selection) {
+        var _this = this;
         selection
             .attr('transform', function (n) {
             return "translate(" + n.x + "," + n.y + ")";
         });
         selection
             .select('text.label')
-            .attr('style', function (n) { return n.label.style; })
+            .attr('style', function (n) { return _this.cssFixer.fix(n.label.style); })
             .text(function (n) { return n.label.text; })
             .attr('x', function (n) {
             if (n.label.x === null) {
@@ -2572,10 +2705,11 @@ var ProjectMapComponent = /** @class */ (function () {
         this.movingMode = false;
         this.isLoading = true;
         this.selectionManager = new __WEBPACK_IMPORTED_MODULE_26__cartography_shared_managers_selection_manager__["a" /* SelectionManager */](this.nodesDataSource, this.linksDataSource, new __WEBPACK_IMPORTED_MODULE_27__cartography_map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */]());
+        this.subscriptions = [];
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.route.paramMap.subscribe(function (paramMap) {
+        var routeSub = this.route.paramMap.subscribe(function (paramMap) {
             var server_id = parseInt(paramMap.get('server_id'), 10);
             __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */]
                 .fromPromise(_this.serverService.get(server_id))
@@ -2598,31 +2732,32 @@ var ProjectMapComponent = /** @class */ (function () {
                 _this.onProjectLoad(project);
             });
         });
-        this.symbolService.symbols.subscribe(function (symbols) {
+        this.subscriptions.push(routeSub);
+        this.subscriptions.push(this.symbolService.symbols.subscribe(function (symbols) {
             _this.symbols = symbols;
-        });
-        this.drawingsDataSource.connect().subscribe(function (drawings) {
+        }));
+        this.subscriptions.push(this.drawingsDataSource.connect().subscribe(function (drawings) {
             _this.drawings = drawings;
             if (_this.mapChild) {
                 _this.mapChild.reload();
             }
-        });
-        this.nodesDataSource.connect().subscribe(function (nodes) {
+        }));
+        this.subscriptions.push(this.nodesDataSource.connect().subscribe(function (nodes) {
             _this.nodes = nodes;
             if (_this.mapChild) {
                 _this.mapChild.reload();
             }
-        });
-        this.linksDataSource.connect().subscribe(function (links) {
+        }));
+        this.subscriptions.push(this.linksDataSource.connect().subscribe(function (links) {
             _this.links = links;
             if (_this.mapChild) {
                 _this.mapChild.reload();
             }
-        });
+        }));
     };
     ProjectMapComponent.prototype.onProjectLoad = function (project) {
         var _this = this;
-        this.symbolService
+        var subscription = this.symbolService
             .load(this.server)
             .flatMap(function () {
             return _this.projectService.nodes(_this.server, project.project_id);
@@ -2641,10 +2776,11 @@ var ProjectMapComponent = /** @class */ (function () {
             _this.setUpWS(project);
             _this.isLoading = false;
         });
+        this.subscriptions.push(subscription);
     };
     ProjectMapComponent.prototype.setUpWS = function (project) {
         this.ws = __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].webSocket(this.projectService.notificationsPath(this.server, project.project_id));
-        this.projectWebServiceHandler.connect(this.ws);
+        this.subscriptions.push(this.projectWebServiceHandler.connect(this.ws));
     };
     ProjectMapComponent.prototype.setUpMapCallbacks = function (project) {
         var _this = this;
@@ -2665,7 +2801,7 @@ var ProjectMapComponent = /** @class */ (function () {
                 _this.nodesDataSource.update(n);
             });
         });
-        this.selectionManager.subscribe(this.mapChild.graphLayout.getSelectionTool().rectangleSelected);
+        this.subscriptions.push(this.selectionManager.subscribe(this.mapChild.graphLayout.getSelectionTool().rectangleSelected));
     };
     ProjectMapComponent.prototype.onNodeCreation = function (appliance) {
         var _this = this;
@@ -2745,6 +2881,13 @@ var ProjectMapComponent = /** @class */ (function () {
                 _this.linksDataSource.set(links);
             });
         });
+    };
+    ProjectMapComponent.prototype.ngOnDestroy = function () {
+        this.drawingsDataSource.clear();
+        this.nodesDataSource.clear();
+        this.linksDataSource.clear();
+        this.ws.unsubscribe();
+        this.subscriptions.forEach(function (subscription) { return subscription.unsubscribe(); });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_10__cartography_map_map_component__["a" /* MapComponent */]),
@@ -3330,7 +3473,7 @@ var ProjectWebServiceHandler = /** @class */ (function () {
     }
     ProjectWebServiceHandler.prototype.connect = function (ws) {
         var _this = this;
-        ws.subscribe(function (message) {
+        var subscription = ws.subscribe(function (message) {
             if (message.action === 'node.updated') {
                 _this.nodesDataSource.update(message.event);
             }
@@ -3359,6 +3502,7 @@ var ProjectWebServiceHandler = /** @class */ (function () {
                 _this.drawingsDataSource.remove(message.event);
             }
         });
+        return subscription;
     };
     ProjectWebServiceHandler = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -4538,13 +4682,14 @@ var SymbolService = /** @class */ (function () {
     };
     SymbolService.prototype.load = function (server) {
         var _this = this;
-        this.list(server).subscribe(function (symbols) {
+        var subscription = this.list(server).subscribe(function (symbols) {
             var streams = symbols.map(function (symbol) { return _this.raw(server, symbol.symbol_id); });
             __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["a" /* Observable */].forkJoin(streams).subscribe(function (results) {
                 symbols.forEach(function (symbol, i) {
                     symbol.raw = results[i];
                 });
                 _this.symbols.next(symbols);
+                subscription.unsubscribe();
             });
         });
         return this.symbols.asObservable();
