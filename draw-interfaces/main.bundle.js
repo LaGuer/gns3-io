@@ -2903,7 +2903,7 @@ var ProjectMapComponent = /** @class */ (function () {
             this.onLineCreation(data['node'], data['port'], node, port);
         }
         else {
-            drawingLineTool.start(node.x, node.y, {
+            drawingLineTool.start(node.x + node.width / 2., node.y + node.height / 2., {
                 'node': node,
                 'port': port
             });
