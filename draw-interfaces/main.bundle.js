@@ -1430,13 +1430,14 @@ var DrawingLine = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterfaceLabel; });
 var InterfaceLabel = /** @class */ (function () {
-    function InterfaceLabel(x, y, text, style, rotation) {
+    function InterfaceLabel(x, y, text, style, rotation, type) {
         if (rotation === void 0) { rotation = 0; }
         this.x = x;
         this.y = y;
         this.text = text;
         this.style = style;
         this.rotation = rotation;
+        this.type = type;
     }
     return InterfaceLabel;
 }());
@@ -2014,8 +2015,8 @@ var InterfaceLabelWidget = /** @class */ (function () {
         var labels = selection
             .selectAll('text.interface_label')
             .data(function (l) {
-            var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.source.x + l.source.width + l.nodes[0].label.x), Math.round(l.source.y + l.source.height + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation);
-            var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.target.x + l.target.width / 2. + l.nodes[1].label.x), Math.round(l.target.y + l.target.height / 2. + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation);
+            var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.source.x + l.nodes[0].label.x), Math.round(l.source.y + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation, 'source');
+            var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.target.x + l.nodes[1].label.x), Math.round(l.target.y + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation, 'target');
             return [sourceInterface, targetInterface];
         });
         var enter = labels
@@ -2027,12 +2028,32 @@ var InterfaceLabelWidget = /** @class */ (function () {
         merge
             .text(function (l) { return l.text; })
             .attr('x', function (l) {
+            /* @todo: in GUI probably it should be calculated based on the line; for now we keep it the same */
+            // const link = select(this.parentElement);
+            // const path = link.select<SVGPathElement>('path');
+            // let point;
+            // if (l.type === 'source') {
+            //   point = path.node().getPointAtLength(40);
+            // } else {
+            //   point = path.node().getPointAtLength(path.node().getTotalLength() - 40);
+            // }
+            // return point.x + l.x;
             var bbox = this.getBBox();
             return l.x;
         })
             .attr('y', function (l) {
+            /* @todo: in GUI probably it should be calculated based on the line; for now we keep it the same */
+            // const link = select(this.parentElement);
+            // const path = link.select<SVGPathElement>('path');
+            // let point;
+            // if (l.type === 'source') {
+            //   point = path.node().getPointAtLength(40);
+            // } else {
+            //   point = path.node().getPointAtLength(path.node().getTotalLength() - 40);
+            // }
+            // return point.y + l.y;
             var bbox = this.getBBox();
-            return l.y;
+            return l.y + bbox.height;
         })
             .attr('style', function (l) { return _this.cssFixer.fix(l.style); })
             .attr('transform', function (l) { return "rotate(" + l.rotation + ", " + l.x + ", " + l.y + ")"; });
@@ -2151,10 +2172,10 @@ var LinksWidget = /** @class */ (function () {
             var link_widget = self.getLinkWidget(l);
             link_widget.draw(link_group, l);
             var link_path = link_group.select('path');
-            var start_point = link_path.node().getPointAtLength(40);
-            var end_point = link_path.node().getPointAtLength(link_path.node().getTotalLength() - 40);
+            var start_point = link_path.node().getPointAtLength(45);
+            var end_point = link_path.node().getPointAtLength(link_path.node().getTotalLength() - 45);
             var statuses = [];
-            if (link_path.node().getTotalLength() > 2 * 40 + 10) {
+            if (link_path.node().getTotalLength() > 2 * 45 + 10) {
                 statuses = [
                     new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](start_point.x, start_point.y, l.source.status),
                     new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](end_point.x, end_point.y, l.target.status)
