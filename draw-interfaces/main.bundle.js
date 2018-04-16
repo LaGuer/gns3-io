@@ -1162,6 +1162,54 @@ var SymbolsDataSource = /** @class */ (function (_super) {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/helpers/css-fixer.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CssFixer; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_css_tree__ = __webpack_require__("./node_modules/css-tree/lib/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_css_tree___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_css_tree__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+
+var CssFixer = /** @class */ (function () {
+    function CssFixer() {
+    }
+    CssFixer.prototype.fix = function (styles) {
+        var ast = __WEBPACK_IMPORTED_MODULE_0_css_tree__["parse"](styles, {
+            'context': 'declarationList'
+        });
+        // fixes font-size when unit (pt|px) is not defined
+        ast.children.forEach(function (child) {
+            if (child.property === 'font-size') {
+                child.value.children.forEach(function (value) {
+                    if (value.type === 'Number') {
+                        var fontSize = value.value.toString();
+                        if (!(fontSize.indexOf("pt") >= 0 || fontSize.indexOf("px") >= 0)) {
+                            value.value = fontSize + "pt";
+                        }
+                    }
+                });
+            }
+        });
+        return __WEBPACK_IMPORTED_MODULE_0_css_tree__["generate"](ast);
+    };
+    CssFixer = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])()
+    ], CssFixer);
+    return CssFixer;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/managers/layers-manager.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1948,11 +1996,15 @@ var GraphLayout = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterfaceLabelWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_interface_label__ = __webpack_require__("./src/app/cartography/shared/models/interface-label.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_css_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/css-fixer.ts");
+
 
 var InterfaceLabelWidget = /** @class */ (function () {
     function InterfaceLabelWidget() {
+        this.cssFixer = new __WEBPACK_IMPORTED_MODULE_1__helpers_css_fixer__["a" /* CssFixer */]();
     }
     InterfaceLabelWidget.prototype.draw = function (selection) {
+        var _this = this;
         var labels = selection
             .selectAll('text.interface_label')
             .data(function (l) {
@@ -1970,7 +2022,7 @@ var InterfaceLabelWidget = /** @class */ (function () {
             .text(function (l) { return l.text; })
             .attr('x', function (l) { return l.x; })
             .attr('y', function (l) { return l.y; })
-            .attr('style', function (l) { return l.style; })
+            .attr('style', function (l) { return _this.cssFixer.fix(l.style); })
             .attr('transform', function (l) { return "rotate(" + l.rotation + ", " + l.x + ", " + l.y + ")"; });
         labels
             .exit()
@@ -2179,6 +2231,8 @@ var LinksWidget = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NodesWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__("./node_modules/d3-selection/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_drag__ = __webpack_require__("./node_modules/d3-drag/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_css_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/css-fixer.ts");
+
 
 
 var NodesWidget = /** @class */ (function () {
@@ -2186,6 +2240,7 @@ var NodesWidget = /** @class */ (function () {
         this.debug = false;
         this.onNodeDraggingCallbacks = [];
         this.symbols = [];
+        this.cssFixer = new __WEBPACK_IMPORTED_MODULE_2__helpers_css_fixer__["a" /* CssFixer */]();
     }
     NodesWidget.prototype.setOnContextMenuCallback = function (onContextMenuCallback) {
         this.onContextMenuCallback = onContextMenuCallback;
@@ -2208,13 +2263,14 @@ var NodesWidget = /** @class */ (function () {
         });
     };
     NodesWidget.prototype.revise = function (selection) {
+        var _this = this;
         selection
             .attr('transform', function (n) {
             return "translate(" + n.x + "," + n.y + ")";
         });
         selection
             .select('text.label')
-            .attr('style', function (n) { return n.label.style; })
+            .attr('style', function (n) { return _this.cssFixer.fix(n.label.style); })
             .text(function (n) { return n.label.text; })
             .attr('x', function (n) {
             if (n.label.x === null) {
