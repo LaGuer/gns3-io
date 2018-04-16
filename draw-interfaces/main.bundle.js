@@ -979,6 +979,10 @@ var DataSource = /** @class */ (function () {
     DataSource.prototype.connect = function () {
         return this.dataChange;
     };
+    DataSource.prototype.clear = function () {
+        this.data = [];
+        this.dataChange.next(this.data);
+    };
     return DataSource;
 }());
 
@@ -1256,6 +1260,7 @@ var SelectionManager = /** @class */ (function () {
             _this.selectedNodes = _this.getSelectedItemsInRectangle(_this.nodesDataSource, rectangle);
             _this.selectedLinks = _this.getSelectedItemsInRectangle(_this.linksDataSource, rectangle);
         });
+        return this.subscription;
     };
     SelectionManager.prototype.getSelectedNodes = function () {
         return this.selectedNodes;
@@ -2644,10 +2649,11 @@ var ProjectMapComponent = /** @class */ (function () {
         this.movingMode = false;
         this.isLoading = true;
         this.selectionManager = new __WEBPACK_IMPORTED_MODULE_26__cartography_shared_managers_selection_manager__["a" /* SelectionManager */](this.nodesDataSource, this.linksDataSource, new __WEBPACK_IMPORTED_MODULE_27__cartography_map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */]());
+        this.subscriptions = [];
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this.route.paramMap.subscribe(function (paramMap) {
+        var routeSub = this.route.paramMap.subscribe(function (paramMap) {
             var server_id = parseInt(paramMap.get('server_id'), 10);
             __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */]
                 .fromPromise(_this.serverService.get(server_id))
@@ -2670,31 +2676,32 @@ var ProjectMapComponent = /** @class */ (function () {
                 _this.onProjectLoad(project);
             });
         });
-        this.symbolService.symbols.subscribe(function (symbols) {
+        this.subscriptions.push(routeSub);
+        this.subscriptions.push(this.symbolService.symbols.subscribe(function (symbols) {
             _this.symbols = symbols;
-        });
-        this.drawingsDataSource.connect().subscribe(function (drawings) {
+        }));
+        this.subscriptions.push(this.drawingsDataSource.connect().subscribe(function (drawings) {
             _this.drawings = drawings;
             if (_this.mapChild) {
                 _this.mapChild.reload();
             }
-        });
-        this.nodesDataSource.connect().subscribe(function (nodes) {
+        }));
+        this.subscriptions.push(this.nodesDataSource.connect().subscribe(function (nodes) {
             _this.nodes = nodes;
             if (_this.mapChild) {
                 _this.mapChild.reload();
             }
-        });
-        this.linksDataSource.connect().subscribe(function (links) {
+        }));
+        this.subscriptions.push(this.linksDataSource.connect().subscribe(function (links) {
             _this.links = links;
             if (_this.mapChild) {
                 _this.mapChild.reload();
             }
-        });
+        }));
     };
     ProjectMapComponent.prototype.onProjectLoad = function (project) {
         var _this = this;
-        this.symbolService
+        var subscription = this.symbolService
             .load(this.server)
             .flatMap(function () {
             return _this.projectService.nodes(_this.server, project.project_id);
@@ -2713,10 +2720,11 @@ var ProjectMapComponent = /** @class */ (function () {
             _this.setUpWS(project);
             _this.isLoading = false;
         });
+        this.subscriptions.push(subscription);
     };
     ProjectMapComponent.prototype.setUpWS = function (project) {
         this.ws = __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].webSocket(this.projectService.notificationsPath(this.server, project.project_id));
-        this.projectWebServiceHandler.connect(this.ws);
+        this.subscriptions.push(this.projectWebServiceHandler.connect(this.ws));
     };
     ProjectMapComponent.prototype.setUpMapCallbacks = function (project) {
         var _this = this;
@@ -2737,7 +2745,7 @@ var ProjectMapComponent = /** @class */ (function () {
                 _this.nodesDataSource.update(n);
             });
         });
-        this.selectionManager.subscribe(this.mapChild.graphLayout.getSelectionTool().rectangleSelected);
+        this.subscriptions.push(this.selectionManager.subscribe(this.mapChild.graphLayout.getSelectionTool().rectangleSelected));
     };
     ProjectMapComponent.prototype.onNodeCreation = function (appliance) {
         var _this = this;
@@ -2817,6 +2825,13 @@ var ProjectMapComponent = /** @class */ (function () {
                 _this.linksDataSource.set(links);
             });
         });
+    };
+    ProjectMapComponent.prototype.ngOnDestroy = function () {
+        this.drawingsDataSource.clear();
+        this.nodesDataSource.clear();
+        this.linksDataSource.clear();
+        this.ws.unsubscribe();
+        this.subscriptions.forEach(function (subscription) { return subscription.unsubscribe(); });
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_10__cartography_map_map_component__["a" /* MapComponent */]),
@@ -3402,7 +3417,7 @@ var ProjectWebServiceHandler = /** @class */ (function () {
     }
     ProjectWebServiceHandler.prototype.connect = function (ws) {
         var _this = this;
-        ws.subscribe(function (message) {
+        var subscription = ws.subscribe(function (message) {
             if (message.action === 'node.updated') {
                 _this.nodesDataSource.update(message.event);
             }
@@ -3431,6 +3446,7 @@ var ProjectWebServiceHandler = /** @class */ (function () {
                 _this.drawingsDataSource.remove(message.event);
             }
         });
+        return subscription;
     };
     ProjectWebServiceHandler = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
@@ -4610,13 +4626,14 @@ var SymbolService = /** @class */ (function () {
     };
     SymbolService.prototype.load = function (server) {
         var _this = this;
-        this.list(server).subscribe(function (symbols) {
+        var subscription = this.list(server).subscribe(function (symbols) {
             var streams = symbols.map(function (symbol) { return _this.raw(server, symbol.symbol_id); });
             __WEBPACK_IMPORTED_MODULE_1_rxjs_Observable__["a" /* Observable */].forkJoin(streams).subscribe(function (results) {
                 symbols.forEach(function (symbol, i) {
                     symbol.raw = results[i];
                 });
                 _this.symbols.next(symbols);
+                subscription.unsubscribe();
             });
         });
         return this.symbols.asObservable();
