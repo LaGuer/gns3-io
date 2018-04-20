@@ -2105,16 +2105,17 @@ var InterfaceLabelWidget = /** @class */ (function () {
             var parent = Object(__WEBPACK_IMPORTED_MODULE_2_d3_selection__["k" /* select */])(this.parentElement);
             var text = parent.select('text');
             var bbox = text.node().getBBox();
-            current.attr('width', bbox.width + InterfaceLabelWidget.SURROUNDING_TEXT_BORDER);
-            current.attr('height', bbox.height + InterfaceLabelWidget.SURROUNDING_TEXT_BORDER);
-            current.attr('x', bbox.x - InterfaceLabelWidget.SURROUNDING_TEXT_BORDER);
-            current.attr('y', bbox.y - InterfaceLabelWidget.SURROUNDING_TEXT_BORDER);
+            var border = InterfaceLabelWidget.SURROUNDING_TEXT_BORDER;
+            current.attr('width', bbox.width + border * 2);
+            current.attr('height', bbox.height + border);
+            current.attr('x', -border);
+            current.attr('y', -bbox.height);
         });
         labels
             .exit()
             .remove();
     };
-    InterfaceLabelWidget.SURROUNDING_TEXT_BORDER = 10;
+    InterfaceLabelWidget.SURROUNDING_TEXT_BORDER = 5;
     return InterfaceLabelWidget;
 }());
 
