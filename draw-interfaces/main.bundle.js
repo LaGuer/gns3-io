@@ -1347,6 +1347,11 @@ var SelectionManager = /** @class */ (function () {
             return !!drawings.find(function (d) { return drawing.drawing_id === d.drawing_id; });
         });
     };
+    SelectionManager.prototype.clearSelection = function () {
+        this.setSelectedDrawings([]);
+        this.setSelectedLinks([]);
+        this.setSelectedNodes([]);
+    };
     SelectionManager.prototype.getSelectedItemsInRectangle = function (dataSource, rectangle) {
         var _this = this;
         return this.setSelectedItems(dataSource, function (item) {
@@ -2880,6 +2885,7 @@ var ProjectMapComponent = /** @class */ (function () {
             _this.nodeContextMenu.open(node, event.clientY, event.clientX);
         });
         this.mapChild.graphLayout.getNodesWidget().setOnNodeClickedCallback(function (event, node) {
+            _this.selectionManager.clearSelection();
             _this.selectionManager.setSelectedNodes([node]);
             if (_this.drawLineMode) {
                 _this.nodeSelectInterfaceMenu.open(node, event.clientY, event.clientX);
