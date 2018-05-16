@@ -1968,14 +1968,26 @@ var DrawingLineWidget = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrawingsWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__drawings_text_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/text-drawing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__map_helpers_svg_to_drawing_converter__ = __webpack_require__("./src/app/cartography/map/helpers/svg-to-drawing-converter.ts");
+
 
 var DrawingsWidget = /** @class */ (function () {
     function DrawingsWidget() {
+        this.svgToDrawingConverter = new __WEBPACK_IMPORTED_MODULE_1__map_helpers_svg_to_drawing_converter__["a" /* SvgToDrawingConverter */]();
     }
     DrawingsWidget.prototype.draw = function (view, drawings) {
+        var _this = this;
         var drawing = view
             .selectAll('g.drawing')
             .data(function (l) {
+            l.drawings.forEach(function (d) {
+                try {
+                    d.element = _this.svgToDrawingConverter.convert(d.svg);
+                }
+                catch (error) {
+                    console.log("Cannot convert due to Error: '" + error + "'");
+                }
+            });
             return l.drawings;
         }, function (d) {
             return d.drawing_id;
@@ -2036,8 +2048,6 @@ var DrawingsWidget = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextDrawingWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/text-element.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__map_helpers_svg_to_drawing_converter__ = __webpack_require__("./src/app/cartography/map/helpers/svg-to-drawing-converter.ts");
-
 
 var TextDrawingWidget = /** @class */ (function () {
     function TextDrawingWidget() {
@@ -2046,16 +2056,7 @@ var TextDrawingWidget = /** @class */ (function () {
         var drawing = view
             .selectAll('text.text_element')
             .data(function (d) {
-            var svgConverter = new __WEBPACK_IMPORTED_MODULE_1__map_helpers_svg_to_drawing_converter__["a" /* SvgToDrawingConverter */]();
-            var elements = [];
-            try {
-                var element = svgConverter.convert(d.svg);
-                elements.push(element);
-            }
-            catch (error) {
-                console.log("Cannot convert due to Error: '" + error + "'");
-            }
-            return elements.filter(function (e) { return e instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__["a" /* TextElement */]; });
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__["a" /* TextElement */]) ? [d.element] : [];
         });
         var drawing_enter = drawing
             .enter()
