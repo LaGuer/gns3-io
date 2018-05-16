@@ -666,9 +666,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var InRectangleHelper = /** @class */ (function () {
     function InRectangleHelper() {
     }
-    InRectangleHelper.prototype.inRectangle = function (item, rectangle) {
-        return (rectangle.x <= item.x && item.x < (rectangle.x + rectangle.width)
-            && rectangle.y <= item.y && item.y < (rectangle.y + rectangle.height));
+    InRectangleHelper.prototype.inRectangle = function (rectangle, x, y) {
+        return (rectangle.x <= x && x < (rectangle.x + rectangle.width)
+            && rectangle.y <= y && y < (rectangle.y + rectangle.height));
     };
     InRectangleHelper = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
@@ -955,8 +955,14 @@ var DataSource = /** @class */ (function () {
         return this.data;
     };
     DataSource.prototype.add = function (item) {
-        this.data.push(item);
-        this.dataChange.next(this.data);
+        var index = this.findIndex(item);
+        if (index >= 0) {
+            this.update(item);
+        }
+        else {
+            this.data.push(item);
+            this.dataChange.next(this.data);
+        }
     };
     DataSource.prototype.set = function (data) {
         this.data = data;
@@ -1281,6 +1287,7 @@ var LayersManager = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datasources_nodes_datasource__ = __webpack_require__("./src/app/cartography/shared/datasources/nodes-datasource.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datasources_links_datasource__ = __webpack_require__("./src/app/cartography/shared/datasources/links-datasource.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__map_helpers_in_rectangle_helper__ = __webpack_require__("./src/app/cartography/map/helpers/in-rectangle-helper.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__datasources_drawings_datasource__ = __webpack_require__("./src/app/cartography/shared/datasources/drawings-datasource.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1294,19 +1301,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var SelectionManager = /** @class */ (function () {
-    function SelectionManager(nodesDataSource, linksDataSource, inRectangleHelper) {
+    function SelectionManager(nodesDataSource, linksDataSource, drawingsDataSource, inRectangleHelper) {
         this.nodesDataSource = nodesDataSource;
         this.linksDataSource = linksDataSource;
+        this.drawingsDataSource = drawingsDataSource;
         this.inRectangleHelper = inRectangleHelper;
         this.selectedNodes = [];
         this.selectedLinks = [];
+        this.selectedDrawings = [];
+        this.selectedInterfaceLabels = [];
     }
     SelectionManager.prototype.subscribe = function (subject) {
         var _this = this;
         this.subscription = subject.subscribe(function (rectangle) {
             _this.selectedNodes = _this.getSelectedItemsInRectangle(_this.nodesDataSource, rectangle);
             _this.selectedLinks = _this.getSelectedItemsInRectangle(_this.linksDataSource, rectangle);
+            _this.selectedDrawings = _this.getSelectedItemsInRectangle(_this.drawingsDataSource, rectangle);
+            // don't select interfaces for now
+            // this.selectedInterfaceLabels = this.getSelectedInterfaceLabelsInRectangle(rectangle);
         });
         return this.subscription;
     };
@@ -1315,6 +1329,9 @@ var SelectionManager = /** @class */ (function () {
     };
     SelectionManager.prototype.getSelectedLinks = function () {
         return this.selectedLinks;
+    };
+    SelectionManager.prototype.getSelectedDrawings = function () {
+        return this.selectedDrawings;
     };
     SelectionManager.prototype.setSelectedNodes = function (nodes) {
         this.selectedNodes = this.setSelectedItems(this.nodesDataSource, function (node) {
@@ -1326,11 +1343,46 @@ var SelectionManager = /** @class */ (function () {
             return !!links.find(function (l) { return link.link_id === l.link_id; });
         });
     };
+    SelectionManager.prototype.setSelectedDrawings = function (drawings) {
+        this.selectedDrawings = this.setSelectedItems(this.drawingsDataSource, function (drawing) {
+            return !!drawings.find(function (d) { return drawing.drawing_id === d.drawing_id; });
+        });
+    };
+    SelectionManager.prototype.clearSelection = function () {
+        this.setSelectedDrawings([]);
+        this.setSelectedLinks([]);
+        this.setSelectedNodes([]);
+    };
     SelectionManager.prototype.getSelectedItemsInRectangle = function (dataSource, rectangle) {
         var _this = this;
         return this.setSelectedItems(dataSource, function (item) {
-            return _this.inRectangleHelper.inRectangle(item, rectangle);
+            return _this.inRectangleHelper.inRectangle(rectangle, item.x, item.y);
         });
+    };
+    SelectionManager.prototype.getSelectedInterfaceLabelsInRectangle = function (rectangle) {
+        var _this = this;
+        this.linksDataSource.getItems().forEach(function (link) {
+            if (!(link.source && link.target && link.nodes.length > 1)) {
+                return;
+            }
+            var updated = false;
+            var x = link.source.x + link.nodes[0].label.x;
+            var y = link.source.y + link.nodes[0].label.y;
+            if (_this.inRectangleHelper.inRectangle(rectangle, x, y)) {
+                link.nodes[0].label.is_selected = true;
+                updated = true;
+            }
+            x = link.target.x + link.nodes[1].label.x;
+            y = link.target.y + link.nodes[1].label.y;
+            if (_this.inRectangleHelper.inRectangle(rectangle, x, y)) {
+                link.nodes[1].label.is_selected = true;
+                updated = true;
+            }
+            if (updated) {
+                _this.linksDataSource.update(link);
+            }
+        });
+        return [];
     };
     SelectionManager.prototype.setSelected = function (item, isSelected, dataSource) {
         if (item.is_selected !== isSelected) {
@@ -1355,6 +1407,7 @@ var SelectionManager = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__datasources_nodes_datasource__["a" /* NodesDataSource */],
             __WEBPACK_IMPORTED_MODULE_2__datasources_links_datasource__["a" /* LinksDataSource */],
+            __WEBPACK_IMPORTED_MODULE_4__datasources_drawings_datasource__["a" /* DrawingsDataSource */],
             __WEBPACK_IMPORTED_MODULE_3__map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */]])
     ], SelectionManager);
     return SelectionManager;
@@ -1424,13 +1477,17 @@ var DrawingLine = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterfaceLabel; });
 var InterfaceLabel = /** @class */ (function () {
-    function InterfaceLabel(x, y, text, style, rotation) {
+    function InterfaceLabel(link_id, direction, x, y, text, style, rotation, is_selected) {
         if (rotation === void 0) { rotation = 0; }
+        if (is_selected === void 0) { is_selected = false; }
+        this.link_id = link_id;
+        this.direction = direction;
         this.x = x;
         this.y = y;
         this.text = text;
         this.style = style;
         this.rotation = rotation;
+        this.is_selected = is_selected;
     }
     return InterfaceLabel;
 }());
@@ -1864,8 +1921,8 @@ var EthernetLinkWidget = /** @class */ (function () {
     }
     EthernetLinkWidget.prototype.draw = function (view, link) {
         var link_data = [[
-                [link.source.x, link.source.y],
-                [link.target.x, link.target.y]
+                [link.source.x + link.source.width / 2., link.source.y + link.source.height / 2.],
+                [link.target.x + link.target.width / 2., link.target.y + link.source.height / 2.]
             ]];
         var value_line = Object(__WEBPACK_IMPORTED_MODULE_0_d3_shape__["v" /* line */])();
         var link_path = view.select('path');
@@ -1997,6 +2054,8 @@ var GraphLayout = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return InterfaceLabelWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_interface_label__ = __webpack_require__("./src/app/cartography/shared/models/interface-label.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_css_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/css-fixer.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_selection__ = __webpack_require__("./node_modules/d3-selection/index.js");
+
 
 
 var InterfaceLabelWidget = /** @class */ (function () {
@@ -2006,28 +2065,65 @@ var InterfaceLabelWidget = /** @class */ (function () {
     InterfaceLabelWidget.prototype.draw = function (selection) {
         var _this = this;
         var labels = selection
-            .selectAll('text.interface_label')
+            .selectAll('g.interface_label_container')
             .data(function (l) {
-            var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.source.x + l.nodes[0].label.x), Math.round(l.source.y + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation);
-            var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](Math.round(l.target.x + l.nodes[1].label.x), Math.round(l.target.y + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation);
+            var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](l.link_id, 'source', Math.round(l.source.x + l.nodes[0].label.x), Math.round(l.source.y + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation, l.nodes[0].label.is_selected);
+            var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](l.link_id, 'target', Math.round(l.target.x + l.nodes[1].label.x), Math.round(l.target.y + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation, l.nodes[1].label.is_selected);
             return [sourceInterface, targetInterface];
         });
         var enter = labels
             .enter()
+            .append('g')
+            .classed('interface_label_container', true);
+        // create surrounding rect
+        enter
+            .append('rect')
+            .attr('class', 'interface_label_border');
+        // create label
+        enter
             .append('text')
             .attr('class', 'interface_label noselect');
         var merge = labels
             .merge(enter);
         merge
+            .attr('width', 100)
+            .attr('height', 100)
+            .attr('transform', function (l) {
+            var bbox = this.getBBox();
+            var x = l.x;
+            var y = l.y + bbox.height;
+            return "translate(" + x + ", " + y + ") rotate(" + l.rotation + ", " + x + ", " + y + ")";
+        })
+            .classed('selected', function (l) { return l.is_selected; });
+        // update label
+        merge
+            .select('text.interface_label')
             .text(function (l) { return l.text; })
-            .attr('x', function (l) { return l.x; })
-            .attr('y', function (l) { return l.y; })
             .attr('style', function (l) { return _this.cssFixer.fix(l.style); })
-            .attr('transform', function (l) { return "rotate(" + l.rotation + ", " + l.x + ", " + l.y + ")"; });
+            .attr('x', -InterfaceLabelWidget.SURROUNDING_TEXT_BORDER)
+            .attr('y', -InterfaceLabelWidget.SURROUNDING_TEXT_BORDER);
+        // update surrounding rect
+        merge
+            .select('rect.interface_label_border')
+            .attr('visibility', function (l) { return l.is_selected ? 'visible' : 'hidden'; })
+            .attr('stroke-dasharray', '3,3')
+            .attr('stroke-width', '0.5')
+            .each(function (l) {
+            var current = Object(__WEBPACK_IMPORTED_MODULE_2_d3_selection__["k" /* select */])(this);
+            var parent = Object(__WEBPACK_IMPORTED_MODULE_2_d3_selection__["k" /* select */])(this.parentElement);
+            var text = parent.select('text');
+            var bbox = text.node().getBBox();
+            var border = InterfaceLabelWidget.SURROUNDING_TEXT_BORDER;
+            current.attr('width', bbox.width + border * 2);
+            current.attr('height', bbox.height + border);
+            current.attr('x', -border);
+            current.attr('y', -bbox.height);
+        });
         labels
             .exit()
             .remove();
     };
+    InterfaceLabelWidget.SURROUNDING_TEXT_BORDER = 5;
     return InterfaceLabelWidget;
 }());
 
@@ -2139,12 +2235,15 @@ var LinksWidget = /** @class */ (function () {
             var link_widget = self.getLinkWidget(l);
             link_widget.draw(link_group, l);
             var link_path = link_group.select('path');
-            var start_point = link_path.node().getPointAtLength(50);
-            var end_point = link_path.node().getPointAtLength(link_path.node().getTotalLength() - 50);
-            var statuses = [
-                new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](start_point.x, start_point.y, l.source.status),
-                new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](end_point.x, end_point.y, l.target.status)
-            ];
+            var start_point = link_path.node().getPointAtLength(45);
+            var end_point = link_path.node().getPointAtLength(link_path.node().getTotalLength() - 45);
+            var statuses = [];
+            if (link_path.node().getTotalLength() > 2 * 45 + 10) {
+                statuses = [
+                    new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](start_point.x, start_point.y, l.source.status),
+                    new __WEBPACK_IMPORTED_MODULE_1__models_link_status__["a" /* LinkStatus */](end_point.x, end_point.y, l.target.status)
+                ];
+            }
             var status_started = link_group
                 .selectAll('circle.status_started')
                 .data(statuses.filter(function (link_status) { return link_status.status === 'started'; }));
@@ -2156,7 +2255,7 @@ var LinksWidget = /** @class */ (function () {
                 .attr('class', 'status_started')
                 .attr('cx', function (ls) { return ls.x; })
                 .attr('cy', function (ls) { return ls.y; })
-                .attr('r', 4)
+                .attr('r', 6)
                 .attr('fill', '#2ecc71');
             status_started
                 .exit()
@@ -2167,7 +2266,7 @@ var LinksWidget = /** @class */ (function () {
             var status_stopped_enter = status_stopped
                 .enter()
                 .append('rect');
-            var STOPPED_STATUS_RECT_WIDTH = 6;
+            var STOPPED_STATUS_RECT_WIDTH = 10;
             status_stopped
                 .merge(status_stopped_enter)
                 .attr('class', 'status_stopped')
@@ -2278,15 +2377,16 @@ var NodesWidget = /** @class */ (function () {
                 var bbox = this.getBBox();
                 return -bbox.width / 2.;
             }
-            return n.label.x - n.width / 2.;
+            return n.label.x;
         })
             .attr('y', function (n) {
+            var bbox = this.getBBox();
             if (n.label.x === null) {
                 // center
-                var bbox = this.getBBox();
+                bbox = this.getBBox();
                 return -n.height / 2. - bbox.height;
             }
-            return n.label.y - n.height / 2.;
+            return n.label.y + bbox.height;
         });
         selection
             .select('text.node_point_label')
@@ -2356,8 +2456,8 @@ var NodesWidget = /** @class */ (function () {
         })
             .attr('width', function (n) { return n.width; })
             .attr('height', function (n) { return n.height; })
-            .attr('x', function (n) { return -n.width / 2.; })
-            .attr('y', function (n) { return -n.height / 2.; })
+            .attr('x', function (n) { return 0; })
+            .attr('y', function (n) { return 0; })
             .on('mouseover', function (n) {
             Object(__WEBPACK_IMPORTED_MODULE_0_d3_selection__["k" /* select */])(this).attr("class", "over");
         })
@@ -2592,7 +2692,7 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
 /***/ "./src/app/project-map/project-map.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: auto;\n}\n\nsvg.map {\n  background-color: #F0F0F0;\n}\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: fixed;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.project-toolbar .mat-toolbar-multiple-rows {\n  width: auto !important;\n}\n\n.loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n\ng.node text {\n  font-family: Roboto !important;\n}\n\nsvg.map image:hover, svg.map image.chosen, g.selected {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n\npath.selected {\n  stroke: darkred;\n}\n\n.selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n\ng.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n/* Disable outline after button click */\n\n.project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n"
+module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: auto;\n}\n\nsvg.map {\n  background-color: #F0F0F0;\n}\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: fixed;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.project-toolbar .mat-toolbar-multiple-rows {\n  width: auto !important;\n}\n\n.loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n\ng.node text {\n  font-family: Roboto !important;\n}\n\nsvg.map image:hover, svg.map image.chosen, g.selected {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n\npath.selected {\n  stroke: darkred;\n}\n\n.selected > .interface_label_border {\n  stroke: black;\n  fill: none;\n}\n\n.selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n\ng.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n/* Disable outline after button click */\n\n.project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n"
 
 /***/ }),
 
@@ -2704,7 +2804,7 @@ var ProjectMapComponent = /** @class */ (function () {
         this.drawLineMode = false;
         this.movingMode = false;
         this.isLoading = true;
-        this.selectionManager = new __WEBPACK_IMPORTED_MODULE_26__cartography_shared_managers_selection_manager__["a" /* SelectionManager */](this.nodesDataSource, this.linksDataSource, new __WEBPACK_IMPORTED_MODULE_27__cartography_map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */]());
+        this.selectionManager = new __WEBPACK_IMPORTED_MODULE_26__cartography_shared_managers_selection_manager__["a" /* SelectionManager */](this.nodesDataSource, this.linksDataSource, this.drawingsDataSource, new __WEBPACK_IMPORTED_MODULE_27__cartography_map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */]());
         this.subscriptions = [];
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
@@ -2788,6 +2888,7 @@ var ProjectMapComponent = /** @class */ (function () {
             _this.nodeContextMenu.open(node, event.clientY, event.clientX);
         });
         this.mapChild.graphLayout.getNodesWidget().setOnNodeClickedCallback(function (event, node) {
+            _this.selectionManager.clearSelection();
             _this.selectionManager.setSelectedNodes([node]);
             if (_this.drawLineMode) {
                 _this.nodeSelectInterfaceMenu.open(node, event.clientY, event.clientX);
@@ -2866,7 +2967,7 @@ var ProjectMapComponent = /** @class */ (function () {
             this.onLineCreation(data['node'], data['port'], node, port);
         }
         else {
-            drawingLineTool.start(node.x, node.y, {
+            drawingLineTool.start(node.x + node.width / 2., node.y + node.height / 2., {
                 'node': node,
                 'port': port
             });
