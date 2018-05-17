@@ -2701,7 +2701,7 @@ module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: a
 /***/ "./src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
 
 /***/ }),
 
@@ -3927,7 +3927,7 @@ var StopNodeActionComponent = /** @class */ (function () {
 /***/ "./src/app/shared/node-context-menu/node-context-menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n    <app-move-layer-up-action [server]=\"server\" [node]=\"node\"></app-move-layer-up-action>\n    <app-move-layer-down-action [server]=\"server\" [node]=\"node\"></app-move-layer-down-action>\n  </mat-menu>\n</div>\n"
+module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n    <app-move-layer-up-action *ngIf=\"!project.readonly\" [server]=\"server\" [node]=\"node\"></app-move-layer-up-action>\n    <app-move-layer-down-action *ngIf=\"!project.readonly\" [server]=\"server\" [node]=\"node\"></app-move-layer-down-action>\n  </mat-menu>\n</div>\n"
 
 /***/ }),
 
@@ -3947,6 +3947,7 @@ module.exports = ".context-menu {\n  position: absolute; }\n"
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__("./node_modules/@angular/platform-browser/esm5/platform-browser.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_server__ = __webpack_require__("./src/app/shared/models/server.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_project__ = __webpack_require__("./src/app/shared/models/project.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3956,6 +3957,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -3978,6 +3980,10 @@ var NodeContextMenuComponent = /** @class */ (function () {
         this.setPosition(top, left);
         this.contextMenu.openMenu();
     };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_4__models_project__["a" /* Project */])
+    ], NodeContextMenuComponent.prototype, "project", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_3__models_server__["a" /* Server */])
