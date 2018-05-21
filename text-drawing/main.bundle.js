@@ -739,6 +739,10 @@ var MultiLinkCalculatorHelper = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SvgToDrawingConverter; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__svg_to_drawing_converter_text_converter__ = __webpack_require__("./src/app/cartography/map/helpers/svg-to-drawing-converter/text-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__svg_to_drawing_converter_image_converter__ = __webpack_require__("./src/app/cartography/map/helpers/svg-to-drawing-converter/image-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__svg_to_drawing_converter_rect_converter__ = __webpack_require__("./src/app/cartography/map/helpers/svg-to-drawing-converter/rect-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__svg_to_drawing_converter_line_converter__ = __webpack_require__("./src/app/cartography/map/helpers/svg-to-drawing-converter/line-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__svg_to_drawing_converter_ellipse_converter__ = __webpack_require__("./src/app/cartography/map/helpers/svg-to-drawing-converter/ellipse-converter.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -750,13 +754,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
+
+
 var SvgToDrawingConverter = /** @class */ (function () {
     function SvgToDrawingConverter() {
         this.parser = new DOMParser();
         this.elementParsers = {
-            'text': new __WEBPACK_IMPORTED_MODULE_1__svg_to_drawing_converter_text_converter__["a" /* TextConverter */]()
+            'text': new __WEBPACK_IMPORTED_MODULE_1__svg_to_drawing_converter_text_converter__["a" /* TextConverter */](),
+            'image': new __WEBPACK_IMPORTED_MODULE_2__svg_to_drawing_converter_image_converter__["a" /* ImageConverter */](),
+            'rect': new __WEBPACK_IMPORTED_MODULE_3__svg_to_drawing_converter_rect_converter__["a" /* RectConverter */](),
+            'line': new __WEBPACK_IMPORTED_MODULE_4__svg_to_drawing_converter_line_converter__["a" /* LineConverter */](),
+            'ellipse': new __WEBPACK_IMPORTED_MODULE_5__svg_to_drawing_converter_ellipse_converter__["a" /* EllipseConverter */]()
         };
     }
+    SvgToDrawingConverter.prototype.supportedTags = function () {
+        return Object.keys(this.elementParsers);
+    };
     SvgToDrawingConverter.prototype.convert = function (svg) {
         var svgDom = this.parser.parseFromString(svg, 'text/xml');
         var roots = svgDom.getElementsByTagName('svg');
@@ -764,15 +779,20 @@ var SvgToDrawingConverter = /** @class */ (function () {
             throw new Error("Cannot locate svg element root in '" + svg + "'");
         }
         var svgRoot = roots[0];
-        var child = svgRoot.firstChild;
-        if (!child) {
-            throw new Error("Cannot find first child in '" + svg);
+        var parser = null;
+        var child = null;
+        // find matching tag
+        for (var i in svgRoot.children) {
+            child = svgRoot.children[i];
+            var name_1 = child.nodeName;
+            if (name_1 in this.elementParsers) {
+                parser = this.elementParsers[name_1];
+                break;
+            }
         }
-        var name = child.nodeName;
-        if (!(name in this.elementParsers)) {
-            throw new Error("Cannot find parser for '" + name + "'");
+        if (parser === null) {
+            throw new Error("Cannot find parser for '" + svg + "'");
         }
-        var parser = this.elementParsers[name];
         var drawing = parser.convert(child);
         drawing.width = +svgRoot.getAttribute('width');
         drawing.height = +svgRoot.getAttribute('height');
@@ -783,6 +803,182 @@ var SvgToDrawingConverter = /** @class */ (function () {
         __metadata("design:paramtypes", [])
     ], SvgToDrawingConverter);
     return SvgToDrawingConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/map/helpers/svg-to-drawing-converter/ellipse-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EllipseConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_models_drawings_ellipse_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/ellipse-element.ts");
+
+var EllipseConverter = /** @class */ (function () {
+    function EllipseConverter() {
+    }
+    EllipseConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__shared_models_drawings_ellipse_element__["a" /* EllipseElement */]();
+        var fill = node.attributes.getNamedItem("fill");
+        if (fill) {
+            drawing.fill = fill.value;
+        }
+        var fill_opacity = node.attributes.getNamedItem("fill-opacity");
+        if (fill) {
+            drawing.fill_opacity = parseInt(fill_opacity.value, 10);
+        }
+        var stroke = node.attributes.getNamedItem("stroke");
+        if (stroke) {
+            drawing.stroke = stroke.value;
+        }
+        var stroke_width = node.attributes.getNamedItem("stroke-width");
+        if (stroke) {
+            drawing.stroke_width = parseInt(stroke_width.value, 10);
+        }
+        var cx = node.attributes.getNamedItem('cx');
+        if (cx) {
+            drawing.cx = parseInt(cx.value, 10);
+        }
+        var cy = node.attributes.getNamedItem('cy');
+        if (cy) {
+            drawing.cy = parseInt(cy.value, 10);
+        }
+        var rx = node.attributes.getNamedItem('rx');
+        if (rx) {
+            drawing.rx = parseInt(rx.value, 10);
+        }
+        var ry = node.attributes.getNamedItem('ry');
+        if (ry) {
+            drawing.ry = parseInt(ry.value, 10);
+        }
+        return drawing;
+    };
+    return EllipseConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/map/helpers/svg-to-drawing-converter/image-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ImageConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_models_drawings_image_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/image-element.ts");
+
+var ImageConverter = /** @class */ (function () {
+    function ImageConverter() {
+    }
+    ImageConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__shared_models_drawings_image_element__["a" /* ImageElement */]();
+        var data = node.attributes.getNamedItem("xlink:href");
+        if (data) {
+            drawing.data = data.value;
+        }
+        var width = node.attributes.getNamedItem('width');
+        if (width) {
+            drawing.width = parseInt(width.value, 10);
+        }
+        var height = node.attributes.getNamedItem('height');
+        if (height) {
+            drawing.height = parseInt(height.value, 10);
+        }
+        return drawing;
+    };
+    return ImageConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/map/helpers/svg-to-drawing-converter/line-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LineConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_models_drawings_line_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/line-element.ts");
+
+var LineConverter = /** @class */ (function () {
+    function LineConverter() {
+    }
+    LineConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__shared_models_drawings_line_element__["a" /* LineElement */]();
+        var stroke = node.attributes.getNamedItem("stroke");
+        if (stroke) {
+            drawing.stroke = stroke.value;
+        }
+        var stroke_width = node.attributes.getNamedItem("stroke-width");
+        if (stroke) {
+            drawing.stroke_width = parseInt(stroke_width.value, 10);
+        }
+        var x1 = node.attributes.getNamedItem('x1');
+        if (x1) {
+            drawing.x1 = parseInt(x1.value, 10);
+        }
+        var x2 = node.attributes.getNamedItem('x2');
+        if (x2) {
+            drawing.x2 = parseInt(x2.value, 10);
+        }
+        var y1 = node.attributes.getNamedItem('y1');
+        if (y1) {
+            drawing.y1 = parseInt(y1.value, 10);
+        }
+        var y2 = node.attributes.getNamedItem('y2');
+        if (y2) {
+            drawing.y2 = parseInt(y2.value, 10);
+        }
+        return drawing;
+    };
+    return LineConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/map/helpers/svg-to-drawing-converter/rect-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RectConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__shared_models_drawings_rect_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/rect-element.ts");
+
+var RectConverter = /** @class */ (function () {
+    function RectConverter() {
+    }
+    RectConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__shared_models_drawings_rect_element__["a" /* RectElement */]();
+        var fill = node.attributes.getNamedItem("fill");
+        if (fill) {
+            drawing.fill = fill.value;
+        }
+        var fill_opacity = node.attributes.getNamedItem("fill-opacity");
+        if (fill) {
+            drawing.fill_opacity = parseInt(fill_opacity.value, 10);
+        }
+        var stroke = node.attributes.getNamedItem("stroke");
+        if (stroke) {
+            drawing.stroke = stroke.value;
+        }
+        var stroke_width = node.attributes.getNamedItem("stroke-width");
+        if (stroke) {
+            drawing.stroke_width = parseInt(stroke_width.value, 10);
+        }
+        var width = node.attributes.getNamedItem('width');
+        if (width) {
+            drawing.width = parseInt(width.value, 10);
+        }
+        var height = node.attributes.getNamedItem('height');
+        if (height) {
+            drawing.height = parseInt(height.value, 10);
+        }
+        return drawing;
+    };
+    return RectConverter;
 }());
 
 
@@ -1570,6 +1766,66 @@ var DrawingLine = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/models/drawings/ellipse-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EllipseElement; });
+var EllipseElement = /** @class */ (function () {
+    function EllipseElement() {
+    }
+    return EllipseElement;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawings/image-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ImageElement; });
+var ImageElement = /** @class */ (function () {
+    function ImageElement() {
+    }
+    return ImageElement;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawings/line-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LineElement; });
+var LineElement = /** @class */ (function () {
+    function LineElement() {
+    }
+    return LineElement;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawings/rect-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RectElement; });
+var RectElement = /** @class */ (function () {
+    function RectElement() {
+    }
+    return RectElement;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/models/drawings/text-element.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1969,6 +2225,14 @@ var DrawingLineWidget = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrawingsWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__drawings_text_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/text-drawing.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__map_helpers_svg_to_drawing_converter__ = __webpack_require__("./src/app/cartography/map/helpers/svg-to-drawing-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drawings_image_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/image-drawing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__drawings_rect_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/rect-drawing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__drawings_line_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/line-drawing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drawings_ellipse_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/ellipse-drawing.ts");
+
+
+
+
 
 
 var DrawingsWidget = /** @class */ (function () {
@@ -2031,11 +2295,174 @@ var DrawingsWidget = /** @class */ (function () {
         });
         var text_drawing = new __WEBPACK_IMPORTED_MODULE_0__drawings_text_drawing__["a" /* TextDrawingWidget */]();
         text_drawing.draw(drawing_merge);
+        var image_drawing = new __WEBPACK_IMPORTED_MODULE_2__drawings_image_drawing__["a" /* ImageDrawingWidget */]();
+        image_drawing.draw(drawing_merge);
+        var rect_drawing = new __WEBPACK_IMPORTED_MODULE_3__drawings_rect_drawing__["a" /* RectDrawingWidget */]();
+        rect_drawing.draw(drawing_merge);
+        var line_drawing = new __WEBPACK_IMPORTED_MODULE_4__drawings_line_drawing__["a" /* LineDrawingWidget */]();
+        line_drawing.draw(drawing_merge);
+        var ellipse_drawing = new __WEBPACK_IMPORTED_MODULE_5__drawings_ellipse_drawing__["a" /* EllipseDrawingWidget */]();
+        ellipse_drawing.draw(drawing_merge);
         drawing
             .exit()
             .remove();
     };
     return DrawingsWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/ellipse-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EllipseDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_ellipse_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/ellipse-element.ts");
+
+var EllipseDrawingWidget = /** @class */ (function () {
+    function EllipseDrawingWidget() {
+    }
+    EllipseDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('ellipse.ellipse_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_ellipse_element__["a" /* EllipseElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('ellipse')
+            .attr('class', 'ellipse_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('fill', function (ellipse) { return ellipse.fill; })
+            .attr('fill-opacity', function (ellipse) { return ellipse.fill_opacity; })
+            .attr('stroke', function (ellipse) { return ellipse.stroke; })
+            .attr('stroke-width', function (ellipse) { return ellipse.stroke_width; })
+            .attr('cx', function (ellipse) { return ellipse.cx; })
+            .attr('cy', function (ellipse) { return ellipse.cy; })
+            .attr('rx', function (ellipse) { return ellipse.rx; })
+            .attr('ry', function (ellipse) { return ellipse.ry; });
+        drawing
+            .exit()
+            .remove();
+    };
+    return EllipseDrawingWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/image-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ImageDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_image_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/image-element.ts");
+
+var ImageDrawingWidget = /** @class */ (function () {
+    function ImageDrawingWidget() {
+    }
+    ImageDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('image.image_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_image_element__["a" /* ImageElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('image')
+            .attr('class', 'image_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('xlink:href', function (image) { return image.data; })
+            .attr('width', function (image) { return image.width; })
+            .attr('height', function (image) { return image.height; });
+        drawing
+            .exit()
+            .remove();
+    };
+    return ImageDrawingWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/line-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LineDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_line_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/line-element.ts");
+
+var LineDrawingWidget = /** @class */ (function () {
+    function LineDrawingWidget() {
+    }
+    LineDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('line.line_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_line_element__["a" /* LineElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('line')
+            .attr('class', 'line_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('stroke', function (line) { return line.stroke; })
+            .attr('stroke-width', function (line) { return line.stroke_width; })
+            .attr('x1', function (line) { return line.x1; })
+            .attr('x2', function (line) { return line.x2; })
+            .attr('y1', function (line) { return line.y1; })
+            .attr('y2', function (line) { return line.y2; });
+        drawing
+            .exit()
+            .remove();
+    };
+    return LineDrawingWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/rect-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RectDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_rect_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/rect-element.ts");
+
+var RectDrawingWidget = /** @class */ (function () {
+    function RectDrawingWidget() {
+    }
+    RectDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('rect.rect_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_rect_element__["a" /* RectElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('rect')
+            .attr('class', 'rect_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('fill', function (rect) { return rect.fill; })
+            .attr('fill-opacity', function (rect) { return rect.fill_opacity; })
+            .attr('stroke', function (rect) { return rect.stroke; })
+            .attr('stroke-width', function (rect) { return rect.stroke_width; })
+            .attr('width', function (rect) { return rect.width; })
+            .attr('height', function (rect) { return rect.height; });
+        drawing
+            .exit()
+            .remove();
+    };
+    return RectDrawingWidget;
 }());
 
 
