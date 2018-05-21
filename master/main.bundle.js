@@ -1216,6 +1216,301 @@ var CssFixer = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/helpers/svg-to-drawing-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SvgToDrawingConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__svg_to_drawing_converter_text_converter__ = __webpack_require__("./src/app/cartography/shared/helpers/svg-to-drawing-converter/text-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__svg_to_drawing_converter_image_converter__ = __webpack_require__("./src/app/cartography/shared/helpers/svg-to-drawing-converter/image-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__svg_to_drawing_converter_rect_converter__ = __webpack_require__("./src/app/cartography/shared/helpers/svg-to-drawing-converter/rect-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__svg_to_drawing_converter_line_converter__ = __webpack_require__("./src/app/cartography/shared/helpers/svg-to-drawing-converter/line-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__svg_to_drawing_converter_ellipse_converter__ = __webpack_require__("./src/app/cartography/shared/helpers/svg-to-drawing-converter/ellipse-converter.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+var SvgToDrawingConverter = /** @class */ (function () {
+    function SvgToDrawingConverter() {
+        this.parser = new DOMParser();
+        this.elementParsers = {
+            'text': new __WEBPACK_IMPORTED_MODULE_1__svg_to_drawing_converter_text_converter__["a" /* TextConverter */](),
+            'image': new __WEBPACK_IMPORTED_MODULE_2__svg_to_drawing_converter_image_converter__["a" /* ImageConverter */](),
+            'rect': new __WEBPACK_IMPORTED_MODULE_3__svg_to_drawing_converter_rect_converter__["a" /* RectConverter */](),
+            'line': new __WEBPACK_IMPORTED_MODULE_4__svg_to_drawing_converter_line_converter__["a" /* LineConverter */](),
+            'ellipse': new __WEBPACK_IMPORTED_MODULE_5__svg_to_drawing_converter_ellipse_converter__["a" /* EllipseConverter */]()
+        };
+    }
+    SvgToDrawingConverter.prototype.supportedTags = function () {
+        return Object.keys(this.elementParsers);
+    };
+    SvgToDrawingConverter.prototype.convert = function (svg) {
+        var svgDom = this.parser.parseFromString(svg, 'text/xml');
+        var roots = svgDom.getElementsByTagName('svg');
+        if (roots.length !== 1) {
+            throw new Error("Cannot locate svg element root in '" + svg + "'");
+        }
+        var svgRoot = roots[0];
+        var parser = null;
+        var child = null;
+        // find matching tag
+        for (var i in svgRoot.children) {
+            child = svgRoot.children[i];
+            var name_1 = child.nodeName;
+            if (name_1 in this.elementParsers) {
+                parser = this.elementParsers[name_1];
+                break;
+            }
+        }
+        if (parser === null) {
+            throw new Error("Cannot find parser for '" + svg + "'");
+        }
+        var drawing = parser.convert(child);
+        drawing.width = +svgRoot.getAttribute('width');
+        drawing.height = +svgRoot.getAttribute('height');
+        return drawing;
+    };
+    SvgToDrawingConverter = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [])
+    ], SvgToDrawingConverter);
+    return SvgToDrawingConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/helpers/svg-to-drawing-converter/ellipse-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EllipseConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_ellipse_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/ellipse-element.ts");
+
+var EllipseConverter = /** @class */ (function () {
+    function EllipseConverter() {
+    }
+    EllipseConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__models_drawings_ellipse_element__["a" /* EllipseElement */]();
+        var fill = node.attributes.getNamedItem("fill");
+        if (fill) {
+            drawing.fill = fill.value;
+        }
+        var fill_opacity = node.attributes.getNamedItem("fill-opacity");
+        if (fill) {
+            drawing.fill_opacity = parseInt(fill_opacity.value, 10);
+        }
+        var stroke = node.attributes.getNamedItem("stroke");
+        if (stroke) {
+            drawing.stroke = stroke.value;
+        }
+        var stroke_width = node.attributes.getNamedItem("stroke-width");
+        if (stroke) {
+            drawing.stroke_width = parseInt(stroke_width.value, 10);
+        }
+        var cx = node.attributes.getNamedItem('cx');
+        if (cx) {
+            drawing.cx = parseInt(cx.value, 10);
+        }
+        var cy = node.attributes.getNamedItem('cy');
+        if (cy) {
+            drawing.cy = parseInt(cy.value, 10);
+        }
+        var rx = node.attributes.getNamedItem('rx');
+        if (rx) {
+            drawing.rx = parseInt(rx.value, 10);
+        }
+        var ry = node.attributes.getNamedItem('ry');
+        if (ry) {
+            drawing.ry = parseInt(ry.value, 10);
+        }
+        return drawing;
+    };
+    return EllipseConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/helpers/svg-to-drawing-converter/image-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ImageConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_image_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/image-element.ts");
+
+var ImageConverter = /** @class */ (function () {
+    function ImageConverter() {
+    }
+    ImageConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__models_drawings_image_element__["a" /* ImageElement */]();
+        var data = node.attributes.getNamedItem("xlink:href");
+        if (data) {
+            drawing.data = data.value;
+        }
+        var width = node.attributes.getNamedItem('width');
+        if (width) {
+            drawing.width = parseInt(width.value, 10);
+        }
+        var height = node.attributes.getNamedItem('height');
+        if (height) {
+            drawing.height = parseInt(height.value, 10);
+        }
+        return drawing;
+    };
+    return ImageConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/helpers/svg-to-drawing-converter/line-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LineConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_line_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/line-element.ts");
+
+var LineConverter = /** @class */ (function () {
+    function LineConverter() {
+    }
+    LineConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__models_drawings_line_element__["a" /* LineElement */]();
+        var stroke = node.attributes.getNamedItem("stroke");
+        if (stroke) {
+            drawing.stroke = stroke.value;
+        }
+        var stroke_width = node.attributes.getNamedItem("stroke-width");
+        if (stroke) {
+            drawing.stroke_width = parseInt(stroke_width.value, 10);
+        }
+        var x1 = node.attributes.getNamedItem('x1');
+        if (x1) {
+            drawing.x1 = parseInt(x1.value, 10);
+        }
+        var x2 = node.attributes.getNamedItem('x2');
+        if (x2) {
+            drawing.x2 = parseInt(x2.value, 10);
+        }
+        var y1 = node.attributes.getNamedItem('y1');
+        if (y1) {
+            drawing.y1 = parseInt(y1.value, 10);
+        }
+        var y2 = node.attributes.getNamedItem('y2');
+        if (y2) {
+            drawing.y2 = parseInt(y2.value, 10);
+        }
+        return drawing;
+    };
+    return LineConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/helpers/svg-to-drawing-converter/rect-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RectConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_rect_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/rect-element.ts");
+
+var RectConverter = /** @class */ (function () {
+    function RectConverter() {
+    }
+    RectConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__models_drawings_rect_element__["a" /* RectElement */]();
+        var fill = node.attributes.getNamedItem("fill");
+        if (fill) {
+            drawing.fill = fill.value;
+        }
+        var fill_opacity = node.attributes.getNamedItem("fill-opacity");
+        if (fill) {
+            drawing.fill_opacity = parseInt(fill_opacity.value, 10);
+        }
+        var stroke = node.attributes.getNamedItem("stroke");
+        if (stroke) {
+            drawing.stroke = stroke.value;
+        }
+        var stroke_width = node.attributes.getNamedItem("stroke-width");
+        if (stroke) {
+            drawing.stroke_width = parseInt(stroke_width.value, 10);
+        }
+        var width = node.attributes.getNamedItem('width');
+        if (width) {
+            drawing.width = parseInt(width.value, 10);
+        }
+        var height = node.attributes.getNamedItem('height');
+        if (height) {
+            drawing.height = parseInt(height.value, 10);
+        }
+        return drawing;
+    };
+    return RectConverter;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/helpers/svg-to-drawing-converter/text-converter.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextConverter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/text-element.ts");
+
+var TextConverter = /** @class */ (function () {
+    function TextConverter() {
+    }
+    TextConverter.prototype.convert = function (node) {
+        var drawing = new __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__["a" /* TextElement */]();
+        drawing.text = node.textContent;
+        var fill = node.attributes.getNamedItem('fill');
+        if (fill) {
+            drawing.fill = fill.value;
+        }
+        var fill_opacity = node.attributes.getNamedItem('fill-opacity');
+        if (fill_opacity) {
+            drawing.fill_opacity = +fill_opacity.value;
+        }
+        var font_family = node.attributes.getNamedItem('font-family');
+        if (font_family) {
+            drawing.font_family = font_family.value;
+        }
+        var font_size = node.attributes.getNamedItem('font-size');
+        if (font_size) {
+            drawing.font_size = +font_size.value;
+        }
+        var font_weight = node.attributes.getNamedItem('font-weight');
+        if (font_weight) {
+            drawing.font_weight = font_weight.value;
+        }
+        return drawing;
+    };
+    return TextConverter;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/managers/layers-manager.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1465,6 +1760,81 @@ var DrawingLine = /** @class */ (function () {
     function DrawingLine() {
     }
     return DrawingLine;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawings/ellipse-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EllipseElement; });
+var EllipseElement = /** @class */ (function () {
+    function EllipseElement() {
+    }
+    return EllipseElement;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawings/image-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ImageElement; });
+var ImageElement = /** @class */ (function () {
+    function ImageElement() {
+    }
+    return ImageElement;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawings/line-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LineElement; });
+var LineElement = /** @class */ (function () {
+    function LineElement() {
+    }
+    return LineElement;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawings/rect-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RectElement; });
+var RectElement = /** @class */ (function () {
+    function RectElement() {
+    }
+    return RectElement;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/models/drawings/text-element.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextElement; });
+var TextElement = /** @class */ (function () {
+    function TextElement() {
+    }
+    return TextElement;
 }());
 
 
@@ -1853,13 +2223,35 @@ var DrawingLineWidget = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DrawingsWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__drawings_text_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/text-drawing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_svg_to_drawing_converter__ = __webpack_require__("./src/app/cartography/shared/helpers/svg-to-drawing-converter.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__drawings_image_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/image-drawing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__drawings_rect_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/rect-drawing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__drawings_line_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/line-drawing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__drawings_ellipse_drawing__ = __webpack_require__("./src/app/cartography/shared/widgets/drawings/ellipse-drawing.ts");
+
+
+
+
+
+
 var DrawingsWidget = /** @class */ (function () {
     function DrawingsWidget() {
+        this.svgToDrawingConverter = new __WEBPACK_IMPORTED_MODULE_1__helpers_svg_to_drawing_converter__["a" /* SvgToDrawingConverter */]();
     }
     DrawingsWidget.prototype.draw = function (view, drawings) {
+        var _this = this;
         var drawing = view
             .selectAll('g.drawing')
             .data(function (l) {
+            l.drawings.forEach(function (d) {
+                try {
+                    d.element = _this.svgToDrawingConverter.convert(d.svg);
+                }
+                catch (error) {
+                    console.log("Cannot convert due to Error: '" + error + "'");
+                }
+            });
             return l.drawings;
         }, function (d) {
             return d.drawing_id;
@@ -1867,42 +2259,241 @@ var DrawingsWidget = /** @class */ (function () {
         var drawing_enter = drawing.enter()
             .append('g')
             .attr('class', 'drawing');
-        var parser = new DOMParser();
-        var drawing_image = drawing_enter.append('image')
-            .attr('xlink:href', function (d) {
-            var svg = d.svg;
-            if (svg.indexOf("xmlns") < 0) {
-                svg = svg.replace('svg', 'svg xmlns="http://www.w3.org/2000/svg"');
-            }
-            return 'data:image/svg+xml;base64,' + btoa(svg);
-        })
-            .attr('width', function (d) {
-            var svg_dom = parser.parseFromString(d.svg, 'text/xml');
-            var roots = svg_dom.getElementsByTagName('svg');
-            if (roots.length > 0) {
-                if (roots[0].hasAttribute('width')) {
-                    return roots[0].getAttribute('width');
-                }
-            }
-            return 0;
-        })
-            .attr('height', function (d) {
-            var svg_dom = parser.parseFromString(d.svg, 'text/xml');
-            var roots = svg_dom.getElementsByTagName('svg');
-            if (roots.length > 0) {
-                if (roots[0].hasAttribute('height')) {
-                    return roots[0].getAttribute('height');
-                }
-            }
-            return 0;
-        });
         var drawing_merge = drawing.merge(drawing_enter)
             .attr('transform', function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         });
-        drawing.exit().remove();
+        var text_drawing = new __WEBPACK_IMPORTED_MODULE_0__drawings_text_drawing__["a" /* TextDrawingWidget */]();
+        text_drawing.draw(drawing_merge);
+        var image_drawing = new __WEBPACK_IMPORTED_MODULE_2__drawings_image_drawing__["a" /* ImageDrawingWidget */]();
+        image_drawing.draw(drawing_merge);
+        var rect_drawing = new __WEBPACK_IMPORTED_MODULE_3__drawings_rect_drawing__["a" /* RectDrawingWidget */]();
+        rect_drawing.draw(drawing_merge);
+        var line_drawing = new __WEBPACK_IMPORTED_MODULE_4__drawings_line_drawing__["a" /* LineDrawingWidget */]();
+        line_drawing.draw(drawing_merge);
+        var ellipse_drawing = new __WEBPACK_IMPORTED_MODULE_5__drawings_ellipse_drawing__["a" /* EllipseDrawingWidget */]();
+        ellipse_drawing.draw(drawing_merge);
+        drawing
+            .exit()
+            .remove();
     };
     return DrawingsWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/ellipse-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EllipseDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_ellipse_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/ellipse-element.ts");
+
+var EllipseDrawingWidget = /** @class */ (function () {
+    function EllipseDrawingWidget() {
+    }
+    EllipseDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('ellipse.ellipse_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_ellipse_element__["a" /* EllipseElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('ellipse')
+            .attr('class', 'ellipse_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('fill', function (ellipse) { return ellipse.fill; })
+            .attr('fill-opacity', function (ellipse) { return ellipse.fill_opacity; })
+            .attr('stroke', function (ellipse) { return ellipse.stroke; })
+            .attr('stroke-width', function (ellipse) { return ellipse.stroke_width; })
+            .attr('cx', function (ellipse) { return ellipse.cx; })
+            .attr('cy', function (ellipse) { return ellipse.cy; })
+            .attr('rx', function (ellipse) { return ellipse.rx; })
+            .attr('ry', function (ellipse) { return ellipse.ry; });
+        drawing
+            .exit()
+            .remove();
+    };
+    return EllipseDrawingWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/image-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ImageDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_image_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/image-element.ts");
+
+var ImageDrawingWidget = /** @class */ (function () {
+    function ImageDrawingWidget() {
+    }
+    ImageDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('image.image_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_image_element__["a" /* ImageElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('image')
+            .attr('class', 'image_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('xlink:href', function (image) { return image.data; })
+            .attr('width', function (image) { return image.width; })
+            .attr('height', function (image) { return image.height; });
+        drawing
+            .exit()
+            .remove();
+    };
+    return ImageDrawingWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/line-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LineDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_line_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/line-element.ts");
+
+var LineDrawingWidget = /** @class */ (function () {
+    function LineDrawingWidget() {
+    }
+    LineDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('line.line_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_line_element__["a" /* LineElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('line')
+            .attr('class', 'line_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('stroke', function (line) { return line.stroke; })
+            .attr('stroke-width', function (line) { return line.stroke_width; })
+            .attr('x1', function (line) { return line.x1; })
+            .attr('x2', function (line) { return line.x2; })
+            .attr('y1', function (line) { return line.y1; })
+            .attr('y2', function (line) { return line.y2; });
+        drawing
+            .exit()
+            .remove();
+    };
+    return LineDrawingWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/rect-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RectDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_rect_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/rect-element.ts");
+
+var RectDrawingWidget = /** @class */ (function () {
+    function RectDrawingWidget() {
+    }
+    RectDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('rect.rect_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_rect_element__["a" /* RectElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('rect')
+            .attr('class', 'rect_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('fill', function (rect) { return rect.fill; })
+            .attr('fill-opacity', function (rect) { return rect.fill_opacity; })
+            .attr('stroke', function (rect) { return rect.stroke; })
+            .attr('stroke-width', function (rect) { return rect.stroke_width; })
+            .attr('width', function (rect) { return rect.width; })
+            .attr('height', function (rect) { return rect.height; });
+        drawing
+            .exit()
+            .remove();
+    };
+    return RectDrawingWidget;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/cartography/shared/widgets/drawings/text-drawing.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextDrawingWidget; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/text-element.ts");
+
+var TextDrawingWidget = /** @class */ (function () {
+    function TextDrawingWidget() {
+    }
+    TextDrawingWidget.prototype.draw = function (view) {
+        var drawing = view
+            .selectAll('text.text_element')
+            .data(function (d) {
+            return (d.element && d.element instanceof __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__["a" /* TextElement */]) ? [d.element] : [];
+        });
+        var drawing_enter = drawing
+            .enter()
+            .append('text')
+            .attr('class', 'text_element noselect');
+        var merge = drawing.merge(drawing_enter);
+        merge
+            .attr('style', function (text) {
+            var styles = [];
+            if (text.font_family) {
+                styles.push("font-family: \"" + text.font_family + "\"");
+            }
+            if (text.font_size) {
+                styles.push("font-size: " + text.font_size + "pt");
+            }
+            if (text.font_weight) {
+                styles.push("font-weight: " + text.font_weight);
+            }
+            return styles.join("; ");
+        });
+        var lines = merge.selectAll('tspan')
+            .data(function (text) {
+            return text.text.split(/\r?\n/);
+        });
+        var lines_enter = lines
+            .enter()
+            .append('tspan');
+        var lines_merge = lines.merge(lines_enter);
+        lines_merge
+            .text(function (line) { return line; })
+            .attr('x', 0)
+            .attr("dy", function (line, i) { return i === 0 ? '0em' : '1.2em'; });
+        lines
+            .exit()
+            .remove();
+        drawing
+            .exit()
+            .remove();
+    };
+    return TextDrawingWidget;
 }());
 
 
@@ -2607,13 +3198,6 @@ module.exports = "<h1 mat-dialog-title>Create snapshot</h1>\n<div mat-dialog-con
 
 /***/ }),
 
-/***/ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.html":
-/***/ (function(module, exports) {
-
-module.exports = ""
-
-/***/ }),
-
 /***/ "./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2626,6 +3210,7 @@ module.exports = ""
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_services_node_service__ = __webpack_require__("./src/app/shared/services/node.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_models_server__ = __webpack_require__("./src/app/shared/models/server.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_services_toaster_service__ = __webpack_require__("./src/app/shared/services/toaster.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_models_project__ = __webpack_require__("./src/app/shared/models/project.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2641,6 +3226,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectMapShortcutsComponent = /** @class */ (function () {
     function ProjectMapShortcutsComponent(hotkeysService, toaster, nodesService) {
         this.hotkeysService = hotkeysService;
@@ -2648,9 +3234,13 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
         this.nodesService = nodesService;
     }
     ProjectMapShortcutsComponent.prototype.ngOnInit = function () {
+        this.deleteHotkey = new __WEBPACK_IMPORTED_MODULE_1_angular2_hotkeys__["Hotkey"]('del', this.onDeleteHandler);
+        this.hotkeysService.add(this.deleteHotkey);
+    };
+    ProjectMapShortcutsComponent.prototype.onDeleteHandler = function (event) {
         var _this = this;
-        this.deleteHotkey = new __WEBPACK_IMPORTED_MODULE_1_angular2_hotkeys__["Hotkey"]('del', function (event) {
-            var selectedNodes = _this.selectionManager.getSelectedNodes();
+        if (!this.project.readonly) {
+            var selectedNodes = this.selectionManager.getSelectedNodes();
             if (selectedNodes) {
                 selectedNodes.forEach(function (node) {
                     _this.nodesService.delete(_this.server, node).subscribe(function (data) {
@@ -2658,13 +3248,16 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
                     });
                 });
             }
-            return false;
-        });
-        this.hotkeysService.add(this.deleteHotkey);
+        }
+        return false;
     };
     ProjectMapShortcutsComponent.prototype.ngOnDestroy = function () {
         this.hotkeysService.remove(this.deleteHotkey);
     };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_6__shared_models_project__["a" /* Project */])
+    ], ProjectMapShortcutsComponent.prototype, "project", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_4__shared_models_server__["a" /* Server */])
@@ -2676,7 +3269,7 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
     ProjectMapShortcutsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-project-map-shortcuts',
-            template: __webpack_require__("./src/app/project-map/project-map-shortcuts/project-map-shortcuts.component.html")
+            template: ''
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_angular2_hotkeys__["HotkeysService"],
             __WEBPACK_IMPORTED_MODULE_5__shared_services_toaster_service__["a" /* ToasterService */],
@@ -2699,7 +3292,7 @@ module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: a
 /***/ "./src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
 
 /***/ }),
 
@@ -3618,6 +4211,22 @@ var ProjectWebServiceHandler = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/shared/models/project.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Project; });
+var Project = /** @class */ (function () {
+    function Project() {
+        this.readonly = true;
+    }
+    return Project;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/shared/models/server.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3909,7 +4518,7 @@ var StopNodeActionComponent = /** @class */ (function () {
 /***/ "./src/app/shared/node-context-menu/node-context-menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n    <app-move-layer-up-action [server]=\"server\" [node]=\"node\"></app-move-layer-up-action>\n    <app-move-layer-down-action [server]=\"server\" [node]=\"node\"></app-move-layer-down-action>\n  </mat-menu>\n</div>\n"
+module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n    <app-move-layer-up-action *ngIf=\"!project.readonly\" [server]=\"server\" [node]=\"node\"></app-move-layer-up-action>\n    <app-move-layer-down-action *ngIf=\"!project.readonly\" [server]=\"server\" [node]=\"node\"></app-move-layer-down-action>\n  </mat-menu>\n</div>\n"
 
 /***/ }),
 
@@ -3929,6 +4538,7 @@ module.exports = ".context-menu {\n  position: absolute; }\n"
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("./node_modules/@angular/material/esm5/material.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__("./node_modules/@angular/platform-browser/esm5/platform-browser.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_server__ = __webpack_require__("./src/app/shared/models/server.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_project__ = __webpack_require__("./src/app/shared/models/project.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3938,6 +4548,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -3960,6 +4571,10 @@ var NodeContextMenuComponent = /** @class */ (function () {
         this.setPosition(top, left);
         this.contextMenu.openMenu();
     };
+    __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
+        __metadata("design:type", __WEBPACK_IMPORTED_MODULE_4__models_project__["a" /* Project */])
+    ], NodeContextMenuComponent.prototype, "project", void 0);
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
         __metadata("design:type", __WEBPACK_IMPORTED_MODULE_3__models_server__["a" /* Server */])
@@ -4820,6 +5435,7 @@ var SymbolService = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToasterService; });
+/* unused harmony export MockedToasterService */
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_material__ = __webpack_require__("./node_modules/@angular/material/esm5/material.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -4848,6 +5464,24 @@ var ToasterService = /** @class */ (function () {
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_material__["s" /* MatSnackBar */]])
     ], ToasterService);
     return ToasterService;
+}());
+
+var MockedToasterService = /** @class */ (function () {
+    function MockedToasterService() {
+        this.errors = [];
+        this.successes = [];
+    }
+    MockedToasterService.prototype.error = function (message) {
+        this.errors.push(message);
+    };
+    MockedToasterService.prototype.success = function (message) {
+        this.successes.push(message);
+    };
+    MockedToasterService = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
+        __metadata("design:paramtypes", [])
+    ], MockedToasterService);
+    return MockedToasterService;
 }());
 
 
