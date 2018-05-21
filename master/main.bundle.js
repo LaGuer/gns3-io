@@ -2237,6 +2237,10 @@ var DrawingLineWidget = /** @class */ (function () {
 
 var DrawingsWidget = /** @class */ (function () {
     function DrawingsWidget() {
+        this.drawingWidgets = [
+            new __WEBPACK_IMPORTED_MODULE_0__drawings_text_drawing__["a" /* TextDrawingWidget */](), new __WEBPACK_IMPORTED_MODULE_2__drawings_image_drawing__["a" /* ImageDrawingWidget */](), new __WEBPACK_IMPORTED_MODULE_3__drawings_rect_drawing__["a" /* RectDrawingWidget */](),
+            new __WEBPACK_IMPORTED_MODULE_4__drawings_line_drawing__["a" /* LineDrawingWidget */](), new __WEBPACK_IMPORTED_MODULE_5__drawings_ellipse_drawing__["a" /* EllipseDrawingWidget */]()
+        ];
         this.svgToDrawingConverter = new __WEBPACK_IMPORTED_MODULE_1__helpers_svg_to_drawing_converter__["a" /* SvgToDrawingConverter */]();
     }
     DrawingsWidget.prototype.draw = function (view, drawings) {
@@ -2263,16 +2267,9 @@ var DrawingsWidget = /** @class */ (function () {
             .attr('transform', function (d) {
             return "translate(" + d.x + "," + d.y + ")";
         });
-        var text_drawing = new __WEBPACK_IMPORTED_MODULE_0__drawings_text_drawing__["a" /* TextDrawingWidget */]();
-        text_drawing.draw(drawing_merge);
-        var image_drawing = new __WEBPACK_IMPORTED_MODULE_2__drawings_image_drawing__["a" /* ImageDrawingWidget */]();
-        image_drawing.draw(drawing_merge);
-        var rect_drawing = new __WEBPACK_IMPORTED_MODULE_3__drawings_rect_drawing__["a" /* RectDrawingWidget */]();
-        rect_drawing.draw(drawing_merge);
-        var line_drawing = new __WEBPACK_IMPORTED_MODULE_4__drawings_line_drawing__["a" /* LineDrawingWidget */]();
-        line_drawing.draw(drawing_merge);
-        var ellipse_drawing = new __WEBPACK_IMPORTED_MODULE_5__drawings_ellipse_drawing__["a" /* EllipseDrawingWidget */]();
-        ellipse_drawing.draw(drawing_merge);
+        this.drawingWidgets.forEach(function (widget) {
+            widget.draw(drawing_merge);
+        });
         drawing
             .exit()
             .remove();
