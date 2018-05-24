@@ -2470,7 +2470,8 @@ var TextDrawingWidget = /** @class */ (function () {
                 styles.push("font-weight: " + text.font_weight);
             }
             return styles.join("; ");
-        });
+        })
+            .attr('fill', function (text) { return text.fill; });
         var lines = merge.selectAll('tspan')
             .data(function (text) {
             return text.text.split(/\r?\n/);
