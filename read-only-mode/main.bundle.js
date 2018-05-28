@@ -1258,6 +1258,50 @@ var FontFixer = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/helpers/qt-dasharray-fixer.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return QtDasharrayFixer; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+/**
+ * GNS3 GUI performs mapping from QT styles to SVG dasharray, but styles don't match
+ * what you can see, here are improvements; later on please adjust GUI for proper values.
+ */
+var QtDasharrayFixer = /** @class */ (function () {
+    function QtDasharrayFixer() {
+    }
+    QtDasharrayFixer_1 = QtDasharrayFixer;
+    QtDasharrayFixer.prototype.fix = function (dasharray) {
+        if (dasharray in QtDasharrayFixer_1.MAPPING) {
+            return QtDasharrayFixer_1.MAPPING[dasharray];
+        }
+        return dasharray;
+    };
+    QtDasharrayFixer.MAPPING = {
+        '25, 25': '10, 2',
+        '5, 25': '4, 2',
+        '5, 25, 25': '5, 5, 1, 5',
+        '25, 25, 5, 25, 5': '5, 2, 5, 2, 5'
+    };
+    QtDasharrayFixer = QtDasharrayFixer_1 = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+    ], QtDasharrayFixer);
+    return QtDasharrayFixer;
+    var QtDasharrayFixer_1;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/helpers/svg-to-drawing-converter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2341,11 +2385,15 @@ var DrawingsWidget = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EllipseDrawingWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_ellipse_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/ellipse-element.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_qt_dasharray_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/qt-dasharray-fixer.ts");
+
 
 var EllipseDrawingWidget = /** @class */ (function () {
     function EllipseDrawingWidget() {
+        this.qtDasharrayFixer = new __WEBPACK_IMPORTED_MODULE_1__helpers_qt_dasharray_fixer__["a" /* QtDasharrayFixer */]();
     }
     EllipseDrawingWidget.prototype.draw = function (view) {
+        var _this = this;
         var drawing = view
             .selectAll('ellipse.ellipse_element')
             .data(function (d) {
@@ -2361,7 +2409,7 @@ var EllipseDrawingWidget = /** @class */ (function () {
             .attr('fill-opacity', function (ellipse) { return ellipse.fill_opacity; })
             .attr('stroke', function (ellipse) { return ellipse.stroke; })
             .attr('stroke-width', function (ellipse) { return ellipse.stroke_width; })
-            .attr('stroke-dasharray', function (ellipse) { return ellipse.stroke_dasharray; })
+            .attr('stroke-dasharray', function (ellipse) { return _this.qtDasharrayFixer.fix(ellipse.stroke_dasharray); })
             .attr('cx', function (ellipse) { return ellipse.cx; })
             .attr('cy', function (ellipse) { return ellipse.cy; })
             .attr('rx', function (ellipse) { return ellipse.rx; })
@@ -2419,11 +2467,15 @@ var ImageDrawingWidget = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LineDrawingWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_line_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/line-element.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_qt_dasharray_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/qt-dasharray-fixer.ts");
+
 
 var LineDrawingWidget = /** @class */ (function () {
     function LineDrawingWidget() {
+        this.qtDasharrayFixer = new __WEBPACK_IMPORTED_MODULE_1__helpers_qt_dasharray_fixer__["a" /* QtDasharrayFixer */]();
     }
     LineDrawingWidget.prototype.draw = function (view) {
+        var _this = this;
         var drawing = view
             .selectAll('line.line_element')
             .data(function (d) {
@@ -2437,7 +2489,7 @@ var LineDrawingWidget = /** @class */ (function () {
         merge
             .attr('stroke', function (line) { return line.stroke; })
             .attr('stroke-width', function (line) { return line.stroke_width; })
-            .attr('stroke-dasharray', function (line) { return line.stroke_dasharray; })
+            .attr('stroke-dasharray', function (line) { return _this.qtDasharrayFixer.fix(line.stroke_dasharray); })
             .attr('x1', function (line) { return line.x1; })
             .attr('x2', function (line) { return line.x2; })
             .attr('y1', function (line) { return line.y1; })
@@ -2459,11 +2511,15 @@ var LineDrawingWidget = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RectDrawingWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_rect_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/rect-element.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_qt_dasharray_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/qt-dasharray-fixer.ts");
+
 
 var RectDrawingWidget = /** @class */ (function () {
     function RectDrawingWidget() {
+        this.qtDasharrayFixer = new __WEBPACK_IMPORTED_MODULE_1__helpers_qt_dasharray_fixer__["a" /* QtDasharrayFixer */]();
     }
     RectDrawingWidget.prototype.draw = function (view) {
+        var _this = this;
         var drawing = view
             .selectAll('rect.rect_element')
             .data(function (d) {
@@ -2479,7 +2535,7 @@ var RectDrawingWidget = /** @class */ (function () {
             .attr('fill-opacity', function (rect) { return rect.fill_opacity; })
             .attr('stroke', function (rect) { return rect.stroke; })
             .attr('stroke-width', function (rect) { return rect.stroke_width; })
-            .attr('stroke-dasharray', function (rect) { return rect.stroke_dasharray; })
+            .attr('stroke-dasharray', function (rect) { return _this.qtDasharrayFixer.fix(rect.stroke_dasharray); })
             .attr('width', function (rect) { return rect.width; })
             .attr('height', function (rect) { return rect.height; });
         drawing
