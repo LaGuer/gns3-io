@@ -1363,6 +1363,10 @@ var EllipseConverter = /** @class */ (function () {
         if (stroke) {
             drawing.stroke_width = parseInt(stroke_width.value, 10);
         }
+        var stroke_dasharray = node.attributes.getNamedItem("stroke-dasharray");
+        if (stroke_dasharray) {
+            drawing.stroke_dasharray = stroke_dasharray.value;
+        }
         var cx = node.attributes.getNamedItem('cx');
         if (cx) {
             drawing.cx = parseInt(cx.value, 10);
@@ -1441,6 +1445,10 @@ var LineConverter = /** @class */ (function () {
         if (stroke) {
             drawing.stroke_width = parseInt(stroke_width.value, 10);
         }
+        var stroke_dasharray = node.attributes.getNamedItem("stroke-dasharray");
+        if (stroke_dasharray) {
+            drawing.stroke_dasharray = stroke_dasharray.value;
+        }
         var x1 = node.attributes.getNamedItem('x1');
         if (x1) {
             drawing.x1 = parseInt(x1.value, 10);
@@ -1493,6 +1501,10 @@ var RectConverter = /** @class */ (function () {
         var stroke_width = node.attributes.getNamedItem("stroke-width");
         if (stroke) {
             drawing.stroke_width = parseInt(stroke_width.value, 10);
+        }
+        var stroke_dasharray = node.attributes.getNamedItem("stroke-dasharray");
+        if (stroke_dasharray) {
+            drawing.stroke_dasharray = stroke_dasharray.value;
         }
         var width = node.attributes.getNamedItem('width');
         if (width) {
@@ -2349,6 +2361,7 @@ var EllipseDrawingWidget = /** @class */ (function () {
             .attr('fill-opacity', function (ellipse) { return ellipse.fill_opacity; })
             .attr('stroke', function (ellipse) { return ellipse.stroke; })
             .attr('stroke-width', function (ellipse) { return ellipse.stroke_width; })
+            .attr('stroke-dasharray', function (ellipse) { return ellipse.stroke_dasharray; })
             .attr('cx', function (ellipse) { return ellipse.cx; })
             .attr('cy', function (ellipse) { return ellipse.cy; })
             .attr('rx', function (ellipse) { return ellipse.rx; })
@@ -2424,6 +2437,7 @@ var LineDrawingWidget = /** @class */ (function () {
         merge
             .attr('stroke', function (line) { return line.stroke; })
             .attr('stroke-width', function (line) { return line.stroke_width; })
+            .attr('stroke-dasharray', function (line) { return line.stroke_dasharray; })
             .attr('x1', function (line) { return line.x1; })
             .attr('x2', function (line) { return line.x2; })
             .attr('y1', function (line) { return line.y1; })
@@ -2465,6 +2479,7 @@ var RectDrawingWidget = /** @class */ (function () {
             .attr('fill-opacity', function (rect) { return rect.fill_opacity; })
             .attr('stroke', function (rect) { return rect.stroke; })
             .attr('stroke-width', function (rect) { return rect.stroke_width; })
+            .attr('stroke-dasharray', function (rect) { return rect.stroke_dasharray; })
             .attr('width', function (rect) { return rect.width; })
             .attr('height', function (rect) { return rect.height; });
         drawing
