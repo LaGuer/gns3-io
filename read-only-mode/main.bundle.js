@@ -1600,6 +1600,10 @@ var TextConverter = /** @class */ (function () {
         if (font_weight) {
             drawing.font_weight = font_weight.value;
         }
+        var text_decoration = node.attributes.getNamedItem('text-decoration');
+        if (text_decoration) {
+            drawing.text_decoration = text_decoration.value;
+        }
         return drawing;
     };
     return TextConverter;
@@ -2589,7 +2593,8 @@ var TextDrawingWidget = /** @class */ (function () {
             }
             return styles.join("; ");
         })
-            .attr('fill', function (text) { return text.fill; });
+            .attr('fill', function (text) { return text.fill; })
+            .attr('text-decoration', function (text) { return text.text_decoration; });
         var lines = merge.selectAll('tspan')
             .data(function (text) {
             return text.text.split(/\r?\n/);
