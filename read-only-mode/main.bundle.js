@@ -2363,7 +2363,7 @@ var DrawingsWidget = /** @class */ (function () {
             .attr('class', 'drawing');
         var drawing_merge = drawing.merge(drawing_enter)
             .attr('transform', function (d) {
-            return "translate(" + d.x + "," + d.y + ")";
+            return "translate(" + d.x + "," + d.y + ") rotate(" + d.rotation + ")";
         });
         this.drawingWidgets.forEach(function (widget) {
             widget.draw(drawing_merge);
