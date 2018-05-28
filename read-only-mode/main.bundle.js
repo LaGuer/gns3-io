@@ -1246,7 +1246,7 @@ var FontFixer = /** @class */ (function () {
     FontFixer.DEFAULT_FONT = "TypeWriter";
     FontFixer.DEFAULT_SIZE = 10;
     FontFixer.REPLACE_BY_FONT = "Noto Sans";
-    FontFixer.REPLACE_BY_SIZE = 10;
+    FontFixer.REPLACE_BY_SIZE = 11;
     FontFixer = FontFixer_1 = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
     ], FontFixer);
@@ -2529,6 +2529,7 @@ var TextDrawingWidget = /** @class */ (function () {
         var lines_merge = lines.merge(lines_enter);
         lines_merge
             .text(function (line) { return line; })
+            .attr('xml:space', 'preserve')
             .attr('x', 0)
             .attr("dy", function (line, i) { return i === 0 ? '0em' : '1.2em'; });
         lines
