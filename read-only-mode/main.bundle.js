@@ -1216,6 +1216,48 @@ var CssFixer = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/cartography/shared/helpers/font-fixer.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FontFixer; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+/**
+ * GNS3 GUI doesn't update font when cannot find font in user system, this fixer fixes it
+ */
+var FontFixer = /** @class */ (function () {
+    function FontFixer() {
+    }
+    FontFixer_1 = FontFixer;
+    FontFixer.prototype.fix = function (font) {
+        if (font.font_family === FontFixer_1.DEFAULT_FONT && font.font_size === FontFixer_1.DEFAULT_SIZE) {
+            font.font_family = FontFixer_1.REPLACE_BY_FONT;
+            font.font_size = FontFixer_1.REPLACE_BY_SIZE;
+        }
+        return font;
+    };
+    FontFixer.DEFAULT_FONT = "TypeWriter";
+    FontFixer.DEFAULT_SIZE = 10;
+    FontFixer.REPLACE_BY_FONT = "Noto Sans";
+    FontFixer.REPLACE_BY_SIZE = 10;
+    FontFixer = FontFixer_1 = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+    ], FontFixer);
+    return FontFixer;
+    var FontFixer_1;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/cartography/shared/helpers/svg-to-drawing-converter.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -1311,7 +1353,7 @@ var EllipseConverter = /** @class */ (function () {
         }
         var fill_opacity = node.attributes.getNamedItem("fill-opacity");
         if (fill) {
-            drawing.fill_opacity = parseInt(fill_opacity.value, 10);
+            drawing.fill_opacity = parseFloat(fill_opacity.value);
         }
         var stroke = node.attributes.getNamedItem("stroke");
         if (stroke) {
@@ -1442,7 +1484,7 @@ var RectConverter = /** @class */ (function () {
         }
         var fill_opacity = node.attributes.getNamedItem("fill-opacity");
         if (fill) {
-            drawing.fill_opacity = parseInt(fill_opacity.value, 10);
+            drawing.fill_opacity = parseFloat(fill_opacity.value);
         }
         var stroke = node.attributes.getNamedItem("stroke");
         if (stroke) {
@@ -1488,7 +1530,7 @@ var TextConverter = /** @class */ (function () {
         }
         var fill_opacity = node.attributes.getNamedItem('fill-opacity');
         if (fill_opacity) {
-            drawing.fill_opacity = +fill_opacity.value;
+            drawing.fill_opacity = parseFloat(fill_opacity.value);
         }
         var font_family = node.attributes.getNamedItem('font-family');
         if (font_family) {
@@ -2442,11 +2484,15 @@ var RectDrawingWidget = /** @class */ (function () {
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextDrawingWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/text-element.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_font_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/font-fixer.ts");
+
 
 var TextDrawingWidget = /** @class */ (function () {
     function TextDrawingWidget() {
+        this.fontFixer = new __WEBPACK_IMPORTED_MODULE_1__helpers_font_fixer__["a" /* FontFixer */]();
     }
     TextDrawingWidget.prototype.draw = function (view) {
+        var _this = this;
         var drawing = view
             .selectAll('text.text_element')
             .data(function (d) {
@@ -2459,14 +2505,15 @@ var TextDrawingWidget = /** @class */ (function () {
         var merge = drawing.merge(drawing_enter);
         merge
             .attr('style', function (text) {
+            var font = _this.fontFixer.fix(text);
             var styles = [];
-            if (text.font_family) {
+            if (font.font_family) {
                 styles.push("font-family: \"" + text.font_family + "\"");
             }
-            if (text.font_size) {
+            if (font.font_size) {
                 styles.push("font-size: " + text.font_size + "pt");
             }
-            if (text.font_weight) {
+            if (font.font_weight) {
                 styles.push("font-weight: " + text.font_weight);
             }
             return styles.join("; ");
@@ -3283,7 +3330,7 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
 /***/ "./src/app/project-map/project-map.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: auto;\n}\n\nsvg.map {\n  background-color: #F0F0F0;\n}\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: fixed;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.project-toolbar .mat-toolbar-multiple-rows {\n  width: auto !important;\n}\n\n.loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n\ng.node text {\n  font-family: Roboto !important;\n}\n\nsvg.map image:hover, svg.map image.chosen, g.selected {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n\npath.selected {\n  stroke: darkred;\n}\n\n.selected > .interface_label_border {\n  stroke: black;\n  fill: none;\n}\n\n.selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n\ng.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n/* Disable outline after button click */\n\n.project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n"
+module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: auto;\n}\n\nsvg.map {\n  background-color: #F0F0F0;\n}\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: fixed;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.project-toolbar .mat-toolbar-multiple-rows {\n  width: auto !important;\n}\n\n.loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n\n/*g.node text {*/\n\n/*font-family: Roboto !important;*/\n\n/*}*/\n\nsvg.map image:hover, svg.map image.chosen, g.selected {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n\npath.selected {\n  stroke: darkred;\n}\n\n.selected > .interface_label_border {\n  stroke: black;\n  fill: none;\n}\n\n.selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n\ng.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n/* Disable outline after button click */\n\n.project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n"
 
 /***/ }),
 
