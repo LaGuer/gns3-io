@@ -2560,6 +2560,8 @@ var RectDrawingWidget = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TextDrawingWidget; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__models_drawings_text_element__ = __webpack_require__("./src/app/cartography/shared/models/drawings/text-element.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__helpers_font_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/font-fixer.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_d3_selection__ = __webpack_require__("./node_modules/d3-selection/index.js");
+
 
 
 var TextDrawingWidget = /** @class */ (function () {
@@ -2611,10 +2613,18 @@ var TextDrawingWidget = /** @class */ (function () {
         lines
             .exit()
             .remove();
+        merge.attr('transform', function () {
+            // SVG calculates y pos by the /bottom/ of the first tspan, hence we need to make some
+            // approx and make it matching to GUI
+            var tspan = Object(__WEBPACK_IMPORTED_MODULE_2_d3_selection__["k" /* select */])(this).selectAll('tspan');
+            var height = this.getBBox().height / tspan.size();
+            return "translate(" + TextDrawingWidget.MARGIN + ", " + (height - TextDrawingWidget.MARGIN) + ")";
+        });
         drawing
             .exit()
             .remove();
     };
+    TextDrawingWidget.MARGIN = 4;
     return TextDrawingWidget;
 }());
 
