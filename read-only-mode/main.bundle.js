@@ -2645,7 +2645,7 @@ var EthernetLinkWidget = /** @class */ (function () {
     EthernetLinkWidget.prototype.draw = function (view, link) {
         var link_data = [[
                 [link.source.x + link.source.width / 2., link.source.y + link.source.height / 2.],
-                [link.target.x + link.target.width / 2., link.target.y + link.source.height / 2.]
+                [link.target.x + link.target.width / 2., link.target.y + link.target.height / 2.]
             ]];
         var value_line = Object(__WEBPACK_IMPORTED_MODULE_0_d3_shape__["v" /* line */])();
         var link_path = view.select('path');
@@ -3228,8 +3228,16 @@ var SerialLinkWidget = /** @class */ (function () {
     function SerialLinkWidget() {
     }
     SerialLinkWidget.prototype.draw = function (view, link) {
-        var dx = link.target.x - link.source.x;
-        var dy = link.target.y - link.source.y;
+        var source = {
+            'x': link.source.x + link.source.width / 2,
+            'y': link.source.y + link.source.height / 2
+        };
+        var target = {
+            'x': link.target.x + link.target.width / 2,
+            'y': link.target.y + link.target.height / 2
+        };
+        var dx = target.x - source.x;
+        var dy = target.y - source.y;
         var vector_angle = Math.atan2(dy, dx);
         var rot_angle = -Math.PI / 4.0;
         var vect_rot = [
@@ -3237,18 +3245,18 @@ var SerialLinkWidget = /** @class */ (function () {
             Math.sin(vector_angle + rot_angle)
         ];
         var angle_source = [
-            link.source.x + dx / 2.0 + 15 * vect_rot[0],
-            link.source.y + dy / 2.0 + 15 * vect_rot[1]
+            source.x + dx / 2.0 + 15 * vect_rot[0],
+            source.y + dy / 2.0 + 15 * vect_rot[1]
         ];
         var angle_target = [
-            link.target.x - dx / 2.0 - 15 * vect_rot[0],
-            link.target.y - dy / 2.0 - 15 * vect_rot[1]
+            target.x - dx / 2.0 - 15 * vect_rot[0],
+            target.y - dy / 2.0 - 15 * vect_rot[1]
         ];
         var line_data = [
-            [link.source.x, link.source.y],
+            [source.x, source.y],
             angle_source,
             angle_target,
-            [link.target.x, link.target.y]
+            [target.x, target.y]
         ];
         var link_path = view.select('path');
         if (!link_path.node()) {
