@@ -1221,13 +1221,16 @@ var CssFixer = /** @class */ (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FontFixer; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_css_tree__ = __webpack_require__("./node_modules/css-tree/lib/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_css_tree___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_css_tree__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 /**
  * GNS3 GUI doesn't update font when cannot find font in user system, this fixer fixes it
@@ -1243,12 +1246,62 @@ var FontFixer = /** @class */ (function () {
         }
         return font;
     };
+    FontFixer.prototype.fixStyles = function (styles) {
+        var ast = __WEBPACK_IMPORTED_MODULE_0_css_tree__["parse"](styles, {
+            'context': 'declarationList'
+        });
+        var fontFamilyPointer = null;
+        var fontSizePointer = null;
+        var isByIdentifier = true;
+        ast.children.forEach(function (child) {
+            if (child.property === 'font-family') {
+                child.value.children.forEach(function (value) {
+                    if (value.type === 'Identifier') {
+                        fontFamilyPointer = value;
+                    }
+                    if (value.type === 'String') {
+                        fontFamilyPointer = value;
+                        isByIdentifier = false;
+                    }
+                });
+            }
+            if (child.property === 'font-size') {
+                child.value.children.forEach(function (value) {
+                    if (value.type === 'Dimension') {
+                        fontSizePointer = value;
+                    }
+                });
+            }
+        });
+        if (fontSizePointer && fontFamilyPointer) {
+            var fontFamilyValue = null;
+            var fontSizeValue = fontSizePointer.value;
+            if (isByIdentifier) {
+                fontFamilyValue = fontFamilyPointer.name;
+            }
+            else {
+                fontFamilyValue = fontFamilyPointer.value;
+            }
+            var fixedFont = this.fix({
+                'font_family': fontFamilyValue.split('"').join(''),
+                'font_size': parseInt(fontSizeValue, 10),
+            });
+            if (isByIdentifier) {
+                fontFamilyPointer.name = fixedFont.font_family;
+            }
+            else {
+                fontFamilyPointer.value = fixedFont.font_family;
+            }
+            fontSizePointer.value = fixedFont.font_size;
+        }
+        return __WEBPACK_IMPORTED_MODULE_0_css_tree__["generate"](ast);
+    };
     FontFixer.DEFAULT_FONT = "TypeWriter";
     FontFixer.DEFAULT_SIZE = 10;
     FontFixer.REPLACE_BY_FONT = "Noto Sans";
     FontFixer.REPLACE_BY_SIZE = 11;
     FontFixer = FontFixer_1 = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+        Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"])()
     ], FontFixer);
     return FontFixer;
     var FontFixer_1;
@@ -3054,6 +3107,8 @@ var LinksWidget = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_d3_selection__ = __webpack_require__("./node_modules/d3-selection/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_d3_drag__ = __webpack_require__("./node_modules/d3-drag/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__helpers_css_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/css-fixer.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__helpers_font_fixer__ = __webpack_require__("./src/app/cartography/shared/helpers/font-fixer.ts");
+
 
 
 
@@ -3064,6 +3119,7 @@ var NodesWidget = /** @class */ (function () {
         this.onNodeDraggingCallbacks = [];
         this.symbols = [];
         this.cssFixer = new __WEBPACK_IMPORTED_MODULE_2__helpers_css_fixer__["a" /* CssFixer */]();
+        this.fontFixer = new __WEBPACK_IMPORTED_MODULE_3__helpers_font_fixer__["a" /* FontFixer */]();
     }
     NodesWidget.prototype.setOnContextMenuCallback = function (onContextMenuCallback) {
         this.onContextMenuCallback = onContextMenuCallback;
@@ -3096,7 +3152,11 @@ var NodesWidget = /** @class */ (function () {
         });
         selection
             .select('text.label')
-            .attr('style', function (n) { return _this.cssFixer.fix(n.label.style); })
+            .attr('style', function (n) {
+            var styles = _this.cssFixer.fix(n.label.style);
+            styles = _this.fontFixer.fixStyles(styles);
+            return styles;
+        })
             .text(function (n) { return n.label.text; })
             .attr('x', function (n) {
             if (n.label.x === null) {
@@ -3104,7 +3164,7 @@ var NodesWidget = /** @class */ (function () {
                 var bbox = this.getBBox();
                 return -bbox.width / 2.;
             }
-            return n.label.x;
+            return n.label.x + NodesWidget.NODE_LABEL_MARGIN;
         })
             .attr('y', function (n) {
             var bbox = this.getBBox();
@@ -3113,7 +3173,7 @@ var NodesWidget = /** @class */ (function () {
                 bbox = this.getBBox();
                 return -n.height / 2. - bbox.height;
             }
-            return n.label.y + bbox.height;
+            return n.label.y + bbox.height - NodesWidget.NODE_LABEL_MARGIN;
         });
         selection
             .select('text.node_point_label')
@@ -3216,6 +3276,7 @@ var NodesWidget = /** @class */ (function () {
             .exit()
             .remove();
     };
+    NodesWidget.NODE_LABEL_MARGIN = 3;
     return NodesWidget;
 }());
 
