@@ -2836,8 +2836,12 @@ var GraphLayout = /** @class */ (function () {
 
 var InterfaceLabelWidget = /** @class */ (function () {
     function InterfaceLabelWidget() {
+        this.enabled = true;
         this.cssFixer = new __WEBPACK_IMPORTED_MODULE_1__helpers_css_fixer__["a" /* CssFixer */]();
     }
+    InterfaceLabelWidget.prototype.setEnabled = function (enabled) {
+        this.enabled = enabled;
+    };
     InterfaceLabelWidget.prototype.draw = function (selection) {
         var _this = this;
         var labels = selection
@@ -2845,7 +2849,10 @@ var InterfaceLabelWidget = /** @class */ (function () {
             .data(function (l) {
             var sourceInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](l.link_id, 'source', Math.round(l.source.x + l.nodes[0].label.x), Math.round(l.source.y + l.nodes[0].label.y), l.nodes[0].label.text, l.nodes[0].label.style, l.nodes[0].label.rotation, l.nodes[0].label.is_selected);
             var targetInterface = new __WEBPACK_IMPORTED_MODULE_0__models_interface_label__["a" /* InterfaceLabel */](l.link_id, 'target', Math.round(l.target.x + l.nodes[1].label.x), Math.round(l.target.y + l.nodes[1].label.y), l.nodes[1].label.text, l.nodes[1].label.style, l.nodes[1].label.rotation, l.nodes[1].label.is_selected);
-            return [sourceInterface, targetInterface];
+            if (_this.enabled) {
+                return [sourceInterface, targetInterface];
+            }
+            return [];
         });
         var enter = labels
             .enter()
@@ -3492,14 +3499,14 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
 /***/ "./src/app/project-map/project-map.component.css":
 /***/ (function(module, exports) {
 
-module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: auto;\n}\n\nsvg.map {\n  background-color: #F0F0F0;\n}\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: fixed;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.project-toolbar .mat-toolbar-multiple-rows {\n  width: auto !important;\n}\n\n.loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n\n/*g.node text {*/\n\n/*font-family: Roboto !important;*/\n\n/*}*/\n\nsvg.map image:hover, svg.map image.chosen, g.selected {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n\npath.selected {\n  stroke: darkred;\n}\n\n.selected > .interface_label_border {\n  stroke: black;\n  fill: none;\n}\n\n.selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n\ng.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n/* Disable outline after button click */\n\n.project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n"
+module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: auto;\n}\n\nsvg.map {\n  background-color: #F0F0F0;\n}\n\ng.node:hover {\n  background-color: #0097a7;\n}\n\n.project-toolbar {\n  width: 70px;\n  position: fixed;\n  top: 20px;\n  left: 20px;\n  -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);\n}\n\n.project-toolbar .mat-toolbar-multiple-rows {\n  width: auto !important;\n}\n\n.loading-spinner {\n  position: absolute;\n  top: 50%;\n  width: 100px;\n  margin-left:-50px;\n  margin-top: -50px;\n  left: 50%;\n}\n\n/*g.node text {*/\n\n/*font-family: Roboto !important;*/\n\n/*}*/\n\nsvg.map image:hover, svg.map image.chosen, g.selected {\n  -webkit-filter: grayscale(100%);\n          filter: grayscale(100%);\n}\n\npath.selected {\n  stroke: darkred;\n}\n\n.selected > .interface_label_border {\n  stroke: black;\n  fill: none;\n}\n\n.selection-line-tool .selection {\n  fill: #7ccbe1;\n  stroke:  #66aec2 ;\n  fill-opacity: 0.3;\n  stroke-opacity: 0.7;\n  stroke-width: 1;\n  stroke-dasharray: 5, 5;\n}\n\ng.node text,\n.noselect {\n  -webkit-touch-callout: none;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n}\n\n/* Disable outline after button click */\n\n.project-toolbar button {\n  outline: 0;\n  border: none;\n  -moz-outline-style: none\n}\n\n.options-item {\n  padding-left: 15px;\n  padding-right: 15px;\n\n}\n"
 
 /***/ }),
 
 /***/ "./src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"viewMenu\">\n          <mat-icon>view_module</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #viewMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <div class=\"options-item\">\n          <mat-checkbox [(ngModel)]=\"showIntefaceLabels\" (change)=\"toggleShowInterfaceLabels($event.checked)\">Show interface labels</mat-checkbox>\n        </div>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
 
 /***/ }),
 
@@ -3789,6 +3796,12 @@ var ProjectMapComponent = /** @class */ (function () {
                 _this.linksDataSource.set(links);
             });
         });
+    };
+    ProjectMapComponent.prototype.toggleShowInterfaceLabels = function (enabled) {
+        this.project.show_interface_labels = enabled;
+        this.mapChild.graphLayout.getLinksWidget().getInterfaceLabelWidget()
+            .setEnabled(this.project.show_interface_labels);
+        this.mapChild.reload();
     };
     ProjectMapComponent.prototype.ngOnDestroy = function () {
         this.drawingsDataSource.clear();
@@ -4431,7 +4444,6 @@ var ProjectWebServiceHandler = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Project; });
 var Project = /** @class */ (function () {
     function Project() {
-        this.readonly = true;
     }
     return Project;
 }());
