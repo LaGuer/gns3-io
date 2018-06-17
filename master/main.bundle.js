@@ -3713,6 +3713,8 @@ var ProjectMapComponent = /** @class */ (function () {
             });
         });
         this.subscriptions.push(this.selectionManager.subscribe(this.mapChild.graphLayout.getSelectionTool().rectangleSelected));
+        this.mapChild.graphLayout.getLinksWidget().getInterfaceLabelWidget().setEnabled(this.project.show_interface_labels);
+        this.mapChild.reload();
     };
     ProjectMapComponent.prototype.onNodeCreation = function (appliance) {
         var _this = this;
@@ -3884,7 +3886,7 @@ module.exports = ""
 /***/ "./src/app/projects/projects.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Projects</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\" matSort>\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <a [routerLink]=\"['/server', server.id, 'project', row.project_id]\" class=\"table-link\">{{row.name}}</a>\n          </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\" style=\"text-align: right\">\n            <button mat-icon-button (click)=\"delete(row)\">\n              <mat-icon aria-label=\"Delete project\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n  </div>\n</div>\n"
+module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Projects</h1>\n  </div>\n  <div class=\"default-content\">\n\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-table #table [dataSource]=\"dataSource\" matSort>\n\n        <ng-container matColumnDef=\"name\">\n          <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\">\n            <a [routerLink]=\"['/server', server.id, 'project', row.project_id]\" class=\"table-link\">{{row.name}}</a>\n          </mat-cell>\n        </ng-container>\n\n        <ng-container matColumnDef=\"actions\">\n          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>\n          <mat-cell *matCellDef=\"let row\" style=\"text-align: right\">\n            <button mat-icon-button (click)=\"delete(row)\" *ngIf=\"settings.experimental_features\">\n              <mat-icon aria-label=\"Delete project\">delete</mat-icon>\n            </button>\n          </mat-cell>\n        </ng-container>\n\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\n      </mat-table>\n    </div>\n\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -3903,6 +3905,7 @@ module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n   
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__ = __webpack_require__("./node_modules/rxjs/_esm5/BehaviorSubject.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_cdk_collections__ = __webpack_require__("./node_modules/@angular/cdk/esm5/collections.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Observable__ = __webpack_require__("./node_modules/rxjs/_esm5/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__shared_services_settings_service__ = __webpack_require__("./src/app/shared/services/settings.service.ts");
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -3930,11 +3933,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectsComponent = /** @class */ (function () {
-    function ProjectsComponent(route, serverService, projectService) {
+    function ProjectsComponent(route, serverService, projectService, settingsService) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
+        this.settingsService = settingsService;
         this.projectDatabase = new ProjectDatabase();
         this.displayedColumns = ['name', 'actions'];
     }
@@ -3947,8 +3952,8 @@ var ProjectsComponent = /** @class */ (function () {
         this.dataSource = new ProjectDataSource(this.projectDatabase, this.sort);
         this.route.paramMap
             .switchMap(function (params) {
-            var server_id = parseInt(params.get('server_id'), 10);
-            return _this.serverService.get(server_id);
+            var server_id = params.get('server_id');
+            return _this.serverService.getLocalOrRemote(server_id);
         })
             .subscribe(function (server) {
             _this.server = server;
@@ -3958,6 +3963,7 @@ var ProjectsComponent = /** @class */ (function () {
                 _this.projectDatabase.addProjects(projects);
             });
         });
+        this.settings = this.settingsService.getAll();
     };
     ProjectsComponent.prototype.delete = function (project) {
         var _this = this;
@@ -3977,7 +3983,8 @@ var ProjectsComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */],
             __WEBPACK_IMPORTED_MODULE_4__shared_services_server_service__["a" /* ServerService */],
-            __WEBPACK_IMPORTED_MODULE_3__shared_services_project_service__["a" /* ProjectService */]])
+            __WEBPACK_IMPORTED_MODULE_3__shared_services_project_service__["a" /* ProjectService */],
+            __WEBPACK_IMPORTED_MODULE_8__shared_services_settings_service__["a" /* SettingsService */]])
     ], ProjectsComponent);
     return ProjectsComponent;
 }());
@@ -4293,7 +4300,7 @@ var ServerDataSource = /** @class */ (function (_super) {
 /***/ "./src/app/settings/settings.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Settings</h1>\n  </div>\n  <div class=\"default-content\">\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-accordion>\n        <mat-expansion-panel>\n          <mat-expansion-panel-header>\n            <mat-panel-title>\n              Local settings\n            </mat-panel-title>\n            <mat-panel-description>\n              Customize your local settings\n            </mat-panel-description>\n          </mat-expansion-panel-header>\n\n          <mat-checkbox class=\"example-margin\" [(ngModel)]=\"settings.crash_reports\">Send anonymous crash reports</mat-checkbox>\n\n        </mat-expansion-panel>\n      </mat-accordion>\n    </div>\n\n    <div class=\"buttons-bar\">\n      <button mat-raised-button color=\"primary\" (click)=\"save()\">Save settings</button>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"content\">\n  <div class=\"default-header\">\n    <h1>Settings</h1>\n  </div>\n  <div class=\"default-content\">\n    <div class=\"example-container mat-elevation-z8\">\n      <mat-accordion>\n        <mat-expansion-panel>\n          <mat-expansion-panel-header>\n            <mat-panel-title>\n              Local settings\n            </mat-panel-title>\n            <mat-panel-description>\n              Customize your local settings\n            </mat-panel-description>\n          </mat-expansion-panel-header>\n\n          <div>\n            <mat-checkbox class=\"example-margin\" [(ngModel)]=\"settings.crash_reports\">Send anonymous crash reports</mat-checkbox>\n          </div>\n\n          <div>\n            <mat-checkbox class=\"example-margin\" [(ngModel)]=\"settings.experimental_features\">Enable experimental features (WARNING: IT CAN BREAK YOU LABS!)</mat-checkbox>\n          </div>\n\n        </mat-expansion-panel>\n      </mat-accordion>\n    </div>\n\n    <div class=\"buttons-bar\">\n      <button mat-raised-button color=\"primary\" (click)=\"save()\">Save settings</button>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -4311,6 +4318,7 @@ module.exports = ""
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SettingsComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_services_settings_service__ = __webpack_require__("./src/app/shared/services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shared_services_toaster_service__ = __webpack_require__("./src/app/shared/services/toaster.service.ts");
 var __assign = (this && this.__assign) || Object.assign || function(t) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
         s = arguments[i];
@@ -4330,9 +4338,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var SettingsComponent = /** @class */ (function () {
-    function SettingsComponent(settingsService) {
+    function SettingsComponent(settingsService, toaster) {
         this.settingsService = settingsService;
+        this.toaster = toaster;
         this.settings = __assign({}, __WEBPACK_IMPORTED_MODULE_1__shared_services_settings_service__["a" /* SettingsService */].DEFAULTS);
     }
     SettingsComponent.prototype.ngOnInit = function () {
@@ -4340,6 +4350,7 @@ var SettingsComponent = /** @class */ (function () {
     };
     SettingsComponent.prototype.save = function () {
         this.settingsService.setAll(this.settings);
+        this.toaster.success("Settings have been saved.");
     };
     SettingsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -4347,7 +4358,8 @@ var SettingsComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/settings/settings.component.html"),
             styles: [__webpack_require__("./src/app/settings/settings.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__shared_services_settings_service__["a" /* SettingsService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__shared_services_settings_service__["a" /* SettingsService */],
+            __WEBPACK_IMPORTED_MODULE_2__shared_services_toaster_service__["a" /* ToasterService */]])
     ], SettingsComponent);
     return SettingsComponent;
 }());
@@ -5408,6 +5420,11 @@ var ServerService = /** @class */ (function () {
             return _this.indexedDbService.get().getByKey(_this.tablename, id);
         });
     };
+    ServerService.prototype.getLocalOrRemote = function (id) {
+        if (id === 'local') {
+        }
+        return this.get(parseInt(id, 10));
+    };
     ServerService.prototype.create = function (server) {
         var _this = this;
         return this.onReady(function () {
@@ -5524,11 +5541,15 @@ var SettingsService = /** @class */ (function () {
             _this.set(key, settings[key]);
         });
     };
+    SettingsService.prototype.isExperimentalEnabled = function () {
+        return this.get('experimental_features');
+    };
     SettingsService.prototype.subscribe = function (subscriber) {
         return this.settingsSubject.subscribe(subscriber);
     };
     SettingsService.DEFAULTS = {
-        'crash_reports': true
+        'crash_reports': true,
+        'experimental_features': false
     };
     SettingsService = SettingsService_1 = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
