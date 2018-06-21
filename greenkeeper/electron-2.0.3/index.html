@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>GNS3 Web UI Demo</title>
+  <!-- It's important to have base here because of the script below //-->
+  <base href="/greenkeeper/electron-2.0.3/">
+
+  <script>
+    var userAgent = navigator.userAgent.toLowerCase();
+    // in case we're running in electron because we need it for resources
+    if (userAgent.indexOf(' electron/') > -1) {
+      var base = document.getElementsByTagName('base');
+      if(base.length > 0) {
+        base.href = document.location;
+      }
+      else {
+        document.write('<base href="' + document.location + '" />');
+      }
+    }
+  </script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+
+  <script type="application/javascript">
+    // Github Pages redirection
+    (function(){
+      var redirect = sessionStorage.redirect;
+      delete sessionStorage.redirect;
+      if (redirect && redirect != location.href) {
+        history.replaceState(null, null, redirect);
+      }
+    })();
+  </script>
+
+</head>
+<body class="mat-app-background">
+  <app-root></app-root>
+<script type="text/javascript" src="inline.bundle.js"></script><script type="text/javascript" src="polyfills.bundle.js"></script><script type="text/javascript" src="styles.bundle.js"></script><script type="text/javascript" src="vendor.bundle.js"></script><script type="text/javascript" src="main.bundle.js"></script></body>
+
+</html>
