@@ -5155,7 +5155,12 @@ var HttpServer = /** @class */ (function () {
         return options;
     };
     HttpServer.prototype.getOptionsForServer = function (server, url, options) {
-        url = "http://" + server.ip + ":" + server.port + "/v2" + url;
+        if (server.ip && server.port) {
+            url = "http://" + server.ip + ":" + server.port + "/v2" + url;
+        }
+        else {
+            url = "/v2" + url;
+        }
         if (!options.headers) {
             options.headers = {};
         }
@@ -5417,6 +5422,8 @@ var ProjectService = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServerService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__indexed_db_service__ = __webpack_require__("./src/app/shared/services/indexed-db.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_server__ = __webpack_require__("./src/app/shared/models/server.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__("./node_modules/rxjs/_esm5/Observable.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5426,6 +5433,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
+
 
 
 var ServerService = /** @class */ (function () {
@@ -5445,6 +5454,9 @@ var ServerService = /** @class */ (function () {
     };
     ServerService.prototype.getLocalOrRemote = function (id) {
         if (id === 'local') {
+            var server = new __WEBPACK_IMPORTED_MODULE_2__models_server__["a" /* Server */]();
+            server.name = 'local';
+            return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].of(server);
         }
         return this.get(parseInt(id, 10));
     };
