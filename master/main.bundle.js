@@ -30,6 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__projects_projects_component__ = __webpack_require__("./src/app/projects/projects.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__default_layout_default_layout_component__ = __webpack_require__("./src/app/default-layout/default-layout.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__settings_settings_component__ = __webpack_require__("./src/app/settings/settings.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__local_server_local_server_component__ = __webpack_require__("./src/app/local-server/local-server.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -44,11 +45,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var routes = [
     { path: '', component: __WEBPACK_IMPORTED_MODULE_6__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
         children: [
             { path: '', redirectTo: 'servers', pathMatch: 'full' },
             { path: 'servers', component: __WEBPACK_IMPORTED_MODULE_4__servers_servers_component__["b" /* ServersComponent */] },
+            { path: 'local', component: __WEBPACK_IMPORTED_MODULE_8__local_server_local_server_component__["a" /* LocalServerComponent */] },
             { path: 'server/:server_id/projects', component: __WEBPACK_IMPORTED_MODULE_5__projects_projects_component__["a" /* ProjectsComponent */] },
             { path: 'settings', component: __WEBPACK_IMPORTED_MODULE_7__settings_settings_component__["a" /* SettingsComponent */] },
         ]
@@ -59,10 +62,10 @@ var routerModule;
 if (__WEBPACK_IMPORTED_MODULE_0__environments_environment__["a" /* environment */].electron) {
     // angular in electron has problem with base-href and links separated by slashes, because of that
     // we use simply hashes
-    routerModule = __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forRoot(routes, { useHash: true });
+    routerModule = __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forRoot(routes, { useHash: true });
 }
 else {
-    routerModule = __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forRoot(routes);
+    routerModule = __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forRoot(routes);
 }
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -70,7 +73,7 @@ var AppRoutingModule = /** @class */ (function () {
     AppRoutingModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
             imports: [routerModule],
-            exports: [__WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */]]
+            exports: [__WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */]]
         })
     ], AppRoutingModule);
     return AppRoutingModule;
@@ -209,12 +212,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__settings_settings_component__ = __webpack_require__("./src/app/settings/settings.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__shared_services_settings_service__ = __webpack_require__("./src/app/shared/services/settings.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__raven_error_handler__ = __webpack_require__("./src/app/raven-error-handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__local_server_local_server_component__ = __webpack_require__("./src/app/local-server/local-server.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -293,6 +298,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_47__shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__["a" /* MoveLayerUpActionComponent */],
                 __WEBPACK_IMPORTED_MODULE_48__project_map_project_map_shortcuts_project_map_shortcuts_component__["a" /* ProjectMapShortcutsComponent */],
                 __WEBPACK_IMPORTED_MODULE_49__settings_settings_component__["a" /* SettingsComponent */],
+                __WEBPACK_IMPORTED_MODULE_52__local_server_local_server_component__["a" /* LocalServerComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_9__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
@@ -3405,6 +3411,72 @@ var DefaultLayoutComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/local-server/local-server.component.html":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/local-server/local-server.component.scss":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/local-server/local-server.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LocalServerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_services_server_service__ = __webpack_require__("./src/app/shared/services/server.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var LocalServerComponent = /** @class */ (function () {
+    function LocalServerComponent(location, router, serverService) {
+        this.location = location;
+        this.router = router;
+        this.serverService = serverService;
+    }
+    LocalServerComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.serverService.getLocalServer(location.hostname, parseInt(location.port, 10))
+            .then(function (server) {
+            _this.router.navigate(['/server', server.id, 'projects']);
+        });
+    };
+    LocalServerComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-local-server',
+            template: __webpack_require__("./src/app/local-server/local-server.component.html"),
+            styles: [__webpack_require__("./src/app/local-server/local-server.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common__["Location"],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_3__shared_services_server_service__["a" /* ServerService */]])
+    ], LocalServerComponent);
+    return LocalServerComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/project-map/create-snapshot-dialog.html":
 /***/ (function(module, exports) {
 
@@ -3425,6 +3497,7 @@ module.exports = "<h1 mat-dialog-title>Create snapshot</h1>\n<div mat-dialog-con
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__shared_models_server__ = __webpack_require__("./src/app/shared/models/server.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__shared_services_toaster_service__ = __webpack_require__("./src/app/shared/services/toaster.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__shared_models_project__ = __webpack_require__("./src/app/shared/models/project.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__shared_services_project_service__ = __webpack_require__("./src/app/shared/services/project.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3441,11 +3514,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectMapShortcutsComponent = /** @class */ (function () {
-    function ProjectMapShortcutsComponent(hotkeysService, toaster, nodesService) {
+    function ProjectMapShortcutsComponent(hotkeysService, toaster, nodesService, projectService) {
         this.hotkeysService = hotkeysService;
         this.toaster = toaster;
         this.nodesService = nodesService;
+        this.projectService = projectService;
     }
     ProjectMapShortcutsComponent.prototype.ngOnInit = function () {
         this.deleteHotkey = new __WEBPACK_IMPORTED_MODULE_1_angular2_hotkeys__["Hotkey"]('del', this.onDeleteHandler);
@@ -3453,7 +3528,7 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
     };
     ProjectMapShortcutsComponent.prototype.onDeleteHandler = function (event) {
         var _this = this;
-        if (!this.project.readonly) {
+        if (!this.projectService.isReadOnly(this.project)) {
             var selectedNodes = this.selectionManager.getSelectedNodes();
             if (selectedNodes) {
                 selectedNodes.forEach(function (node) {
@@ -3487,7 +3562,8 @@ var ProjectMapShortcutsComponent = /** @class */ (function () {
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_angular2_hotkeys__["HotkeysService"],
             __WEBPACK_IMPORTED_MODULE_5__shared_services_toaster_service__["a" /* ToasterService */],
-            __WEBPACK_IMPORTED_MODULE_3__shared_services_node_service__["a" /* NodeService */]])
+            __WEBPACK_IMPORTED_MODULE_3__shared_services_node_service__["a" /* NodeService */],
+            __WEBPACK_IMPORTED_MODULE_7__shared_services_project_service__["a" /* ProjectService */]])
     ], ProjectMapShortcutsComponent);
     return ProjectMapShortcutsComponent;
 }());
@@ -3506,7 +3582,7 @@ module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: a
 /***/ "./src/app/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"viewMenu\">\n          <mat-icon>view_module</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #viewMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <div class=\"options-item\">\n          <mat-checkbox [(ngModel)]=\"showIntefaceLabels\" (change)=\"toggleShowInterfaceLabels($event.checked)\">Show interface labels</mat-checkbox>\n        </div>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!project.readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"viewMenu\">\n          <mat-icon>view_module</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #viewMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <div class=\"options-item\">\n          <mat-checkbox [(ngModel)]=\"showIntefaceLabels\" (change)=\"toggleShowInterfaceLabels($event.checked)\">Show interface labels</mat-checkbox>\n        </div>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
 
 /***/ }),
 
@@ -3544,6 +3620,7 @@ module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [sym
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__cartography_shared_managers_selection_manager__ = __webpack_require__("./src/app/cartography/shared/managers/selection-manager.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__cartography_map_helpers_in_rectangle_helper__ = __webpack_require__("./src/app/cartography/map/helpers/in-rectangle-helper.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__cartography_shared_datasources_drawings_datasource__ = __webpack_require__("./src/app/cartography/shared/datasources/drawings-datasource.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__shared_services_settings_service__ = __webpack_require__("./src/app/shared/services/settings.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3584,8 +3661,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
 var ProjectMapComponent = /** @class */ (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toaster, projectWebServiceHandler, nodesDataSource, linksDataSource, drawingsDataSource) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toaster, projectWebServiceHandler, settingsService, nodesDataSource, linksDataSource, drawingsDataSource) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
@@ -3597,6 +3675,7 @@ var ProjectMapComponent = /** @class */ (function () {
         this.progressDialogService = progressDialogService;
         this.toaster = toaster;
         this.projectWebServiceHandler = projectWebServiceHandler;
+        this.settingsService = settingsService;
         this.nodesDataSource = nodesDataSource;
         this.linksDataSource = linksDataSource;
         this.drawingsDataSource = drawingsDataSource;
@@ -3606,6 +3685,7 @@ var ProjectMapComponent = /** @class */ (function () {
         this.symbols = [];
         this.drawLineMode = false;
         this.movingMode = false;
+        this.readonly = false;
         this.isLoading = true;
         this.selectionManager = new __WEBPACK_IMPORTED_MODULE_25__cartography_shared_managers_selection_manager__["a" /* SelectionManager */](this.nodesDataSource, this.linksDataSource, this.drawingsDataSource, new __WEBPACK_IMPORTED_MODULE_26__cartography_map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */]());
         this.subscriptions = [];
@@ -3619,7 +3699,6 @@ var ProjectMapComponent = /** @class */ (function () {
                 .flatMap(function (server) {
                 _this.server = server;
                 return _this.projectService.get(server, paramMap.get('project_id')).map(function (project) {
-                    project.readonly = true;
                     return project;
                 });
             })
@@ -3663,6 +3742,7 @@ var ProjectMapComponent = /** @class */ (function () {
     };
     ProjectMapComponent.prototype.onProjectLoad = function (project) {
         var _this = this;
+        this.readonly = this.projectService.isReadOnly(project);
         var subscription = this.symbolService
             .load(this.server)
             .flatMap(function () {
@@ -3690,10 +3770,10 @@ var ProjectMapComponent = /** @class */ (function () {
     };
     ProjectMapComponent.prototype.setUpMapCallbacks = function (project) {
         var _this = this;
-        if (this.project.readonly) {
+        if (this.readonly) {
             this.mapChild.graphLayout.getSelectionTool().deactivate();
         }
-        this.mapChild.graphLayout.getNodesWidget().setDraggingEnabled(!this.project.readonly);
+        this.mapChild.graphLayout.getNodesWidget().setDraggingEnabled(!this.readonly);
         this.mapChild.graphLayout.getNodesWidget().setOnContextMenuCallback(function (event, node) {
             _this.nodeContextMenu.open(node, event.clientY, event.clientX);
         });
@@ -3762,14 +3842,14 @@ var ProjectMapComponent = /** @class */ (function () {
     ProjectMapComponent.prototype.toggleMovingMode = function () {
         this.movingMode = !this.movingMode;
         if (this.movingMode) {
-            if (!this.project.readonly) {
+            if (!this.readonly) {
                 this.mapChild.graphLayout.getSelectionTool().deactivate();
             }
             this.mapChild.graphLayout.getMovingTool().activate();
         }
         else {
             this.mapChild.graphLayout.getMovingTool().deactivate();
-            if (!this.project.readonly) {
+            if (!this.readonly) {
                 this.mapChild.graphLayout.getSelectionTool().activate();
             }
         }
@@ -3842,6 +3922,7 @@ var ProjectMapComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_15__shared_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */],
             __WEBPACK_IMPORTED_MODULE_21__shared_services_toaster_service__["a" /* ToasterService */],
             __WEBPACK_IMPORTED_MODULE_24__shared_handlers_project_web_service_handler__["a" /* ProjectWebServiceHandler */],
+            __WEBPACK_IMPORTED_MODULE_28__shared_services_settings_service__["a" /* SettingsService */],
             __WEBPACK_IMPORTED_MODULE_22__cartography_shared_datasources_nodes_datasource__["a" /* NodesDataSource */],
             __WEBPACK_IMPORTED_MODULE_23__cartography_shared_datasources_links_datasource__["a" /* LinksDataSource */],
             __WEBPACK_IMPORTED_MODULE_27__cartography_shared_datasources_drawings_datasource__["a" /* DrawingsDataSource */]])
@@ -3953,7 +4034,7 @@ var ProjectsComponent = /** @class */ (function () {
         this.route.paramMap
             .switchMap(function (params) {
             var server_id = params.get('server_id');
-            return _this.serverService.getLocalOrRemote(server_id);
+            return _this.serverService.get(parseInt(server_id, 10));
         })
             .subscribe(function (server) {
             _this.server = server;
@@ -4755,7 +4836,7 @@ var StopNodeActionComponent = /** @class */ (function () {
 /***/ "./src/app/shared/node-context-menu/node-context-menu.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n    <app-move-layer-up-action *ngIf=\"!project.readonly\" [server]=\"server\" [node]=\"node\"></app-move-layer-up-action>\n    <app-move-layer-down-action *ngIf=\"!project.readonly\" [server]=\"server\" [node]=\"node\"></app-move-layer-down-action>\n  </mat-menu>\n</div>\n"
+module.exports = "<div class=\"context-menu\" [style.left]=\"leftPosition\" [style.top]=\"topPosition\" *ngIf=\"node\">\n  <span [matMenuTriggerFor]=\"contextMenu\"></span>\n  <mat-menu #contextMenu=\"matMenu\">\n    <app-start-node-action [server]=\"server\" [node]=\"node\"></app-start-node-action>\n    <app-stop-node-action [server]=\"server\" [node]=\"node\"></app-stop-node-action>\n    <app-move-layer-up-action *ngIf=\"!projectService.isReadOnly(project)\" [server]=\"server\" [node]=\"node\"></app-move-layer-up-action>\n    <app-move-layer-down-action *ngIf=\"!projectService.isReadOnly(project)\" [server]=\"server\" [node]=\"node\"></app-move-layer-down-action>\n  </mat-menu>\n</div>\n"
 
 /***/ }),
 
@@ -4776,6 +4857,7 @@ module.exports = ".context-menu {\n  position: absolute; }\n"
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__("./node_modules/@angular/platform-browser/esm5/platform-browser.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_server__ = __webpack_require__("./src/app/shared/models/server.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_project__ = __webpack_require__("./src/app/shared/models/project.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__services_project_service__ = __webpack_require__("./src/app/shared/services/project.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4790,10 +4872,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var NodeContextMenuComponent = /** @class */ (function () {
-    function NodeContextMenuComponent(sanitizer, changeDetector) {
+    function NodeContextMenuComponent(sanitizer, changeDetector, projectService) {
         this.sanitizer = sanitizer;
         this.changeDetector = changeDetector;
+        this.projectService = projectService;
     }
     NodeContextMenuComponent.prototype.ngOnInit = function () {
         this.setPosition(0, 0);
@@ -4827,7 +4911,8 @@ var NodeContextMenuComponent = /** @class */ (function () {
             styles: [__webpack_require__("./src/app/shared/node-context-menu/node-context-menu.component.scss")]
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */],
-            __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"]])
+            __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
+            __WEBPACK_IMPORTED_MODULE_5__services_project_service__["a" /* ProjectService */]])
     ], NodeContextMenuComponent);
     return NodeContextMenuComponent;
 }());
@@ -5142,7 +5227,12 @@ var HttpServer = /** @class */ (function () {
         return options;
     };
     HttpServer.prototype.getOptionsForServer = function (server, url, options) {
-        url = "http://" + server.ip + ":" + server.port + "/v2" + url;
+        if (server.ip && server.port) {
+            url = "http://" + server.ip + ":" + server.port + "/v2" + url;
+        }
+        else {
+            url = "/v2" + url;
+        }
         if (!options.headers) {
             options.headers = {};
         }
@@ -5329,6 +5419,7 @@ var NodeService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__ = __webpack_require__("./node_modules/rxjs/_esm5/add/operator/map.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__http_server_service__ = __webpack_require__("./src/app/shared/services/http-server.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__settings_service__ = __webpack_require__("./src/app/shared/services/settings.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5341,9 +5432,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ProjectService = /** @class */ (function () {
-    function ProjectService(httpServer) {
+    function ProjectService(httpServer, settingsService) {
         this.httpServer = httpServer;
+        this.settingsService = settingsService;
     }
     ProjectService.prototype.get = function (server, project_id) {
         return this.httpServer
@@ -5376,9 +5469,16 @@ var ProjectService = /** @class */ (function () {
     ProjectService.prototype.notificationsPath = function (server, project_id) {
         return "ws://" + server.ip + ":" + server.port + "/v2/projects/" + project_id + "/notifications/ws";
     };
+    ProjectService.prototype.isReadOnly = function (project) {
+        if (project.readonly) {
+            return project.readonly;
+        }
+        return !this.settingsService.isExperimentalEnabled();
+    };
     ProjectService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__http_server_service__["a" /* HttpServer */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__http_server_service__["a" /* HttpServer */],
+            __WEBPACK_IMPORTED_MODULE_3__settings_service__["a" /* SettingsService */]])
     ], ProjectService);
     return ProjectService;
 }());
@@ -5394,6 +5494,7 @@ var ProjectService = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ServerService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__indexed_db_service__ = __webpack_require__("./src/app/shared/services/indexed-db.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_server__ = __webpack_require__("./src/app/shared/models/server.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5403,6 +5504,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 var ServerService = /** @class */ (function () {
@@ -5420,17 +5522,23 @@ var ServerService = /** @class */ (function () {
             return _this.indexedDbService.get().getByKey(_this.tablename, id);
         });
     };
-    ServerService.prototype.getLocalOrRemote = function (id) {
-        if (id === 'local') {
-        }
-        return this.get(parseInt(id, 10));
-    };
     ServerService.prototype.create = function (server) {
         var _this = this;
         return this.onReady(function () {
             var promise = new Promise(function (resolve, reject) {
                 _this.indexedDbService.get().add(_this.tablename, server).then(function (added) {
                     server.id = added.key;
+                    resolve(server);
+                }, reject);
+            });
+            return promise;
+        });
+    };
+    ServerService.prototype.update = function (server) {
+        var _this = this;
+        return this.onReady(function () {
+            var promise = new Promise(function (resolve, reject) {
+                _this.indexedDbService.get().update(_this.tablename, server).then(function (updated) {
                     resolve(server);
                 }, reject);
             });
@@ -5448,6 +5556,32 @@ var ServerService = /** @class */ (function () {
         return this.onReady(function () {
             return _this.indexedDbService.get().delete(_this.tablename, server.id);
         });
+    };
+    ServerService.prototype.getLocalServer = function (ip, port) {
+        var _this = this;
+        var promise = new Promise(function (resolve, reject) {
+            _this.findAll().then(function (servers) {
+                var local = servers.find(function (server) { return server.is_local; });
+                if (local) {
+                    local.ip = ip;
+                    local.port = port;
+                    _this.update(local).then(function (updated) {
+                        resolve(updated);
+                    }, reject);
+                }
+                else {
+                    var server = new __WEBPACK_IMPORTED_MODULE_2__models_server__["a" /* Server */]();
+                    server.name = 'local';
+                    server.ip = ip;
+                    server.port = port;
+                    server.is_local = true;
+                    _this.create(server).then(function (created) {
+                        resolve(created);
+                    }, reject);
+                }
+            }, reject);
+        });
+        return promise;
     };
     ServerService.prototype.onReady = function (query) {
         var _this = this;
