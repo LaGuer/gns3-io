@@ -30,6 +30,7 @@ webpackEmptyAsyncContext.id = "./src/$$_lazy_route_resource lazy recursive";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__projects_projects_component__ = __webpack_require__("./src/app/projects/projects.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__default_layout_default_layout_component__ = __webpack_require__("./src/app/default-layout/default-layout.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__settings_settings_component__ = __webpack_require__("./src/app/settings/settings.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__local_server_local_server_component__ = __webpack_require__("./src/app/local-server/local-server.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -44,11 +45,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
 var routes = [
     { path: '', component: __WEBPACK_IMPORTED_MODULE_6__default_layout_default_layout_component__["a" /* DefaultLayoutComponent */],
         children: [
             { path: '', redirectTo: 'servers', pathMatch: 'full' },
             { path: 'servers', component: __WEBPACK_IMPORTED_MODULE_4__servers_servers_component__["b" /* ServersComponent */] },
+            { path: 'local', component: __WEBPACK_IMPORTED_MODULE_8__local_server_local_server_component__["a" /* LocalServerComponent */] },
             { path: 'server/:server_id/projects', component: __WEBPACK_IMPORTED_MODULE_5__projects_projects_component__["a" /* ProjectsComponent */] },
             { path: 'settings', component: __WEBPACK_IMPORTED_MODULE_7__settings_settings_component__["a" /* SettingsComponent */] },
         ]
@@ -59,10 +62,10 @@ var routerModule;
 if (__WEBPACK_IMPORTED_MODULE_0__environments_environment__["a" /* environment */].electron) {
     // angular in electron has problem with base-href and links separated by slashes, because of that
     // we use simply hashes
-    routerModule = __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forRoot(routes, { useHash: true });
+    routerModule = __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forRoot(routes, { useHash: true });
 }
 else {
-    routerModule = __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */].forRoot(routes);
+    routerModule = __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */].forRoot(routes);
 }
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
@@ -70,7 +73,7 @@ var AppRoutingModule = /** @class */ (function () {
     AppRoutingModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
             imports: [routerModule],
-            exports: [__WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* RouterModule */]]
+            exports: [__WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* RouterModule */]]
         })
     ], AppRoutingModule);
     return AppRoutingModule;
@@ -209,12 +212,14 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__settings_settings_component__ = __webpack_require__("./src/app/settings/settings.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__shared_services_settings_service__ = __webpack_require__("./src/app/shared/services/settings.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__raven_error_handler__ = __webpack_require__("./src/app/raven-error-handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__local_server_local_server_component__ = __webpack_require__("./src/app/local-server/local-server.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -293,6 +298,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_47__shared_node_context_menu_actions_move_layer_up_action_move_layer_up_action_component__["a" /* MoveLayerUpActionComponent */],
                 __WEBPACK_IMPORTED_MODULE_48__project_map_project_map_shortcuts_project_map_shortcuts_component__["a" /* ProjectMapShortcutsComponent */],
                 __WEBPACK_IMPORTED_MODULE_49__settings_settings_component__["a" /* SettingsComponent */],
+                __WEBPACK_IMPORTED_MODULE_52__local_server_local_server_component__["a" /* LocalServerComponent */],
             ],
             imports: [
                 __WEBPACK_IMPORTED_MODULE_9__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
@@ -3405,6 +3411,72 @@ var DefaultLayoutComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/local-server/local-server.component.html":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/local-server/local-server.component.scss":
+/***/ (function(module, exports) {
+
+module.exports = ""
+
+/***/ }),
+
+/***/ "./src/app/local-server/local-server.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LocalServerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common__ = __webpack_require__("./node_modules/@angular/common/esm5/common.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__shared_services_server_service__ = __webpack_require__("./src/app/shared/services/server.service.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+var LocalServerComponent = /** @class */ (function () {
+    function LocalServerComponent(location, router, serverService) {
+        this.location = location;
+        this.router = router;
+        this.serverService = serverService;
+    }
+    LocalServerComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.serverService.getLocalServer(location.hostname, parseInt(location.port, 10))
+            .then(function (server) {
+            _this.router.navigate(['/server', server.id, 'projects']);
+        });
+    };
+    LocalServerComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-local-server',
+            template: __webpack_require__("./src/app/local-server/local-server.component.html"),
+            styles: [__webpack_require__("./src/app/local-server/local-server.component.scss")]
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common__["Location"],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */],
+            __WEBPACK_IMPORTED_MODULE_3__shared_services_server_service__["a" /* ServerService */]])
+    ], LocalServerComponent);
+    return LocalServerComponent;
+}());
+
+
+
+/***/ }),
+
 /***/ "./src/app/project-map/create-snapshot-dialog.html":
 /***/ (function(module, exports) {
 
@@ -3962,7 +4034,7 @@ var ProjectsComponent = /** @class */ (function () {
         this.route.paramMap
             .switchMap(function (params) {
             var server_id = params.get('server_id');
-            return _this.serverService.getLocalOrRemote(server_id);
+            return _this.serverService.get(parseInt(server_id, 10));
         })
             .subscribe(function (server) {
             _this.server = server;
@@ -5423,7 +5495,6 @@ var ProjectService = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__indexed_db_service__ = __webpack_require__("./src/app/shared/services/indexed-db.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_server__ = __webpack_require__("./src/app/shared/models/server.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__ = __webpack_require__("./node_modules/rxjs/_esm5/Observable.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5433,7 +5504,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -5452,20 +5522,23 @@ var ServerService = /** @class */ (function () {
             return _this.indexedDbService.get().getByKey(_this.tablename, id);
         });
     };
-    ServerService.prototype.getLocalOrRemote = function (id) {
-        if (id === 'local') {
-            var server = new __WEBPACK_IMPORTED_MODULE_2__models_server__["a" /* Server */]();
-            server.name = 'local';
-            return __WEBPACK_IMPORTED_MODULE_3_rxjs_Observable__["a" /* Observable */].of(server);
-        }
-        return this.get(parseInt(id, 10));
-    };
     ServerService.prototype.create = function (server) {
         var _this = this;
         return this.onReady(function () {
             var promise = new Promise(function (resolve, reject) {
                 _this.indexedDbService.get().add(_this.tablename, server).then(function (added) {
                     server.id = added.key;
+                    resolve(server);
+                }, reject);
+            });
+            return promise;
+        });
+    };
+    ServerService.prototype.update = function (server) {
+        var _this = this;
+        return this.onReady(function () {
+            var promise = new Promise(function (resolve, reject) {
+                _this.indexedDbService.get().update(_this.tablename, server).then(function (updated) {
                     resolve(server);
                 }, reject);
             });
@@ -5483,6 +5556,32 @@ var ServerService = /** @class */ (function () {
         return this.onReady(function () {
             return _this.indexedDbService.get().delete(_this.tablename, server.id);
         });
+    };
+    ServerService.prototype.getLocalServer = function (ip, port) {
+        var _this = this;
+        var promise = new Promise(function (resolve, reject) {
+            _this.findAll().then(function (servers) {
+                var local = servers.find(function (server) { return server.is_local; });
+                if (local) {
+                    local.ip = ip;
+                    local.port = port;
+                    _this.update(local).then(function (updated) {
+                        resolve(updated);
+                    }, reject);
+                }
+                else {
+                    var server = new __WEBPACK_IMPORTED_MODULE_2__models_server__["a" /* Server */]();
+                    server.name = 'local';
+                    server.ip = ip;
+                    server.port = port;
+                    server.is_local = true;
+                    _this.create(server).then(function (created) {
+                        resolve(created);
+                    }, reject);
+                }
+            }, reject);
+        });
+        return promise;
     };
     ServerService.prototype.onReady = function (query) {
         var _this = this;
