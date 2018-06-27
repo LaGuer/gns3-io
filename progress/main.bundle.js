@@ -4153,13 +4153,17 @@ var ProjectsComponent = /** @class */ (function () {
         })
             .subscribe(function (server) {
             _this.server = server;
-            _this.projectService
-                .list(_this.server)
-                .subscribe(function (projects) {
-                _this.projectDatabase.addProjects(projects);
-            });
+            _this.refresh();
         });
         this.settings = this.settingsService.getAll();
+    };
+    ProjectsComponent.prototype.refresh = function () {
+        var _this = this;
+        this.projectService
+            .list(this.server)
+            .subscribe(function (projects) {
+            _this.projectDatabase.addProjects(projects);
+        });
     };
     ProjectsComponent.prototype.delete = function (project) {
         var _this = this;
@@ -4171,6 +4175,7 @@ var ProjectsComponent = /** @class */ (function () {
         var _this = this;
         this.progressService.activate();
         this.projectService.open(this.server, project.project_id).subscribe(function () {
+            _this.refresh();
         }, function () { }, function () {
             _this.progressService.deactivate();
         });
@@ -4178,7 +4183,9 @@ var ProjectsComponent = /** @class */ (function () {
     ProjectsComponent.prototype.close = function (project) {
         var _this = this;
         this.progressService.activate();
-        this.projectService.close(this.server, project.project_id).subscribe(function () { }, function () { }, function () {
+        this.projectService.close(this.server, project.project_id).subscribe(function () {
+            _this.refresh();
+        }, function () { }, function () {
             _this.progressService.deactivate();
         });
     };
