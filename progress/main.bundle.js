@@ -1,5 +1,12 @@
 webpackJsonp(["main"],{
 
+/***/ "./package.json":
+/***/ (function(module, exports) {
+
+module.exports = {"name":"gns3-web-ui","version":"0.0.1-beta.0","license":"GPLv3","main":"main.js","repository":{"type":"git","url":"https://github.com/GNS3/gns3-web-ui.git"},"scripts":{"ng":"ng","start":"ng serve","startforelectron":"ng serve -e electronDev","build":"ng build","buildforelectron":"ng build -e electronProd","buildforgithub":"ng build -e githubProd","test":"ng test","lint":"ng lint","e2e":"ng e2e","electron":"electron .","electrondev":"concurrently -k \"yarn startforelectron\" \"electron . -e dev\"","distlinux":"yarn buildforelectron && electron-builder --linux --x64","distwin":"yarn buildforelectron && electron-builder --win --x64","distmac":"yarn buildforelectron && electron-builder --mac --x64","release":"build"},"private":true,"dependencies":{"@angular/animations":"^5.2.9","@angular/cdk":"^5.2.4","@angular/common":"^5.2.9","@angular/compiler":"^5.2.9","@angular/core":"^5.2.9","@angular/forms":"^5.2.9","@angular/http":"^5.2.9","@angular/material":"^5.2.4","@angular/platform-browser":"^5.2.9","@angular/platform-browser-dynamic":"^5.2.9","@angular/router":"^5.2.9","@ng-bootstrap/ng-bootstrap":"^2.0.0-alpha.0","angular-persistence":"^1.0.1","angular2-hotkeys":"^2.0.4","angular2-indexeddb":"^1.2.2","bootstrap":"4.1.0","core-js":"^2.5.5","css-tree":"^1.0.0-alpha.28","d3-ng2-service":"^2.1.0","electron-settings":"^3.1.4","material-design-icons":"^3.0.1","ngx-electron":"^1.0.4","npm-check-updates":"^2.14.1","raven-js":"^3.24.1","rxjs":"^5.5.9","typeface-roboto":"^0.0.54","yargs":"^11.0.0","zone.js":"^0.8.26"},"devDependencies":{"@angular/cli":"^1.7.4","@angular/compiler-cli":"^5.2.9","@angular/language-service":"^5.2.9","@sentry/electron":"^0.5.0","@types/jasmine":"~2.8.6","@types/jasminewd2":"~2.0.2","@types/node":"~9.6.4","codelyzer":"~4.2.1","electron":"1.8.4","electron-builder":"^20.8.1","jasmine-core":"~3.1.0","jasmine-spec-reporter":"~4.2.1","jquery":"^3.3.1","karma":"~2.0.0","karma-chrome-launcher":"~2.2.0","karma-cli":"~1.0.1","karma-coverage-istanbul-reporter":"^1.4.2","karma-jasmine":"~1.1.0","karma-jasmine-html-reporter":"^1.0.0","node-sass":"^4.8.3","popper.js":"^1.14.3","protractor":"~5.3.1","ts-mockito":"^2.3.0","ts-node":"~5.0.1","tslint":"~5.9.1","typescript":">=2.4.2 <2.7.0"},"greenkeeper":{"ignore":["typescript"]},"comments":["Typescript should remain below 2.6.0, @todo: check later if packages were adjusted"]}
+
+/***/ }),
+
 /***/ "./src/$$_lazy_route_resource lazy recursive":
 /***/ (function(module, exports) {
 
@@ -215,6 +222,7 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__components_local_server_local_server_component__ = __webpack_require__("./src/app/components/local-server/local-server.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__common_progress_progress_component__ = __webpack_require__("./src/app/common/progress/progress.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__common_progress_progress_service__ = __webpack_require__("./src/app/common/progress/progress.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__version__ = __webpack_require__("./src/app/version.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -276,7 +284,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-__WEBPACK_IMPORTED_MODULE_0_raven_js__["config"]('https://b2b1cfd9b043491eb6b566fd8acee358@sentry.io/842726')
+
+__WEBPACK_IMPORTED_MODULE_0_raven_js__["config"]('https://b2b1cfd9b043491eb6b566fd8acee358@sentry.io/842726', {
+    release: __WEBPACK_IMPORTED_MODULE_55__version__["a" /* version */]
+})
     .install();
 var AppModule = /** @class */ (function () {
     function AppModule() {
@@ -5229,11 +5240,12 @@ var RavenErrorHandler = /** @class */ (function () {
         this.injector = injector;
     }
     RavenErrorHandler.prototype.handleError = function (err) {
-        var settingsService = this.injector.get(__WEBPACK_IMPORTED_MODULE_2__services_settings_service__["a" /* SettingsService */]);
+        __WEBPACK_IMPORTED_MODULE_0_raven_js__["setShouldSendCallback"](this.shouldSend);
         console.error(err.originalError || err);
-        if (__WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].production && settingsService.get('crash_reports')) {
-            __WEBPACK_IMPORTED_MODULE_0_raven_js__["captureException"](err.originalError || err);
-        }
+    };
+    RavenErrorHandler.prototype.shouldSend = function () {
+        var settingsService = this.injector.get(__WEBPACK_IMPORTED_MODULE_2__services_settings_service__["a" /* SettingsService */]);
+        return __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].production && settingsService.get('crash_reports');
     };
     RavenErrorHandler = __decorate([
         __param(0, Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injector"])),
@@ -6026,6 +6038,16 @@ var VersionService = /** @class */ (function () {
     return VersionService;
 }());
 
+
+
+/***/ }),
+
+/***/ "./src/app/version.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return version; });
+var version = __webpack_require__("./package.json").version;
 
 
 /***/ }),
