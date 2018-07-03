@@ -222,9 +222,9 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__common_progress_progress_component__ = __webpack_require__("./src/app/common/progress/progress.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__common_progress_progress_service__ = __webpack_require__("./src/app/common/progress/progress.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__version__ = __webpack_require__("./src/app/version.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__toaster_error_handler__ = __webpack_require__("./src/app/toaster-error-handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__common_error_handlers_toaster_error_handler__ = __webpack_require__("./src/app/common/error-handlers/toaster-error-handler.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__environments_environment__ = __webpack_require__("./src/environments/environment.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__raven_state_communicator__ = __webpack_require__("./src/app/raven-state-communicator.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__common_error_handlers_raven_state_communicator__ = __webpack_require__("./src/app/common/error-handlers/raven-state-communicator.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -292,7 +292,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 if (__WEBPACK_IMPORTED_MODULE_56__environments_environment__["a" /* environment */].production) {
     __WEBPACK_IMPORTED_MODULE_0_raven_js__["config"]('https://b2b1cfd9b043491eb6b566fd8acee358@sentry.io/842726', {
         shouldSendCallback: function () {
-            return __WEBPACK_IMPORTED_MODULE_57__raven_state_communicator__["a" /* RavenState */].shouldSend;
+            return __WEBPACK_IMPORTED_MODULE_57__common_error_handlers_raven_state_communicator__["a" /* RavenState */].shouldSend;
         },
         release: __WEBPACK_IMPORTED_MODULE_54__version__["a" /* version */]
     })
@@ -358,7 +358,7 @@ var AppModule = /** @class */ (function () {
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_50__services_settings_service__["a" /* SettingsService */],
-                { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["ErrorHandler"], useClass: __WEBPACK_IMPORTED_MODULE_55__toaster_error_handler__["a" /* ToasterErrorHandler */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["ErrorHandler"], useClass: __WEBPACK_IMPORTED_MODULE_55__common_error_handlers_toaster_error_handler__["a" /* ToasterErrorHandler */] },
                 __WEBPACK_IMPORTED_MODULE_8_d3_ng2_service__["a" /* D3Service */],
                 __WEBPACK_IMPORTED_MODULE_14__services_version_service__["a" /* VersionService */],
                 __WEBPACK_IMPORTED_MODULE_15__services_project_service__["a" /* ProjectService */],
@@ -3138,6 +3138,109 @@ var SerialLinkWidget = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/common/error-handlers/raven-error-handler.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RavenErrorHandler; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_settings_service__ = __webpack_require__("./src/app/services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__environments_environment__ = __webpack_require__("./src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__raven_state_communicator__ = __webpack_require__("./src/app/common/error-handlers/raven-state-communicator.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+var RavenErrorHandler = /** @class */ (function () {
+    function RavenErrorHandler(injector) {
+        this.injector = injector;
+    }
+    RavenErrorHandler.prototype.handleError = function (err) {
+        __WEBPACK_IMPORTED_MODULE_3__raven_state_communicator__["a" /* RavenState */].shouldSend = this.shouldSend();
+        console.error(err.originalError || err);
+    };
+    RavenErrorHandler.prototype.shouldSend = function () {
+        var settingsService = this.injector.get(__WEBPACK_IMPORTED_MODULE_1__services_settings_service__["a" /* SettingsService */]);
+        return __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].production && settingsService.get('crash_reports');
+    };
+    RavenErrorHandler = __decorate([
+        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"]])
+    ], RavenErrorHandler);
+    return RavenErrorHandler;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/common/error-handlers/raven-state-communicator.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export RavenStateCommunicator */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RavenState; });
+var RavenStateCommunicator = /** @class */ (function () {
+    function RavenStateCommunicator() {
+        this.shouldSend = true;
+    }
+    return RavenStateCommunicator;
+}());
+
+;
+var RavenState = new RavenStateCommunicator();
+
+
+/***/ }),
+
+/***/ "./src/app/common/error-handlers/toaster-error-handler.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToasterErrorHandler; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__raven_error_handler__ = __webpack_require__("./src/app/common/error-handlers/raven-error-handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_toaster_service__ = __webpack_require__("./src/app/services/toaster.service.ts");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var ToasterErrorHandler = /** @class */ (function (_super) {
+    __extends(ToasterErrorHandler, _super);
+    function ToasterErrorHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ToasterErrorHandler.prototype.handleError = function (err) {
+        _super.prototype.handleError.call(this, err);
+        var toasterService = this.injector.get(__WEBPACK_IMPORTED_MODULE_1__services_toaster_service__["a" /* ToasterService */]);
+        toasterService.error(err.message);
+    };
+    return ToasterErrorHandler;
+}(__WEBPACK_IMPORTED_MODULE_0__raven_error_handler__["a" /* RavenErrorHandler */]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/common/progress-dialog/progress-dialog.component.html":
 /***/ (function(module, exports) {
 
@@ -5219,73 +5322,6 @@ var Snapshot = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/raven-error-handler.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RavenErrorHandler; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_settings_service__ = __webpack_require__("./src/app/services/settings.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__environments_environment__ = __webpack_require__("./src/environments/environment.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__raven_state_communicator__ = __webpack_require__("./src/app/raven-state-communicator.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
-
-
-
-var RavenErrorHandler = /** @class */ (function () {
-    function RavenErrorHandler(injector) {
-        this.injector = injector;
-    }
-    RavenErrorHandler.prototype.handleError = function (err) {
-        __WEBPACK_IMPORTED_MODULE_3__raven_state_communicator__["a" /* RavenState */].shouldSend = this.shouldSend();
-        console.error(err.originalError || err);
-    };
-    RavenErrorHandler.prototype.shouldSend = function () {
-        var settingsService = this.injector.get(__WEBPACK_IMPORTED_MODULE_1__services_settings_service__["a" /* SettingsService */]);
-        return __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].production && settingsService.get('crash_reports');
-    };
-    RavenErrorHandler = __decorate([
-        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"])),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"]])
-    ], RavenErrorHandler);
-    return RavenErrorHandler;
-}());
-
-
-
-/***/ }),
-
-/***/ "./src/app/raven-state-communicator.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export RavenStateCommunicator */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RavenState; });
-var RavenStateCommunicator = /** @class */ (function () {
-    function RavenStateCommunicator() {
-        this.shouldSend = true;
-    }
-    return RavenStateCommunicator;
-}());
-
-;
-var RavenState = new RavenStateCommunicator();
-
-
-/***/ }),
-
 /***/ "./src/app/services/appliance.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -6130,42 +6166,6 @@ var VersionService = /** @class */ (function () {
     ], VersionService);
     return VersionService;
 }());
-
-
-
-/***/ }),
-
-/***/ "./src/app/toaster-error-handler.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToasterErrorHandler; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__raven_error_handler__ = __webpack_require__("./src/app/raven-error-handler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_toaster_service__ = __webpack_require__("./src/app/services/toaster.service.ts");
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-var ToasterErrorHandler = /** @class */ (function (_super) {
-    __extends(ToasterErrorHandler, _super);
-    function ToasterErrorHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ToasterErrorHandler.prototype.handleError = function (err) {
-        _super.prototype.handleError.call(this, err);
-        var toasterService = this.injector.get(__WEBPACK_IMPORTED_MODULE_1__services_toaster_service__["a" /* ToasterService */]);
-        toasterService.error(err.message);
-    };
-    return ToasterErrorHandler;
-}(__WEBPACK_IMPORTED_MODULE_0__raven_error_handler__["a" /* RavenErrorHandler */]));
 
 
 
