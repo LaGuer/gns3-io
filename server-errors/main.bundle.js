@@ -3348,14 +3348,14 @@ var ProgressDialogService = /** @class */ (function () {
 /***/ "./src/app/common/progress/progress.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"overlay\" *ngIf=\"visible\">\n  <div class=\"loading-spinner\">\n    <mat-spinner color=\"primary\">\n    </mat-spinner>\n  </div>\n</div>\n\n\n"
+module.exports = "<div class=\"overlay\" *ngIf=\"visible || error\">\n  <div class=\"loading-spinner\" *ngIf=\"visible && !error\">\n    <mat-spinner color=\"primary\">\n    </mat-spinner>\n  </div>\n  <div class=\"error-state\" *ngIf=\"error\">\n    <div class=\"error-icon\"><mat-icon>error_outline</mat-icon></div>\n    <div>Error occurred: {{ error.message }}</div>\n    <div>\n      <button mat-button (click)=\"refresh()\" matTooltip=\"Refresh page\" >\n        <mat-icon>refresh</mat-icon>\n      </button>\n      <button mat-button routerLink=\"/\" matTooltip=\"Go to home\" >\n        <mat-icon>home</mat-icon>\n      </button>\n    </div>\n  </div>\n</div>\n\n\n"
 
 /***/ }),
 
 /***/ "./src/app/common/progress/progress.component.scss":
 /***/ (function(module, exports) {
 
-module.exports = ".overlay {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.5);\n  z-index: 1000; }\n\n.loading-spinner {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%); }\n"
+module.exports = ".overlay {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.5);\n  z-index: 1000; }\n\n.loading-spinner, .error-state {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%); }\n\n.error-state div {\n  text-align: center; }\n\n.error-icon mat-icon {\n  font-size: 64px;\n  width: 64px;\n  height: 64px; }\n"
 
 /***/ }),
 
@@ -3366,6 +3366,7 @@ module.exports = ".overlay {\n  position: fixed;\n  width: 100%;\n  height: 100%
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProgressComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__progress_service__ = __webpack_require__("./src/app/common/progress/progress.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3377,16 +3378,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var ProgressComponent = /** @class */ (function () {
-    function ProgressComponent(progressService) {
+    function ProgressComponent(progressService, router) {
         this.progressService = progressService;
+        this.router = router;
         this.visible = false;
     }
     ProgressComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.progressService.state.subscribe(function (state) {
             _this.visible = state.visible;
+            // only set error state once; ignore next "correct" states
+            if (state.error && !_this.error) {
+                _this.error = state.error;
+            }
+            if (state.clear) {
+                _this.error = null;
+            }
         });
+        // when page changes clear error state
+        this.routerSubscription = this.router.events.subscribe(function () {
+            _this.progressService.clear();
+        });
+    };
+    ProgressComponent.prototype.refresh = function () {
+        // unfortunately we need to use global var
+        location.reload();
+    };
+    ProgressComponent.prototype.ngOnDestroy = function () {
+        this.routerSubscription.unsubscribe();
     };
     ProgressComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -3394,7 +3415,8 @@ var ProgressComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/common/progress/progress.component.html"),
             styles: [__webpack_require__("./src/app/common/progress/progress.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__progress_service__["a" /* ProgressService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__progress_service__["a" /* ProgressService */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]])
     ], ProgressComponent);
     return ProgressComponent;
 }());
@@ -3423,8 +3445,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var State = /** @class */ (function () {
-    function State(visible) {
+    function State(visible, error, clear) {
+        if (clear === void 0) { clear = false; }
         this.visible = visible;
+        this.error = error;
+        this.clear = clear;
     }
     return State;
 }());
@@ -3433,6 +3458,12 @@ var ProgressService = /** @class */ (function () {
     function ProgressService() {
         this.state = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](new State(false));
     }
+    ProgressService.prototype.setError = function (error) {
+        this.state.next(new State(false, error));
+    };
+    ProgressService.prototype.clear = function () {
+        this.state.next(new State(false, null, true));
+    };
     ProgressService.prototype.activate = function () {
         this.state.next(new State(true));
     };
@@ -4300,7 +4331,7 @@ module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: a
 /***/ "./src/app/components/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"viewMenu\">\n          <mat-icon>view_module</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #viewMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <div class=\"options-item\">\n          <mat-checkbox [(ngModel)]=\"showIntefaceLabels\" (change)=\"toggleShowInterfaceLabels($event.checked)\">Show interface labels</mat-checkbox>\n        </div>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"viewMenu\">\n          <mat-icon>view_module</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #viewMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <div class=\"options-item\">\n          <mat-checkbox [(ngModel)]=\"showIntefaceLabels\" (change)=\"toggleShowInterfaceLabels($event.checked)\">Show interface labels</mat-checkbox>\n        </div>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<app-progress></app-progress>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
 
 /***/ }),
 
@@ -4339,6 +4370,7 @@ module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [sym
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__cartography_components_map_helpers_in_rectangle_helper__ = __webpack_require__("./src/app/cartography/components/map/helpers/in-rectangle-helper.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__cartography_datasources_drawings_datasource__ = __webpack_require__("./src/app/cartography/datasources/drawings-datasource.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__services_settings_service__ = __webpack_require__("./src/app/services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__common_progress_progress_service__ = __webpack_require__("./src/app/common/progress/progress.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4380,8 +4412,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
 var ProjectMapComponent = /** @class */ (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toaster, projectWebServiceHandler, settingsService, nodesDataSource, linksDataSource, drawingsDataSource) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, progressService, toaster, projectWebServiceHandler, settingsService, nodesDataSource, linksDataSource, drawingsDataSource) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
@@ -4391,6 +4424,7 @@ var ProjectMapComponent = /** @class */ (function () {
         this.linkService = linkService;
         this.dialog = dialog;
         this.progressDialogService = progressDialogService;
+        this.progressService = progressService;
         this.toaster = toaster;
         this.projectWebServiceHandler = projectWebServiceHandler;
         this.settingsService = settingsService;
@@ -4404,12 +4438,12 @@ var ProjectMapComponent = /** @class */ (function () {
         this.drawLineMode = false;
         this.movingMode = false;
         this.readonly = false;
-        this.isLoading = true;
         this.selectionManager = new __WEBPACK_IMPORTED_MODULE_25__cartography_managers_selection_manager__["a" /* SelectionManager */](this.nodesDataSource, this.linksDataSource, this.drawingsDataSource, new __WEBPACK_IMPORTED_MODULE_26__cartography_components_map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */]());
         this.subscriptions = [];
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.progressService.activate();
         var routeSub = this.route.paramMap.subscribe(function (paramMap) {
             var server_id = parseInt(paramMap.get('server_id'), 10);
             __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["a" /* Observable */]
@@ -4433,6 +4467,10 @@ var ProjectMapComponent = /** @class */ (function () {
             })
                 .subscribe(function (project) {
                 _this.onProjectLoad(project);
+            }, function (error) {
+                _this.progressService.setError(error);
+            }, function () {
+                _this.progressService.deactivate();
             });
         });
         this.subscriptions.push(routeSub);
@@ -4478,7 +4516,7 @@ var ProjectMapComponent = /** @class */ (function () {
             _this.drawingsDataSource.set(drawings);
             _this.setUpMapCallbacks(project);
             _this.setUpWS(project);
-            _this.isLoading = false;
+            _this.progressService.deactivate();
         });
         this.subscriptions.push(subscription);
     };
@@ -4607,7 +4645,9 @@ var ProjectMapComponent = /** @class */ (function () {
         this.drawingsDataSource.clear();
         this.nodesDataSource.clear();
         this.linksDataSource.clear();
-        this.ws.unsubscribe();
+        if (this.ws) {
+            this.ws.unsubscribe();
+        }
         this.subscriptions.forEach(function (subscription) { return subscription.unsubscribe(); });
     };
     __decorate([
@@ -4638,6 +4678,7 @@ var ProjectMapComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_20__services_link_service__["a" /* LinkService */],
             __WEBPACK_IMPORTED_MODULE_12__angular_material__["e" /* MatDialog */],
             __WEBPACK_IMPORTED_MODULE_15__common_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */],
+            __WEBPACK_IMPORTED_MODULE_29__common_progress_progress_service__["a" /* ProgressService */],
             __WEBPACK_IMPORTED_MODULE_21__services_toaster_service__["a" /* ToasterService */],
             __WEBPACK_IMPORTED_MODULE_24__handlers_project_web_service_handler__["a" /* ProjectWebServiceHandler */],
             __WEBPACK_IMPORTED_MODULE_28__services_settings_service__["a" /* SettingsService */],
@@ -4769,6 +4810,8 @@ var ProjectsComponent = /** @class */ (function () {
             .list(this.server)
             .subscribe(function (projects) {
             _this.projectDatabase.addProjects(projects);
+        }, function (error) {
+            _this.progressService.setError(error);
         });
     };
     ProjectsComponent.prototype.delete = function (project) {
