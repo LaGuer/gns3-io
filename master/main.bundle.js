@@ -222,7 +222,9 @@ var AppComponent = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_52__common_progress_progress_component__ = __webpack_require__("./src/app/common/progress/progress.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_53__common_progress_progress_service__ = __webpack_require__("./src/app/common/progress/progress.service.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_54__version__ = __webpack_require__("./src/app/version.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__toaster_error_handler__ = __webpack_require__("./src/app/toaster-error-handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_55__common_error_handlers_toaster_error_handler__ = __webpack_require__("./src/app/common/error-handlers/toaster-error-handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_56__environments_environment__ = __webpack_require__("./src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_57__common_error_handlers_raven_state_communicator__ = __webpack_require__("./src/app/common/error-handlers/raven-state-communicator.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -285,10 +287,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
-__WEBPACK_IMPORTED_MODULE_0_raven_js__["config"]('https://b2b1cfd9b043491eb6b566fd8acee358@sentry.io/842726', {
-    release: __WEBPACK_IMPORTED_MODULE_54__version__["a" /* version */]
-})
-    .install();
+
+
+if (__WEBPACK_IMPORTED_MODULE_56__environments_environment__["a" /* environment */].production) {
+    __WEBPACK_IMPORTED_MODULE_0_raven_js__["config"]('https://b2b1cfd9b043491eb6b566fd8acee358@sentry.io/842726', {
+        shouldSendCallback: function () {
+            return __WEBPACK_IMPORTED_MODULE_57__common_error_handlers_raven_state_communicator__["a" /* RavenState */].shouldSend;
+        },
+        release: __WEBPACK_IMPORTED_MODULE_54__version__["a" /* version */]
+    })
+        .install();
+}
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -349,7 +358,7 @@ var AppModule = /** @class */ (function () {
             ],
             providers: [
                 __WEBPACK_IMPORTED_MODULE_50__services_settings_service__["a" /* SettingsService */],
-                { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["ErrorHandler"], useClass: __WEBPACK_IMPORTED_MODULE_55__toaster_error_handler__["a" /* ToasterErrorHandler */] },
+                { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["ErrorHandler"], useClass: __WEBPACK_IMPORTED_MODULE_55__common_error_handlers_toaster_error_handler__["a" /* ToasterErrorHandler */] },
                 __WEBPACK_IMPORTED_MODULE_8_d3_ng2_service__["a" /* D3Service */],
                 __WEBPACK_IMPORTED_MODULE_14__services_version_service__["a" /* VersionService */],
                 __WEBPACK_IMPORTED_MODULE_15__services_project_service__["a" /* ProjectService */],
@@ -370,7 +379,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_42__cartography_datasources_symbols_datasource__["a" /* SymbolsDataSource */],
                 __WEBPACK_IMPORTED_MODULE_43__cartography_managers_selection_manager__["a" /* SelectionManager */],
                 __WEBPACK_IMPORTED_MODULE_44__cartography_components_map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */],
-                __WEBPACK_IMPORTED_MODULE_45__cartography_datasources_drawings_datasource__["a" /* DrawingsDataSource */]
+                __WEBPACK_IMPORTED_MODULE_45__cartography_datasources_drawings_datasource__["a" /* DrawingsDataSource */],
+                __WEBPACK_IMPORTED_MODULE_19__services_http_server_service__["b" /* ServerErrorHandler */]
             ],
             entryComponents: [
                 __WEBPACK_IMPORTED_MODULE_30__components_servers_servers_component__["a" /* AddServerDialogComponent */],
@@ -3128,6 +3138,109 @@ var SerialLinkWidget = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "./src/app/common/error-handlers/raven-error-handler.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RavenErrorHandler; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_settings_service__ = __webpack_require__("./src/app/services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__environments_environment__ = __webpack_require__("./src/environments/environment.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__raven_state_communicator__ = __webpack_require__("./src/app/common/error-handlers/raven-state-communicator.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+
+
+
+
+var RavenErrorHandler = /** @class */ (function () {
+    function RavenErrorHandler(injector) {
+        this.injector = injector;
+    }
+    RavenErrorHandler.prototype.handleError = function (err) {
+        __WEBPACK_IMPORTED_MODULE_3__raven_state_communicator__["a" /* RavenState */].shouldSend = this.shouldSend();
+        console.error(err.originalError || err);
+    };
+    RavenErrorHandler.prototype.shouldSend = function () {
+        var settingsService = this.injector.get(__WEBPACK_IMPORTED_MODULE_1__services_settings_service__["a" /* SettingsService */]);
+        return __WEBPACK_IMPORTED_MODULE_2__environments_environment__["a" /* environment */].production && settingsService.get('crash_reports');
+    };
+    RavenErrorHandler = __decorate([
+        __param(0, Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"])),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injector"]])
+    ], RavenErrorHandler);
+    return RavenErrorHandler;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/common/error-handlers/raven-state-communicator.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export RavenStateCommunicator */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RavenState; });
+var RavenStateCommunicator = /** @class */ (function () {
+    function RavenStateCommunicator() {
+        this.shouldSend = true;
+    }
+    return RavenStateCommunicator;
+}());
+
+;
+var RavenState = new RavenStateCommunicator();
+
+
+/***/ }),
+
+/***/ "./src/app/common/error-handlers/toaster-error-handler.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToasterErrorHandler; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__raven_error_handler__ = __webpack_require__("./src/app/common/error-handlers/raven-error-handler.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_toaster_service__ = __webpack_require__("./src/app/services/toaster.service.ts");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+var ToasterErrorHandler = /** @class */ (function (_super) {
+    __extends(ToasterErrorHandler, _super);
+    function ToasterErrorHandler() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ToasterErrorHandler.prototype.handleError = function (err) {
+        _super.prototype.handleError.call(this, err);
+        var toasterService = this.injector.get(__WEBPACK_IMPORTED_MODULE_1__services_toaster_service__["a" /* ToasterService */]);
+        toasterService.error(err.message);
+    };
+    return ToasterErrorHandler;
+}(__WEBPACK_IMPORTED_MODULE_0__raven_error_handler__["a" /* RavenErrorHandler */]));
+
+
+
+/***/ }),
+
 /***/ "./src/app/common/progress-dialog/progress-dialog.component.html":
 /***/ (function(module, exports) {
 
@@ -3235,14 +3348,14 @@ var ProgressDialogService = /** @class */ (function () {
 /***/ "./src/app/common/progress/progress.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"overlay\" *ngIf=\"visible\">\n  <div class=\"loading-spinner\">\n    <mat-spinner color=\"primary\">\n    </mat-spinner>\n  </div>\n</div>\n\n\n"
+module.exports = "<div class=\"overlay\" *ngIf=\"visible || error\">\n  <div class=\"loading-spinner\" *ngIf=\"visible && !error\">\n    <mat-spinner color=\"primary\">\n    </mat-spinner>\n  </div>\n  <div class=\"error-state\" *ngIf=\"error\">\n    <div class=\"error-icon\"><mat-icon>error_outline</mat-icon></div>\n    <div>Error occurred: {{ error.message }}</div>\n    <div>\n      <button mat-button (click)=\"refresh()\" matTooltip=\"Refresh page\" >\n        <mat-icon>refresh</mat-icon>\n      </button>\n      <button mat-button routerLink=\"/\" matTooltip=\"Go to home\" >\n        <mat-icon>home</mat-icon>\n      </button>\n    </div>\n  </div>\n</div>\n\n\n"
 
 /***/ }),
 
 /***/ "./src/app/common/progress/progress.component.scss":
 /***/ (function(module, exports) {
 
-module.exports = ".overlay {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.5);\n  z-index: 1000; }\n\n.loading-spinner {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%); }\n"
+module.exports = ".overlay {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  background-color: rgba(0, 0, 0, 0.5);\n  z-index: 1000; }\n\n.loading-spinner, .error-state {\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  -webkit-transform: translate(-50%, -50%);\n          transform: translate(-50%, -50%); }\n\n.error-state div {\n  text-align: center; }\n\n.error-icon mat-icon {\n  font-size: 64px;\n  width: 64px;\n  height: 64px; }\n"
 
 /***/ }),
 
@@ -3253,6 +3366,7 @@ module.exports = ".overlay {\n  position: fixed;\n  width: 100%;\n  height: 100%
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProgressComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__progress_service__ = __webpack_require__("./src/app/common/progress/progress.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__("./node_modules/@angular/router/esm5/router.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -3264,16 +3378,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var ProgressComponent = /** @class */ (function () {
-    function ProgressComponent(progressService) {
+    function ProgressComponent(progressService, router) {
         this.progressService = progressService;
+        this.router = router;
         this.visible = false;
     }
     ProgressComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.progressService.state.subscribe(function (state) {
             _this.visible = state.visible;
+            // only set error state once; ignore next "correct" states
+            if (state.error && !_this.error) {
+                _this.error = state.error;
+            }
+            if (state.clear) {
+                _this.error = null;
+            }
         });
+        // when page changes clear error state
+        this.routerSubscription = this.router.events.subscribe(function () {
+            _this.progressService.clear();
+        });
+    };
+    ProgressComponent.prototype.refresh = function () {
+        // unfortunately we need to use global var
+        location.reload();
+    };
+    ProgressComponent.prototype.ngOnDestroy = function () {
+        this.routerSubscription.unsubscribe();
     };
     ProgressComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
@@ -3281,7 +3415,8 @@ var ProgressComponent = /** @class */ (function () {
             template: __webpack_require__("./src/app/common/progress/progress.component.html"),
             styles: [__webpack_require__("./src/app/common/progress/progress.component.scss")]
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__progress_service__["a" /* ProgressService */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__progress_service__["a" /* ProgressService */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]])
     ], ProgressComponent);
     return ProgressComponent;
 }());
@@ -3310,8 +3445,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var State = /** @class */ (function () {
-    function State(visible) {
+    function State(visible, error, clear) {
+        if (clear === void 0) { clear = false; }
         this.visible = visible;
+        this.error = error;
+        this.clear = clear;
     }
     return State;
 }());
@@ -3320,6 +3458,12 @@ var ProgressService = /** @class */ (function () {
     function ProgressService() {
         this.state = new __WEBPACK_IMPORTED_MODULE_1_rxjs_BehaviorSubject__["a" /* BehaviorSubject */](new State(false));
     }
+    ProgressService.prototype.setError = function (error) {
+        this.state.next(new State(false, error));
+    };
+    ProgressService.prototype.clear = function () {
+        this.state.next(new State(false, null, true));
+    };
     ProgressService.prototype.activate = function () {
         this.state.next(new State(true));
     };
@@ -4187,7 +4331,7 @@ module.exports = "app-root, app-project-map, .project-map, app-map {\n  width: a
 /***/ "./src/app/components/project-map/project-map.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"viewMenu\">\n          <mat-icon>view_module</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #viewMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <div class=\"options-item\">\n          <mat-checkbox [(ngModel)]=\"showIntefaceLabels\" (change)=\"toggleShowInterfaceLabels($event.checked)\">Show interface labels</mat-checkbox>\n        </div>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<div class=\"loading-spinner\" *ngIf=\"isLoading\">\n  <mat-spinner color=\"primary\">\n  </mat-spinner>\n</div>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
+module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [symbols]=\"symbols\" [nodes]=\"nodes\" [links]=\"links\" [drawings]=\"drawings\" [width]=\"project.scene_width\" [height]=\"project.scene_height\"></app-map>\n\n  <div class=\"project-toolbar\">\n    <mat-toolbar color=\"primary\" class=\"project-toolbar\">\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"mainMenu\">\n          <mat-icon svgIcon=\"gns3\"></mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #mainMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <button mat-menu-item [routerLink]=\"['/server', server.id, 'projects']\">\n          <mat-icon>work</mat-icon>\n          <span>Projects</span>\n        </button>\n        <button mat-menu-item [routerLink]=\"['/servers']\">\n          <mat-icon>developer_board</mat-icon>\n          <span>Servers</span>\n        </button>\n      </mat-menu>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [matMenuTriggerFor]=\"viewMenu\">\n          <mat-icon>view_module</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-menu #viewMenu=\"matMenu\" [overlapTrigger]=\"false\">\n        <div class=\"options-item\">\n          <mat-checkbox [(ngModel)]=\"showIntefaceLabels\" (change)=\"toggleShowInterfaceLabels($event.checked)\">Show interface labels</mat-checkbox>\n        </div>\n      </mat-menu>\n\n      <mat-toolbar-row *ngIf=\"!readonly\">\n        <button mat-icon-button [color]=\"drawLineMode ? 'primary': 'basic'\" (click)=\"toggleDrawLineMode()\">\n          <mat-icon>timeline</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row>\n        <button mat-icon-button [color]=\"movingMode ? 'primary': 'basic'\" (click)=\"toggleMovingMode()\">\n          <mat-icon>zoom_out_map</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <button mat-icon-button (click)=\"createSnapshotModal()\">\n          <mat-icon>snooze</mat-icon>\n        </button>\n      </mat-toolbar-row>\n\n      <mat-toolbar-row *ngIf=\"!readonly\" >\n        <app-appliance [server]=\"server\" (onNodeCreation)=\"onNodeCreation($event)\"></app-appliance>\n      </mat-toolbar-row>\n\n    </mat-toolbar>\n  </div>\n\n  <app-node-context-menu [project]=\"project\" [server]=\"server\"></app-node-context-menu>\n  <app-node-select-interface (onChooseInterface)=\"onChooseInterface($event)\"></app-node-select-interface>\n</div>\n\n<app-progress></app-progress>\n\n<app-project-map-shortcuts *ngIf=\"project\" [project]=\"project\" [server]=\"server\" [selectionManager]=\"selectionManager\"></app-project-map-shortcuts>\n"
 
 /***/ }),
 
@@ -4226,6 +4370,7 @@ module.exports = "<div *ngIf=\"project\" class=\"project-map\">\n  <app-map [sym
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__cartography_components_map_helpers_in_rectangle_helper__ = __webpack_require__("./src/app/cartography/components/map/helpers/in-rectangle-helper.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__cartography_datasources_drawings_datasource__ = __webpack_require__("./src/app/cartography/datasources/drawings-datasource.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__services_settings_service__ = __webpack_require__("./src/app/services/settings.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__common_progress_progress_service__ = __webpack_require__("./src/app/common/progress/progress.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -4267,8 +4412,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 
 
 
+
 var ProjectMapComponent = /** @class */ (function () {
-    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, toaster, projectWebServiceHandler, settingsService, nodesDataSource, linksDataSource, drawingsDataSource) {
+    function ProjectMapComponent(route, serverService, projectService, symbolService, snapshotService, nodeService, linkService, dialog, progressDialogService, progressService, toaster, projectWebServiceHandler, settingsService, nodesDataSource, linksDataSource, drawingsDataSource) {
         this.route = route;
         this.serverService = serverService;
         this.projectService = projectService;
@@ -4278,6 +4424,7 @@ var ProjectMapComponent = /** @class */ (function () {
         this.linkService = linkService;
         this.dialog = dialog;
         this.progressDialogService = progressDialogService;
+        this.progressService = progressService;
         this.toaster = toaster;
         this.projectWebServiceHandler = projectWebServiceHandler;
         this.settingsService = settingsService;
@@ -4291,12 +4438,12 @@ var ProjectMapComponent = /** @class */ (function () {
         this.drawLineMode = false;
         this.movingMode = false;
         this.readonly = false;
-        this.isLoading = true;
         this.selectionManager = new __WEBPACK_IMPORTED_MODULE_25__cartography_managers_selection_manager__["a" /* SelectionManager */](this.nodesDataSource, this.linksDataSource, this.drawingsDataSource, new __WEBPACK_IMPORTED_MODULE_26__cartography_components_map_helpers_in_rectangle_helper__["a" /* InRectangleHelper */]());
         this.subscriptions = [];
     }
     ProjectMapComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.progressService.activate();
         var routeSub = this.route.paramMap.subscribe(function (paramMap) {
             var server_id = parseInt(paramMap.get('server_id'), 10);
             __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["a" /* Observable */]
@@ -4320,6 +4467,10 @@ var ProjectMapComponent = /** @class */ (function () {
             })
                 .subscribe(function (project) {
                 _this.onProjectLoad(project);
+            }, function (error) {
+                _this.progressService.setError(error);
+            }, function () {
+                _this.progressService.deactivate();
             });
         });
         this.subscriptions.push(routeSub);
@@ -4365,7 +4516,7 @@ var ProjectMapComponent = /** @class */ (function () {
             _this.drawingsDataSource.set(drawings);
             _this.setUpMapCallbacks(project);
             _this.setUpWS(project);
-            _this.isLoading = false;
+            _this.progressService.deactivate();
         });
         this.subscriptions.push(subscription);
     };
@@ -4494,7 +4645,9 @@ var ProjectMapComponent = /** @class */ (function () {
         this.drawingsDataSource.clear();
         this.nodesDataSource.clear();
         this.linksDataSource.clear();
-        this.ws.unsubscribe();
+        if (this.ws) {
+            this.ws.unsubscribe();
+        }
         this.subscriptions.forEach(function (subscription) { return subscription.unsubscribe(); });
     };
     __decorate([
@@ -4525,6 +4678,7 @@ var ProjectMapComponent = /** @class */ (function () {
             __WEBPACK_IMPORTED_MODULE_20__services_link_service__["a" /* LinkService */],
             __WEBPACK_IMPORTED_MODULE_12__angular_material__["e" /* MatDialog */],
             __WEBPACK_IMPORTED_MODULE_15__common_progress_dialog_progress_dialog_service__["a" /* ProgressDialogService */],
+            __WEBPACK_IMPORTED_MODULE_29__common_progress_progress_service__["a" /* ProgressService */],
             __WEBPACK_IMPORTED_MODULE_21__services_toaster_service__["a" /* ToasterService */],
             __WEBPACK_IMPORTED_MODULE_24__handlers_project_web_service_handler__["a" /* ProjectWebServiceHandler */],
             __WEBPACK_IMPORTED_MODULE_28__services_settings_service__["a" /* SettingsService */],
@@ -4656,6 +4810,8 @@ var ProjectsComponent = /** @class */ (function () {
             .list(this.server)
             .subscribe(function (projects) {
             _this.projectDatabase.addProjects(projects);
+        }, function (error) {
+            _this.progressService.setError(error);
         });
     };
     ProjectsComponent.prototype.delete = function (project) {
@@ -5209,58 +5365,6 @@ var Snapshot = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/raven-error-handler.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RavenErrorHandler; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_raven_js__ = __webpack_require__("./node_modules/raven-js/src/singleton.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_raven_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_raven_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_settings_service__ = __webpack_require__("./src/app/services/settings.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__("./src/environments/environment.ts");
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
-
-
-
-
-var RavenErrorHandler = /** @class */ (function () {
-    function RavenErrorHandler(injector) {
-        this.injector = injector;
-    }
-    RavenErrorHandler.prototype.handleError = function (err) {
-        __WEBPACK_IMPORTED_MODULE_0_raven_js__["setShouldSendCallback"](this.shouldSend());
-        console.error(err.originalError || err);
-    };
-    RavenErrorHandler.prototype.shouldSend = function () {
-        var _this = this;
-        return function () {
-            var settingsService = _this.injector.get(__WEBPACK_IMPORTED_MODULE_2__services_settings_service__["a" /* SettingsService */]);
-            return __WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].production && settingsService.get('crash_reports');
-        };
-    };
-    RavenErrorHandler = __decorate([
-        __param(0, Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"])(__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injector"])),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_core__["Injector"]])
-    ], RavenErrorHandler);
-    return RavenErrorHandler;
-}());
-
-
-
-/***/ }),
-
 /***/ "./src/app/services/appliance.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -5304,9 +5408,24 @@ var ApplianceService = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export ServerError */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ServerErrorHandler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HttpServer; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__("./node_modules/rxjs/_esm5/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operators__ = __webpack_require__("./node_modules/rxjs/_esm5/operators.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_throw__ = __webpack_require__("./node_modules/rxjs/_esm5/add/observable/throw.js");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5318,50 +5437,99 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
+
+
 /* tslint:enable:interface-over-type-literal */
+var ServerError = /** @class */ (function (_super) {
+    __extends(ServerError, _super);
+    function ServerError(message) {
+        return _super.call(this, message) || this;
+    }
+    ServerError.fromError = function (message, originalError) {
+        var serverError = new ServerError(message);
+        serverError.originalError = originalError;
+        return serverError;
+    };
+    return ServerError;
+}(Error));
+
+var ServerErrorHandler = /** @class */ (function () {
+    function ServerErrorHandler() {
+    }
+    ServerErrorHandler.prototype.handleError = function (error) {
+        var err = error;
+        if (error.name === 'HttpErrorResponse' && error.status === 0) {
+            err = ServerError.fromError("Server is unreachable", error);
+        }
+        return __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["a" /* Observable */].throw(err);
+    };
+    ServerErrorHandler = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])()
+    ], ServerErrorHandler);
+    return ServerErrorHandler;
+}());
+
 var HttpServer = /** @class */ (function () {
-    function HttpServer(http) {
+    function HttpServer(http, errorHandler) {
         this.http = http;
+        this.errorHandler = errorHandler;
     }
     HttpServer.prototype.get = function (server, url, options) {
         options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
-        return this.http.get(intercepted.url, intercepted.options);
+        return this.http
+            .get(intercepted.url, intercepted.options)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.errorHandler.handleError));
     };
     HttpServer.prototype.getText = function (server, url, options) {
         options = this.getTextOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
-        return this.http.get(intercepted.url, intercepted.options);
+        return this.http
+            .get(intercepted.url, intercepted.options)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.errorHandler.handleError));
     };
     HttpServer.prototype.post = function (server, url, body, options) {
         options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
-        return this.http.post(intercepted.url, body, intercepted.options);
+        return this.http
+            .post(intercepted.url, body, intercepted.options)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.errorHandler.handleError));
     };
     HttpServer.prototype.put = function (server, url, body, options) {
         options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
-        return this.http.put(intercepted.url, body, intercepted.options);
+        return this.http
+            .put(intercepted.url, body, intercepted.options)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.errorHandler.handleError));
     };
     HttpServer.prototype.delete = function (server, url, options) {
         options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
-        return this.http.delete(intercepted.url, intercepted.options);
+        return this.http
+            .delete(intercepted.url, intercepted.options)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.errorHandler.handleError));
     };
     HttpServer.prototype.patch = function (server, url, body, options) {
         options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
-        return this.http.patch(intercepted.url, body, intercepted.options);
+        return this.http
+            .patch(intercepted.url, body, intercepted.options)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.errorHandler.handleError));
     };
     HttpServer.prototype.head = function (server, url, options) {
         options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
-        return this.http.head(intercepted.url, intercepted.options);
+        return this.http
+            .head(intercepted.url, intercepted.options)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.errorHandler.handleError));
     };
     HttpServer.prototype.options = function (server, url, options) {
         options = this.getJsonOptions(options);
         var intercepted = this.getOptionsForServer(server, url, options);
-        return this.http.options(intercepted.url, intercepted.options);
+        return this.http
+            .options(intercepted.url, intercepted.options)
+            .pipe(Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_operators__["a" /* catchError */])(this.errorHandler.handleError));
     };
     HttpServer.prototype.getJsonOptions = function (options) {
         if (!options) {
@@ -5400,7 +5568,8 @@ var HttpServer = /** @class */ (function () {
     };
     HttpServer = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__angular_common_http__["a" /* HttpClient */],
+            ServerErrorHandler])
     ], HttpServer);
     return HttpServer;
 }());
@@ -6040,43 +6209,6 @@ var VersionService = /** @class */ (function () {
     ], VersionService);
     return VersionService;
 }());
-
-
-
-/***/ }),
-
-/***/ "./src/app/toaster-error-handler.ts":
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ToasterErrorHandler; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__raven_error_handler__ = __webpack_require__("./src/app/raven-error-handler.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_toaster_service__ = __webpack_require__("./src/app/services/toaster.service.ts");
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-
-
-var ToasterErrorHandler = /** @class */ (function (_super) {
-    __extends(ToasterErrorHandler, _super);
-    function ToasterErrorHandler() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    ToasterErrorHandler.prototype.handleError = function (err) {
-        _super.prototype.handleError.call(this, err);
-        var toasterService = this.injector.get(__WEBPACK_IMPORTED_MODULE_1__services_toaster_service__["a" /* ToasterService */]);
-        var error = err.originalError || err;
-        toasterService.error(error.message);
-    };
-    return ToasterErrorHandler;
-}(__WEBPACK_IMPORTED_MODULE_0__raven_error_handler__["a" /* RavenErrorHandler */]));
 
 
 
