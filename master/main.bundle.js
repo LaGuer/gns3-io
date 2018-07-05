@@ -5839,7 +5839,7 @@ var ServerService = /** @class */ (function () {
         this.indexedDbService = indexedDbService;
         this.tablename = "servers";
         this.ready = indexedDbService.get().openDatabase(1, function (evt) {
-            var store = evt.currentTarget.result.createObjectStore(_this.tablename, { keyPath: "id", autoIncrement: true });
+            evt.currentTarget.result.createObjectStore(_this.tablename, { keyPath: "id", autoIncrement: true });
         });
     }
     ServerService.prototype.get = function (id) {
