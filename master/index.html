@@ -8,16 +8,16 @@
   <script>
     var userAgent = navigator.userAgent.toLowerCase();
 
-    // in case we're running in electron because we need it for resources
-    // if (userAgent.indexOf(' electron/') > -1) {
-    //   var base = document.getElementsByTagName('base');
-    //   if(base.length > 0) {
-    //     base.href = document.location;
-    //   }
-    //   else {
-    //     document.write('<base href="' + document.location + '" />');
-    //   }
-    // }
+    //in case we're running in electron because we need it for resources
+    if (userAgent.indexOf(' electron/') > -1) {
+      var base = document.getElementsByTagName('base');
+      if(base.length > 0) {
+        base.href ='./';
+      }
+      else {
+        document.write('<base href="./" />');
+      }
+    }
   </script>
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,6 +37,6 @@
 <link rel="stylesheet" href="styles.346c8a015e99ba94ab09.css"></head>
 <body class="mat-app-background">
   <app-root></app-root>
-<script type="text/javascript" src="runtime.a66f828dca56eeb90e02.js"></script><script type="text/javascript" src="polyfills.a9bcdc541031988f635b.js"></script><script type="text/javascript" src="main.376eb9cafedb3a63e331.js"></script></body>
+<script type="text/javascript" src="runtime.a66f828dca56eeb90e02.js"></script><script type="text/javascript" src="polyfills.a9bcdc541031988f635b.js"></script><script type="text/javascript" src="main.c479a43eb6e99a946c61.js"></script></body>
 
 </html>
